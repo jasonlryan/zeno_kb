@@ -12,6 +12,7 @@ export { CategoryGrid } from "./CategoryGrid"
 export { ChatPanel, ChatPanelDemo } from "./ChatPanel"
 export { CuratorDashboard } from "./CuratorDashboard"
 export { ToolFormModal } from "./ToolFormModal"
+export { FilterPanel } from "./FilterPanel"
 
 // Hooks
 export { useLocalSearch } from "../hooks/useLocalSearch"

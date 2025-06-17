@@ -1,7 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { Home, Search, BookOpen, Settings, Users, Zap } from "lucide-react";
+import {
+  Home,
+  Search,
+  BookOpen,
+  Settings,
+  Users,
+  Zap,
+  Filter,
+} from "lucide-react";
 import { AppShell } from "../components/AppShell";
 import { ToolCardDemo } from "../components/ToolCard";
 import { CategoryTileDemo } from "../components/CategoryTile";
@@ -10,167 +18,75 @@ import { CuratorDashboard } from "../components/CuratorDashboard";
 import { FeaturedCarousel } from "../components/FeaturedCarousel";
 import { CategoryGrid } from "../components/CategoryGrid";
 import { ToolGrid } from "../components/ToolGrid";
+import { FilterPanel } from "../components/FilterPanel";
 import { useLocalSearch } from "../hooks/useLocalSearch";
+// import { useTaxonomy } from "../hooks/useTaxonomy";
+import {
+  useConfig,
+  useNavigation,
+  useTools,
+  useCategories,
+  useText,
+} from "../hooks/useConfig";
 import type { Tool, Category, SidebarSection } from "../types";
 
-// Sample data
-const sampleTools: Tool[] = [
-  {
-    id: "1",
-    title: "GPT-4 Code Assistant",
-    description:
-      "Advanced AI assistant for code generation, debugging, and optimization.",
-    type: "GPT",
-    tier: "Specialist",
-    complexity: "Intermediate",
-    tags: ["coding", "ai", "debugging"],
-    featured: true,
-    function: "Content & Creative",
-    link: "https://chat.openai.com/g/code-assistant",
-    date_added: "2024-01-15T10:00:00Z",
-    added_by: "curator-1",
-    scheduled_feature_date: undefined,
-  },
-  {
-    id: "2",
-    title: "API Documentation Generator",
-    description:
-      "Automatically generate comprehensive API documentation from your codebase.",
-    type: "Script",
-    tier: "Foundation",
-    complexity: "Beginner",
-    tags: ["documentation", "api", "automation"],
-    featured: true,
-    function: "Ops & Governance",
-    link: "https://github.com/api-doc-generator",
-    date_added: "2024-01-20T14:30:00Z",
-    added_by: "curator-2",
-    scheduled_feature_date: undefined,
-  },
-  {
-    id: "3",
-    title: "React Best Practices Guide",
-    description:
-      "Comprehensive guide covering modern React development patterns and practices.",
-    type: "Doc",
-    tier: "Foundation",
-    complexity: "Intermediate",
-    tags: ["react", "frontend", "best-practices"],
-    function: "Best Practice Guides",
-    link: "https://example.com/react-best-practices.pdf",
-    date_added: "2024-01-10T11:00:00Z",
-    added_by: "curator-3",
-    scheduled_feature_date: undefined,
-  },
-  {
-    id: "4",
-    title: "Advanced TypeScript Tutorial",
-    description: "Deep dive into TypeScript advanced features and patterns.",
-    type: "Video",
-    tier: "Specialist",
-    complexity: "Advanced",
-    tags: ["typescript", "tutorial", "advanced"],
-    function: "Best Practice Guides",
-    link: "https://www.youtube.com/watch?v=typescript-advanced",
-    date_added: "2024-01-25T09:30:00Z",
-    added_by: "curator-1",
-    scheduled_feature_date: undefined,
-  },
-];
-
-const sampleCategories: Category[] = [
-  {
-    id: "1",
-    icon: "🤖",
-    title: "AI Assistants",
-    description: "Powerful AI tools for various tasks",
-    count: 24,
-  },
-  {
-    id: "2",
-    icon: "📚",
-    title: "Documentation",
-    description: "Guides, tutorials, and references",
-    count: 156,
-  },
-  {
-    id: "3",
-    icon: "⚡",
-    title: "Scripts & Tools",
-    description: "Automation and utility scripts",
-    count: 89,
-  },
-  {
-    id: "4",
-    icon: "🎥",
-    title: "Video Tutorials",
-    description: "Step-by-step video guides",
-    count: 67,
-  },
-];
+// Configuration data loaded from config files
 
 export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeView, setActiveView] = useState<
     "home" | "search" | "library" | "curator" | "users" | "analytics" | "demos"
   >("home");
+  const [isFilterOpen, setIsFilterOpen] = useState(true);
 
-  const filteredTools = useLocalSearch(sampleTools, searchQuery);
+  // Load configuration data
+  const { app } = useConfig();
+  const navigation = useNavigation();
+  const { all: allTools, featured: featuredTools } = useTools();
+  const categories = useCategories();
 
-  // Create sidebar sections with proper active state
-  const sidebarSections: SidebarSection[] = [
-    {
-      id: "main",
-      title: "Main",
-      items: [
-        {
-          id: "home",
-          title: "Home",
-          icon: Home,
-          active: activeView === "home",
-        },
-        {
-          id: "search",
-          title: "Search",
-          icon: Search,
-          active: activeView === "search",
-        },
-        {
-          id: "library",
-          title: "Library",
-          icon: BookOpen,
-          active: activeView === "library",
-        },
-      ],
-    },
-    {
-      id: "management",
-      title: "Management",
-      items: [
-        {
-          id: "curator",
-          title: "Curator Dashboard",
-          icon: Settings,
-          active: activeView === "curator",
-        },
-        {
-          id: "users",
-          title: "Users",
-          icon: Users,
-          active: activeView === "users",
-        },
-        {
-          id: "analytics",
-          title: "Analytics",
-          icon: Zap,
-          active: activeView === "analytics",
-        },
-      ],
-    },
-  ];
+  // Temporarily disable taxonomy system for debugging
+  // const {
+  //   filteredTools: taxonomyFilteredTools,
+  //   searchTools,
+  //   hasActiveFilters,
+  //   clearFilters,
+  // } = useTaxonomy(allTools);
+
+  // Always call useLocalSearch (Rules of Hooks)
+  const localSearchResults = useLocalSearch(allTools, searchQuery);
+
+  // Use local search for now
+  const displayTools = localSearchResults;
+  const hasActiveFilters = false;
+
+  // Get text values at top level to avoid hook violations
+  const categoriesTitle = useText("pages.home.sections.categories.title");
+
+  // Icon mapping for navigation
+  const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
+    Home,
+    Search,
+    BookOpen,
+    Settings,
+    Users,
+    Zap,
+  };
+
+  // Create sidebar sections with proper active state from config
+  const sidebarSections: SidebarSection[] = navigation.map((section) => ({
+    ...section,
+    items: section.items.map((item) => ({
+      ...item,
+      icon:
+        typeof item.icon === "string" ? iconMap[item.icon] || Home : item.icon,
+      active: activeView === item.id,
+    })),
+  }));
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
+    // Use local search for now
     if (query.trim()) {
       setActiveView("search");
     }
@@ -194,16 +110,33 @@ export default function HomePage() {
       case "home":
         return (
           <div className="space-y-16">
+            {/* Welcome Section */}
+            <section className="text-center py-12 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl border border-blue-100">
+              <h1 className="text-4xl font-bold text-gray-900 mb-4">
+                Welcome to the Zeno Knowledge Hub
+              </h1>
+              <h2 className="text-xl text-gray-600 mb-6">
+                Your AI toolkit, all in one place
+              </h2>
+              <p className="text-lg text-gray-700 max-w-2xl mx-auto">
+                Explore practical guides, GPTs, and shared know-how to help you
+                get more from AI – fast.
+              </p>
+            </section>
+
             {/* Featured Tools */}
-            <FeaturedCarousel tools={sampleTools} onSelect={handleToolSelect} />
+            <FeaturedCarousel
+              tools={featuredTools}
+              onSelect={handleToolSelect}
+            />
 
             {/* Categories */}
             <section className="zeno-section-spacing">
               <h2 className="zeno-heading text-card-foreground mb-6">
-                Browse categories
+                {categoriesTitle}
               </h2>
               <CategoryGrid
-                categories={sampleCategories}
+                categories={categories}
                 onSelect={handleCategorySelect}
               />
             </section>
@@ -213,7 +146,7 @@ export default function HomePage() {
               <h2 className="zeno-heading text-card-foreground mb-6">
                 All tools
               </h2>
-              <ToolGrid tools={sampleTools} onSelect={handleToolSelect} />
+              <ToolGrid tools={allTools} onSelect={handleToolSelect} />
             </section>
           </div>
         );
@@ -228,7 +161,7 @@ export default function HomePage() {
                   : "Search tools"}
               </h2>
               {searchQuery ? (
-                <ToolGrid tools={filteredTools} onSelect={handleToolSelect} />
+                <ToolGrid tools={displayTools} onSelect={handleToolSelect} />
               ) : (
                 <div className="text-center py-16">
                   <Search className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
@@ -341,22 +274,54 @@ export default function HomePage() {
       onSearch={handleSearch}
       onNavigate={handleNavigate}
     >
-      <div className="zeno-section-spacing space-y-16">
-        {/* Navigation buttons for demo purposes */}
-        <div className="flex space-x-4 mb-8 border-b border-border pb-4">
-          <button
-            onClick={() => setActiveView("demos")}
-            className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
-              activeView === "demos"
-                ? "bg-primary text-primary-foreground shadow-lg"
-                : "bg-secondary text-secondary-foreground hover:bg-primary/10 hover:text-primary"
-            }`}
-          >
-            Component demos
-          </button>
+      <div className="flex h-full">
+        {/* Filter Panel - only takes space when open */}
+        <div
+          className={`transition-all duration-300 ease-in-out ${
+            isFilterOpen ? "w-80 opacity-100" : "w-0 opacity-0"
+          } overflow-hidden`}
+        >
+          <div className="w-80 h-full flex flex-col">
+            <FilterPanel
+              tools={allTools}
+              isOpen={isFilterOpen}
+              onToggle={() => setIsFilterOpen(!isFilterOpen)}
+            />
+          </div>
         </div>
 
-        {renderMainContent()}
+        {/* Main Content Area - expands to fill available space */}
+        <div className="flex-1 overflow-auto">
+          <div className="zeno-section-spacing space-y-16">
+            {/* Filter Toggle Button - positioned at top of main content */}
+            <div className="flex justify-between items-center mb-8 border-b border-border pb-4">
+              <button
+                onClick={() => setIsFilterOpen(!isFilterOpen)}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
+                  isFilterOpen
+                    ? "bg-blue-600 text-white shadow-lg"
+                    : "bg-gray-100 text-gray-700 hover:bg-blue-50 hover:text-blue-600 border border-gray-300"
+                }`}
+              >
+                <Filter size={16} />
+                {isFilterOpen ? "Hide Filters" : "Show Filters"}
+              </button>
+
+              <button
+                onClick={() => setActiveView("demos")}
+                className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
+                  activeView === "demos"
+                    ? "bg-primary text-primary-foreground shadow-lg"
+                    : "bg-secondary text-secondary-foreground hover:bg-primary/10 hover:text-primary"
+                }`}
+              >
+                Component demos
+              </button>
+            </div>
+
+            {renderMainContent()}
+          </div>
+        </div>
       </div>
     </AppShell>
   );

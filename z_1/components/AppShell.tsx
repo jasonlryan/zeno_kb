@@ -5,6 +5,7 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { SidebarNav } from "./SidebarNav";
 import { TopSearchBar } from "./TopSearchBar";
+import { useConfig } from "../hooks/useConfig";
 import type { SidebarSection } from "../types";
 
 interface AppShellProps {
@@ -23,6 +24,7 @@ export function AppShell({
   className,
 }: AppShellProps) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const { app } = useConfig();
 
   const handleNavigate = (itemId: string) => {
     console.log("Navigating to:", itemId);
@@ -55,7 +57,9 @@ export function AppShell({
                   />
                 </svg>
               </button>
-              <h1 className="zeno-heading text-card-foreground">Zeno Knows</h1>
+              <h1 className="zeno-heading text-card-foreground">
+                {app.app.name}
+              </h1>
             </div>
             <div className="flex-1 max-w-2xl mx-8">
               <TopSearchBar onSubmit={onSearch} />

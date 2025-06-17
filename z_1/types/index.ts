@@ -12,7 +12,7 @@ export interface Tool {
   link: string
   date_added: string
   added_by: string
-  scheduled_feature_date?: string
+  scheduled_feature_date?: string | null
 }
 
 export interface Category {
@@ -21,6 +21,8 @@ export interface Category {
   title: string
   description: string
   count: number
+  color?: string
+  featured?: boolean
 }
 
 export interface Message {
@@ -33,8 +35,11 @@ export interface Message {
 export interface SidebarItem {
   id: string
   title: string
-  icon: React.ComponentType<{ className?: string }>
+  icon: React.ComponentType<{ className?: string }> | string
   href?: string
+  route?: string
+  description?: string
+  permissions?: string[]
   active?: boolean
 }
 

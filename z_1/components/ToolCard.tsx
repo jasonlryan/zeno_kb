@@ -1,6 +1,7 @@
 "use client";
 import { Bookmark, BookmarkCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useComponentContent } from "../hooks/useConfig";
 import type { Tool } from "../types";
 
 interface ToolCardProps {
@@ -18,6 +19,8 @@ export function ToolCard({
   bookmarked = false,
   className,
 }: ToolCardProps) {
+  const content = useComponentContent("toolCard") as any;
+
   const getTypeColor = (type: Tool["type"]) => {
     switch (type) {
       case "GPT":
@@ -90,7 +93,9 @@ export function ToolCard({
             onBookmark?.(tool.id);
           }}
           className="p-2 rounded-lg hover:bg-secondary transition-colors"
-          aria-label={bookmarked ? "Remove bookmark" : "Add bookmark"}
+          aria-label={
+            bookmarked ? content.actions.unsave : content.actions.save
+          }
         >
           {bookmarked ? (
             <BookmarkCheck className="w-5 h-5 text-primary" />
