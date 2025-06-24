@@ -1,5 +1,6 @@
 "use client";
 import { cn } from "@/lib/utils";
+import { Filter } from "lucide-react";
 import type { SidebarSection } from "../types";
 
 interface SidebarNavProps {
@@ -7,6 +8,8 @@ interface SidebarNavProps {
   collapsed?: boolean;
   className?: string;
   onItemClick?: (itemId: string) => void;
+  isFilterOpen?: boolean;
+  onFilterToggle?: () => void;
 }
 
 export function SidebarNav({
@@ -14,6 +17,8 @@ export function SidebarNav({
   collapsed = false,
   className,
   onItemClick,
+  isFilterOpen,
+  onFilterToggle,
 }: SidebarNavProps) {
   const handleItemClick = (itemId: string) => {
     onItemClick?.(itemId);
@@ -36,12 +41,13 @@ export function SidebarNav({
                   <button
                     onClick={() => handleItemClick(item.id)}
                     className={cn(
-                      "w-full flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors",
+                      "w-full flex items-center text-sm font-medium rounded-lg transition-colors",
                       "hover:bg-primary/10 hover:text-primary",
                       "focus:outline-none focus:ring-2 focus:ring-primary",
                       item.active
                         ? "bg-primary text-primary-foreground"
-                        : "text-card-foreground"
+                        : "text-card-foreground",
+                      collapsed ? "px-2 py-3 justify-center" : "px-3 py-2"
                     )}
                     aria-label={item.title}
                   >
@@ -56,6 +62,37 @@ export function SidebarNav({
           </ul>
         </div>
       ))}
+
+      {/* Filter Toggle Button */}
+      {onFilterToggle && (
+        <div className="border-t border-border pt-4">
+          {!collapsed && (
+            <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+              Tools
+            </h3>
+          )}
+          <button
+            onClick={onFilterToggle}
+            className={cn(
+              "w-full flex items-center text-sm font-medium rounded-lg transition-colors",
+              "hover:bg-primary/10 hover:text-primary",
+              "focus:outline-none focus:ring-2 focus:ring-primary",
+              isFilterOpen
+                ? "bg-blue-600 text-white shadow-lg"
+                : "text-card-foreground",
+              collapsed ? "px-2 py-3 justify-center" : "px-3 py-2"
+            )}
+            aria-label={isFilterOpen ? "Hide Filters" : "Show Filters"}
+          >
+            <Filter className="w-5 h-5 flex-shrink-0" />
+            {!collapsed && (
+              <span className="ml-3 truncate">
+                {isFilterOpen ? "Hide Filters" : "Show Filters"}
+              </span>
+            )}
+          </button>
+        </div>
+      )}
     </nav>
   );
 }

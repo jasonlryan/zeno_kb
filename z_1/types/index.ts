@@ -3,7 +3,7 @@ export interface Tool {
   id: string
   title: string
   description: string
-  type: "GPT" | "Doc" | "Script" | "Video"
+  type: "GPT" | "Doc" | "Script" | "Video" | "Platform" | "Tool" | "Learning Guide"
   tier: "Foundation" | "Specialist"
   complexity: "Beginner" | "Intermediate" | "Advanced"
   tags: string[]
@@ -13,6 +13,18 @@ export interface Tool {
   date_added: string
   added_by: string
   scheduled_feature_date?: string | null
+  // Learning Guide specific fields
+  content_type?: string
+  estimated_read_time?: string
+  prerequisites?: string[]
+  learning_objectives?: string[]
+  // Video specific fields
+  duration?: string
+  transcript_available?: boolean
+  // Script specific fields
+  language?: string
+  requirements?: string[]
+  [key: string]: any // Allow additional dynamic fields
 }
 
 export interface Category {

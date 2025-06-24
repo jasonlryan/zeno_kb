@@ -25,6 +25,13 @@ export function TopSearchBar({
     onSubmit(query);
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newQuery = e.target.value;
+    setQuery(newQuery);
+    // Call onSubmit immediately for incremental search
+    onSubmit(newQuery);
+  };
+
   const placeholderText = placeholder || searchConfig.placeholder;
 
   return (
@@ -34,7 +41,7 @@ export function TopSearchBar({
         <input
           type="text"
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={handleInputChange}
           placeholder={placeholderText}
           className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         />

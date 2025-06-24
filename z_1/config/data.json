@@ -105,21 +105,7 @@
       "added_by": "curator-1",
       "scheduled_feature_date": null
     },
-    {
-      "id": "8",
-      "title": "API Documentation Generator",
-      "description": "Automatically generate comprehensive API documentation from your codebase.",
-      "type": "Script",
-      "tier": "Foundation",
-      "complexity": "Beginner",
-      "tags": ["documentation", "api", "automation"],
-      "featured": true,
-      "function": "Ops & Governance",
-      "link": "https://github.com/api-doc-generator",
-      "date_added": "2024-01-20T14:30:00Z",
-      "added_by": "curator-2",
-      "scheduled_feature_date": null
-    },
+
     {
       "id": "9",
       "title": "React Best Practices Guide",
@@ -150,21 +136,7 @@
       "added_by": "curator-1",
       "scheduled_feature_date": null
     },
-    {
-      "id": "11",
-      "title": "ChatGPT Enterprise",
-      "description": "OpenAI's enterprise-grade conversational AI platform for business use with enhanced security and admin controls.",
-      "type": "Platform",
-      "tier": "Foundation",
-      "complexity": "Beginner",
-      "tags": ["ai", "chatbot", "enterprise", "openai"],
-      "featured": true,
-      "function": "AI Platforms",
-      "link": "https://chat.openai.com/",
-      "date_added": "2024-02-01T10:00:00Z",
-      "added_by": "curator-1",
-      "scheduled_feature_date": null
-    },
+
     {
       "id": "12",
       "title": "Custom GPTs Builder",
@@ -494,6 +466,117 @@
       "date_added": "2024-02-01T21:00:00Z",
       "added_by": "curator-2",
       "scheduled_feature_date": null
+    },
+    {
+      "id": "34",
+      "title": "How to Prompt",
+      "description": "Master the perfect ChatGPT prompt formula with this solid deep-dive into effective prompting for consistently high-quality responses from AI chatbots.",
+      "type": "Learning Guide",
+      "tier": "Foundation",
+      "complexity": "Beginner",
+      "tags": ["prompting", "ai", "best-practices", "guide", "fundamentals"],
+      "featured": true,
+      "function": "Best Practice Guides",
+      "link": "https://www.youtube.com/watch?v=jC4v5AS4RIM&t=40s",
+      "date_added": "2024-02-01T22:00:00Z",
+      "added_by": "curator-1",
+      "scheduled_feature_date": null,
+      "content_type": "video",
+      "estimated_read_time": "8 minutes",
+      "video_duration": "8 minutes",
+      "prerequisites": [],
+      "learning_objectives": [
+        "Use a clear formula: role, task, and format",
+        "Add context to improve output quality", 
+        "Provide examples to guide the AI",
+        "Learn tips for refining and iterating on prompts"
+      ],
+      "key_takeaways": [
+        "Use a clear formula: role, task, and format",
+        "Add context to improve output quality",
+        "Provide examples to guide the AI",
+        "Tips for refining and iterating on prompts"
+      ],
+      "why_valuable": "This resource helps users get the most out of AI chatbots by teaching practical, actionable strategies for writing better prompts and achieving more reliable, relevant results.",
+      "content_summary": "This video is a solid deep-dive into effective prompting for consistently high-quality responses from AI chatbots like ChatGPT. As you'll be familiar with from the 'Introduction to generative AI' video, the key to a good prompt is giving your chosen AI chatbot a solid formula: a role, a task, and format. This video goes into even more depth by showing what else you can do to make the output as good as possible; things like how to add more context, and adding examples."
+    },
+    {
+      "id": "35",
+      "title": "Reasoning Models - What they are and when to use them",
+      "description": "Reasoning models (like ChatGPT's o-series) are designed to tackle complex, multi-step tasks by carefully thinking through the details before responding, making them different from standard GPT models.",
+      "type": "Learning Guide",
+      "tier": "Specialist",
+      "complexity": "Intermediate",
+      "tags": ["reasoning-models", "ai", "gpt-o1", "problem-solving", "advanced"],
+      "featured": true,
+      "function": "Best Practice Guides",
+      "link": "https://platform.openai.com/docs/guides/reasoning-best-practices",
+      "date_added": "2024-02-01T22:15:00Z",
+      "added_by": "curator-1",
+      "scheduled_feature_date": null,
+      "content_type": "article",
+      "estimated_read_time": "10 minutes",
+      "prerequisites": ["How to Prompt"],
+      "learning_objectives": [
+        "Understand what reasoning models are and how they differ from standard models",
+        "Learn when to use reasoning vs standard models for different tasks",
+        "Recognize the strengths of reasoning models for complex problem-solving",
+        "Apply reasoning models effectively in your workflow"
+      ],
+      "key_points": [
+        "Reasoning models work through problems step by step, refining answers as they go, making them more explainable and reliable for complex tasks",
+        "Use standard models for fast, data-driven tasks; use reasoning models for logic, explanation, or deep analysis",
+        "Expect reasoning models to be slower, but smarter and more trustworthy for multi-step or strategic work"
+      ],
+      "why_valuable": "Knowing about reasoning models matters because they can reliably handle challenging scenarios that typically require human-like logic and judgment—perfect for tasks involving strategic planning, detailed data analysis, or complex problem-solving.",
+      "resources": [
+        {
+          "title": "OpenAI's Reasoning best practices",
+          "type": "READ",
+          "url": "https://platform.openai.com/docs/guides/reasoning-best-practices"
+        },
+        {
+          "title": "Reasoning models: a 2-minute briefing",
+          "type": "READ", 
+          "url": "https://bnedition.substack.com/p/reasoning-models-a-2-minute-briefing"
+        }
+      ],
+      "content_summary": "By diving into these resources, you'll learn when and how to use reasoning models effectively, see examples of their strengths, and gain practical tips for integrating them into your work alongside faster GPT models."
+    },
+    {
+      "id": "36",
+      "title": "What are LLMs, and how to use them",
+      "description": "An in-depth practical guide on how to effectively use large language models (LLMs) like ChatGPT, Claude, Gemini, and others for tasks ranging from text generation and coding to multimodal applications.",
+      "type": "Learning Guide",
+      "tier": "Foundation",
+      "complexity": "Beginner",
+      "tags": ["llm", "ai", "fundamentals", "business-applications", "introduction"],
+      "featured": true,
+      "function": "Best Practice Guides",
+      "link": "https://www.youtube.com/watch?v=EWvNQjAaOHw",
+      "date_added": "2024-02-01T22:30:00Z",
+      "added_by": "curator-1",
+      "scheduled_feature_date": null,
+      "content_type": "video",
+      "estimated_read_time": "45 minutes",
+      "video_duration": "45 minutes",
+      "prerequisites": [],
+      "learning_objectives": [
+        "Understand what LLMs are and how they work",
+        "Learn hands-on examples of integrating LLMs into daily workflow",
+        "Master programming assistance, research, and document analysis with AI",
+        "Recognize strengths and trade-offs of various models"
+      ],
+      "presenter": "Andrej Karpathy, a leading mind in AI, founding member of OpenAI, and former director of artificial intelligence at Tesla",
+      "key_takeaways": [
+        "Hands-on examples of integrating LLMs into daily workflow",
+        "Programming assistance, deep research, document analysis, and personal knowledge management",
+        "Real-world use cases and demonstrations",
+        "How to leverage AI tools for different tasks",
+        "Strengths and trade-offs of various models"
+      ],
+      "why_valuable": "This video provides real-world use cases, demonstrates how to leverage AI tools for different tasks, and highlights the strengths and trade-offs of various models, making it a valuable resource for anyone looking to get more out of LLMs in their work or studies.",
+      "content_summary": "This video is an in-depth practical guide on how to effectively use large language models (LLMs) like ChatGPT, Claude, Gemini, and others for tasks ranging from text generation and coding to multimodal applications like image and voice interaction."
     }
   ],
   "categories": [
@@ -710,6 +793,60 @@
       "label": "Trends",
       "category": "insights",
       "color": "#F59E0B"
+    },
+    {
+      "id": "prompting",
+      "label": "Prompting",
+      "category": "ai-techniques",
+      "color": "#8B5CF6"
+    },
+    {
+      "id": "reasoning-models",
+      "label": "Reasoning Models",
+      "category": "ai-techniques",
+      "color": "#7C3AED"
+    },
+    {
+      "id": "llm",
+      "label": "LLM",
+      "category": "ai-fundamentals",
+      "color": "#6366F1"
+    },
+    {
+      "id": "fundamentals",
+      "label": "Fundamentals",
+      "category": "learning",
+      "color": "#059669"
+    },
+    {
+      "id": "guide",
+      "label": "Guide",
+      "category": "content-type",
+      "color": "#10B981"
+    },
+    {
+      "id": "gpt-o1",
+      "label": "GPT-o1",
+      "category": "ai-models",
+      "color": "#7C3AED"
+    },
+    {
+      "id": "problem-solving",
+      "label": "Problem Solving",
+      "category": "skills",
+      "color": "#F59E0B"
+    },
+    {
+      "id": "business-applications",
+      "label": "Business Applications",
+      "category": "application",
+      "color": "#10B981"
+    },
+    {
+      "id": "introduction",
+      "label": "Introduction",
+      "category": "learning",
+      "color": "#06B6D4"
     }
   ],
   "users": [
@@ -758,9 +895,9 @@
     }
   ],
   "metadata": {
-    "version": "1.1.0",
-    "lastUpdated": "2024-02-01T21:00:00Z",
-    "totalTools": 33,
+    "version": "1.2.0",
+    "lastUpdated": "2024-02-01T22:30:00Z",
+    "totalTools": 36,
     "totalCategories": 10,
     "totalUsers": 3
   }

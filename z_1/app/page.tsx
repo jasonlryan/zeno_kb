@@ -9,6 +9,7 @@ import {
   Users,
   Zap,
   Filter,
+  ChevronLeft,
 } from "lucide-react";
 import { AppShell } from "../components/AppShell";
 import { ToolCardDemo } from "../components/ToolCard";
@@ -19,6 +20,7 @@ import { FeaturedCarousel } from "../components/FeaturedCarousel";
 import { CategoryGrid } from "../components/CategoryGrid";
 import { ToolGrid } from "../components/ToolGrid";
 import { FilterPanel } from "../components/FilterPanel";
+import { ToolDetailPage } from "../components/ToolDetailModal";
 import { useLocalSearch } from "../hooks/useLocalSearch";
 // import { useTaxonomy } from "../hooks/useTaxonomy";
 import {
@@ -28,6 +30,7 @@ import {
   useCategories,
   useText,
 } from "../hooks/useConfig";
+import { generateCategoriesFromData } from "../lib/mockData";
 import type { Tool, Category, SidebarSection } from "../types";
 
 // Configuration data loaded from config files
@@ -35,8 +38,18 @@ import type { Tool, Category, SidebarSection } from "../types";
 export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeView, setActiveView] = useState<
-    "home" | "search" | "library" | "curator" | "users" | "analytics" | "demos"
+    | "home"
+    | "search"
+    | "library"
+    | "curator"
+    | "users"
+    | "analytics"
+    | "demos"
+    | "tool-detail"
+    | "category"
   >("home");
+  const [selectedTool, setSelectedTool] = useState<Tool | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [isFilterOpen, setIsFilterOpen] = useState(true);
 
   // Load configuration data
@@ -56,9 +69,31 @@ export default function HomePage() {
   // Always call useLocalSearch (Rules of Hooks)
   const localSearchResults = useLocalSearch(allTools, searchQuery);
 
-  // Use local search for now
-  const displayTools = localSearchResults;
+  // Use local search for now - if no search query, show all tools
+  const displayTools = searchQuery.trim() ? localSearchResults : allTools;
   const hasActiveFilters = false;
+
+  // Filter tools by category (dynamic based on actual categories)
+  const getToolsByCategory = (categoryTitle: string): Tool[] => {
+    // Dynamic mapping based on the category title to tool type
+    const categoryToTypeMap: Record<string, string> = {
+      "AI Assistants": "GPT",
+      Documentation: "Doc",
+      "Video Tutorials": "Video",
+      "Scripts & Tools": "Script",
+      Platforms: "Platform",
+      Tools: "Tool",
+      "Learning Materials": "Learning Guide",
+    };
+
+    const targetType = categoryToTypeMap[categoryTitle];
+    if (!targetType) {
+      // If no mapping found, return empty array
+      return [];
+    }
+
+    return allTools.filter((tool) => tool.type === targetType);
+  };
 
   // Get text values at top level to avoid hook violations
   const categoriesTitle = useText("pages.home.sections.categories.title");
@@ -86,10 +121,8 @@ export default function HomePage() {
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
-    // Use local search for now
-    if (query.trim()) {
-      setActiveView("search");
-    }
+    // Always switch to search view when user starts searching
+    setActiveView("search");
   };
 
   const handleNavigate = (itemId: string) => {
@@ -98,21 +131,35 @@ export default function HomePage() {
   };
 
   const handleToolSelect = (id: string) => {
-    console.log("Selected tool:", id);
+    const tool = allTools.find((t) => t.id === id);
+    if (tool) {
+      setSelectedTool(tool);
+      setActiveView("tool-detail");
+    }
+  };
+
+  const handleBackToHome = () => {
+    setSelectedTool(null);
+    setSelectedCategory(null);
+    setActiveView("home");
   };
 
   const handleCategorySelect = (id: string) => {
-    console.log("Selected category:", id);
+    const category = categories.find((c) => c.id === id);
+    if (category) {
+      setSelectedCategory(category.title);
+      setActiveView("category");
+    }
   };
 
   const renderMainContent = () => {
     switch (activeView) {
       case "home":
         return (
-          <div className="space-y-16">
+          <div className="space-y-8">
             {/* Welcome Section */}
-            <section className="text-center py-12 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl border border-blue-100">
-              <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            <section className="text-center py-12 bg-gray-100">
+              <h1 className="text-4xl font-bold text-green-600 mb-4">
                 Welcome to the Zeno Knowledge Hub
               </h1>
               <h2 className="text-xl text-gray-600 mb-6">
@@ -131,7 +178,7 @@ export default function HomePage() {
             />
 
             {/* Categories */}
-            <section className="zeno-section-spacing">
+            <section>
               <h2 className="zeno-heading text-card-foreground mb-6">
                 {categoriesTitle}
               </h2>
@@ -142,7 +189,7 @@ export default function HomePage() {
             </section>
 
             {/* All Tools */}
-            <section className="zeno-section-spacing">
+            <section>
               <h2 className="zeno-heading text-card-foreground mb-6">
                 All tools
               </h2>
@@ -157,19 +204,10 @@ export default function HomePage() {
             <section>
               <h2 className="zeno-heading text-card-foreground mb-6">
                 {searchQuery
-                  ? `Search results for "${searchQuery}"`
-                  : "Search tools"}
+                  ? `Search results for "${searchQuery}" (${displayTools.length} tools)`
+                  : `All tools (${allTools.length} tools)`}
               </h2>
-              {searchQuery ? (
-                <ToolGrid tools={displayTools} onSelect={handleToolSelect} />
-              ) : (
-                <div className="text-center py-16">
-                  <Search className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-                  <p className="zeno-body text-muted-foreground">
-                    Use the search bar above to find tools
-                  </p>
-                </div>
-              )}
+              <ToolGrid tools={displayTools} onSelect={handleToolSelect} />
             </section>
           </div>
         );
@@ -259,6 +297,69 @@ export default function HomePage() {
           </div>
         );
 
+      case "category":
+        const categoryTools = selectedCategory
+          ? getToolsByCategory(selectedCategory)
+          : [];
+        return (
+          <div className="space-y-8">
+            <section>
+              <div className="flex items-center gap-4 mb-6">
+                <button
+                  onClick={handleBackToHome}
+                  className="flex items-center text-blue-600 hover:text-blue-800 transition-colors duration-200"
+                >
+                  <ChevronLeft size={20} className="mr-2" /> Back to Home
+                </button>
+                <h2 className="zeno-heading text-card-foreground">
+                  {selectedCategory} ({categoryTools.length} tools)
+                </h2>
+              </div>
+              {categoryTools.length > 0 ? (
+                <ToolGrid tools={categoryTools} onSelect={handleToolSelect} />
+              ) : (
+                <div className="text-center py-16">
+                  <p className="zeno-body text-muted-foreground">
+                    No tools found in this category
+                  </p>
+                </div>
+              )}
+            </section>
+          </div>
+        );
+
+      case "tool-detail":
+        if (!selectedTool) {
+          return (
+            <div className="text-center py-16">
+              <p className="zeno-body text-muted-foreground">
+                No tool selected
+              </p>
+            </div>
+          );
+        }
+        return (
+          <div className="space-y-8">
+            <div className="flex items-center gap-4 mb-6">
+              <button
+                onClick={handleBackToHome}
+                className="flex items-center text-blue-600 hover:text-blue-800 transition-colors duration-200"
+              >
+                <ChevronLeft size={20} className="mr-2" /> Back to All Tools
+              </button>
+            </div>
+            <ToolDetailPage
+              tool={selectedTool}
+              onBack={handleBackToHome}
+              onFavorite={(toolId) => {
+                console.log("Toggle favorite for tool:", toolId);
+                // TODO: Implement favorites functionality
+              }}
+              isFavorite={false} // TODO: Implement favorites state
+            />
+          </div>
+        );
+
       default:
         return (
           <div className="text-center py-16">
@@ -268,11 +369,15 @@ export default function HomePage() {
     }
   };
 
+  // Tool detail is now handled within the AppShell in renderMainContent
+
   return (
     <AppShell
       sidebarSections={sidebarSections}
       onSearch={handleSearch}
       onNavigate={handleNavigate}
+      isFilterOpen={isFilterOpen}
+      onFilterToggle={() => setIsFilterOpen(!isFilterOpen)}
     >
       <div className="flex h-full">
         {/* Filter Panel - only takes space when open */}
@@ -292,34 +397,8 @@ export default function HomePage() {
 
         {/* Main Content Area - expands to fill available space */}
         <div className="flex-1 overflow-auto">
-          <div className="zeno-section-spacing space-y-16">
-            {/* Filter Toggle Button - positioned at top of main content */}
-            <div className="flex justify-between items-center mb-8 border-b border-border pb-4">
-              <button
-                onClick={() => setIsFilterOpen(!isFilterOpen)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
-                  isFilterOpen
-                    ? "bg-blue-600 text-white shadow-lg"
-                    : "bg-gray-100 text-gray-700 hover:bg-blue-50 hover:text-blue-600 border border-gray-300"
-                }`}
-              >
-                <Filter size={16} />
-                {isFilterOpen ? "Hide Filters" : "Show Filters"}
-              </button>
-
-              <button
-                onClick={() => setActiveView("demos")}
-                className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
-                  activeView === "demos"
-                    ? "bg-primary text-primary-foreground shadow-lg"
-                    : "bg-secondary text-secondary-foreground hover:bg-primary/10 hover:text-primary"
-                }`}
-              >
-                Component demos
-              </button>
-            </div>
-
-            {renderMainContent()}
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div className="space-y-16">{renderMainContent()}</div>
           </div>
         </div>
       </div>

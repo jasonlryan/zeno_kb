@@ -109,10 +109,20 @@ class ConfigManager implements IConfigManager {
   }
 
   /**
-   * Get categories data
+   * Get categories data (dynamically generated from tools)
    */
   getCategories(): Category[] {
-    return this.dataConfig.categories;
+    const cacheKey = 'categories:dynamic';
+    if (this.cache.has(cacheKey)) {
+      return this.cache.get(cacheKey);
+    }
+
+    // Import the generateCategoriesFromData function
+    const { generateCategoriesFromData } = require('./mockData');
+    const categories = generateCategoriesFromData(this.dataConfig.tools);
+
+    this.cache.set(cacheKey, categories);
+    return categories;
   }
 
   /**

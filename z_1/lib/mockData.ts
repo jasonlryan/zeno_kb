@@ -109,34 +109,111 @@ export const mockTools: Tool[] = [
   },
 ];
 
+// Remove hardcoded categories and replace with dynamic generation
+export function generateCategoriesFromData(tools: Tool[]): Category[] {
+  // Create categories based on tool types
+  const typeCategories = new Map<string, { count: number; tools: Tool[] }>();
+  
+  tools.forEach(tool => {
+    const type = tool.type;
+    if (!typeCategories.has(type)) {
+      typeCategories.set(type, { count: 0, tools: [] });
+    }
+    const category = typeCategories.get(type)!;
+    category.count++;
+    category.tools.push(tool);
+  });
+
+  // Map types to category configurations
+  const categoryConfigs: Record<string, { icon: string; title: string; description: string }> = {
+    'GPT': {
+      icon: '🤖',
+      title: 'AI Assistants',
+      description: 'Custom GPTs and AI tools for various tasks'
+    },
+    'Doc': {
+      icon: '📚',
+      title: 'Documentation',
+      description: 'Guides, templates, and reference materials'
+    },
+    'Video': {
+      icon: '🎥',
+      title: 'Video Tutorials',
+      description: 'Step-by-step video guides and tutorials'
+    },
+    'Script': {
+      icon: '⚡',
+      title: 'Scripts & Tools',
+      description: 'Automation scripts and utility tools'
+    },
+    'Platform': {
+      icon: '🌐',
+      title: 'Platforms',
+      description: 'AI platforms and enterprise tools'
+    },
+    'Tool': {
+      icon: '🔧',
+      title: 'Tools',
+      description: 'Specialized tools and applications'
+    },
+    'Learning Guide': {
+      icon: '📖',
+      title: 'Learning Materials',
+      description: 'Educational content and learning resources'
+    }
+  };
+
+  // Generate categories from the data
+  const categories: Category[] = [];
+  let categoryId = 1;
+
+  typeCategories.forEach((data, type) => {
+    const config = categoryConfigs[type];
+    if (config) {
+      categories.push({
+        id: categoryId.toString(),
+        icon: config.icon,
+        title: config.title,
+        description: config.description,
+        count: data.count,
+      });
+      categoryId++;
+    }
+  });
+
+  // Sort by count (descending) to show most popular categories first
+  return categories.sort((a, b) => b.count - a.count);
+}
+
+// Keep the original mockCategories as fallback but mark it as deprecated
 export const mockCategories: Category[] = [
   {
     id: "1",
     icon: "🤖",
     title: "AI Assistants",
     description: "Powerful AI tools for various tasks",
-    count: 24,
+    count: 0, // Will be dynamically calculated
   },
   {
     id: "2",
     icon: "📚",
     title: "Documentation",
     description: "Guides, tutorials, and references",
-    count: 156,
+    count: 0, // Will be dynamically calculated
   },
   {
     id: "3",
     icon: "⚡",
     title: "Scripts & Tools",
     description: "Automation and utility scripts",
-    count: 89,
+    count: 0, // Will be dynamically calculated
   },
   {
     id: "4",
     icon: "🎥",
     title: "Video Tutorials",
     description: "Step-by-step video guides",
-    count: 67,
+    count: 0, // Will be dynamically calculated
   },
 ];
 
