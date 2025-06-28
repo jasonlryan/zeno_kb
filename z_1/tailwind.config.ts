@@ -20,12 +20,28 @@ const config: Config = {
     },
     extend: {
       colors: {
-        // Zeno Brand Colors
+        // Zeno Brand Colors - Updated as per Brand Guidelines 2023
         zeno: {
-          green: "#04BB63", // Primary brand color
-          black: "#000000", // Text color
-          white: "#FFFFFF", // Background
-          lightgray: "#F5F5F5", // Alt background
+          // Primary Color
+          green: "#00BE65", // Primary brand color (PMS 7481)
+          // Secondary Greens
+          brightGreen: "#00FF00", // Bright Green (PMS 802)
+          midGreen: "#0C7547", // Green (PMS 7732)
+          deepGreen: "#043B32", // Deep Green (PMS 343)
+          // Secondary Highlight Colors
+          yellow: "#FFFF00", // Yellow (PMS 803)
+          purple: "#BD01FE", // Purple (PMS 2592)
+          reddishOrange: "#FF4536", // Reddish Orange (PMS 171)
+          orange: "#FF6A32", // Orange (PMS 165)
+          deepPurple: "#731CB2", // Deep Purple (PMS 2597)
+          lavender: "#BC77FB", // Lavender (PMS 265)
+          burgundy: "#590A3B", // Burgundy (PMS 229)
+          // Neutral Colors
+          black: "#000000", // Classic Black
+          white: "#FFFFFF", // White
+          lightGray: "#F3F3F1", // Light Gray
+          mediumGray: "#E1E0D8", // Medium Gray
+          darkGray: "#535953", // Dark Gray
         },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -33,26 +49,26 @@ const config: Config = {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#04BB63", // Zeno Green
+          DEFAULT: "#00BE65", // Zeno Green (PMS 7481)
           50: "#E6FFF2",
           100: "#CCFFE6",
           200: "#99FFCC",
           300: "#66FFB3",
           400: "#33FF99",
-          500: "#04BB63", // Main Zeno Green
-          600: "#039954",
-          700: "#027745",
-          800: "#015536",
-          900: "#013327",
+          500: "#00BE65", // Main Zeno Green
+          600: "#009E54",
+          700: "#007E43",
+          800: "#005E32",
+          900: "#003E21",
           foreground: "#FFFFFF",
         },
         accent: {
-          DEFAULT: "#04BB63", // Reused Zeno Green for accents
+          DEFAULT: "#00BE65", // Zeno Green for accents
           50: "#E6FFF2",
           100: "#CCFFE6",
-          500: "#04BB63",
-          600: "#039954",
-          700: "#027745",
+          500: "#00BE65",
+          600: "#009E54",
+          700: "#007E43",
           foreground: "#FFFFFF",
         },
         secondary: {
@@ -76,10 +92,14 @@ const config: Config = {
           foreground: "hsl(var(--card-foreground))",
         },
       },
-      // Zeno Typography
+      // Zeno Typography - Updated as per Brand Guidelines 2023
       fontFamily: {
-        'helios': ['Helios Antique', 'sans-serif'],
-        'sans': ['Helios Antique', 'Inter', 'system-ui', 'sans-serif'],
+        'gotham': ['Gotham', 'Arial', 'sans-serif'],
+        'gotham-black': ['Gotham Black', 'Arial Black', 'sans-serif'],
+        'gotham-bold': ['Gotham Bold', 'Arial Bold', 'sans-serif'],
+        'gotham-book': ['Gotham Book', 'Arial', 'sans-serif'],
+        'dharma': ['Dharma Gothic C Heavy', 'Arial Black', 'sans-serif'],
+        'sans': ['Gotham', 'Arial', 'sans-serif'],
       },
       spacing: {
         '18': '4.5rem', // 72px - Custom spacing for Zeno's 64px + padding

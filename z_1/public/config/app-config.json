@@ -44,7 +44,10 @@
               "icon": "Settings",
               "route": "/curator",
               "description": "Manage tools and content",
-              "permissions": ["curator", "admin"]
+              "permissions": [
+                "curator",
+                "admin"
+              ]
             },
             {
               "id": "users",
@@ -52,7 +55,9 @@
               "icon": "Users",
               "route": "/users",
               "description": "User management",
-              "permissions": ["admin"]
+              "permissions": [
+                "admin"
+              ]
             },
             {
               "id": "analytics",
@@ -60,7 +65,10 @@
               "icon": "Zap",
               "route": "/analytics",
               "description": "Usage analytics and insights",
-              "permissions": ["curator", "admin"]
+              "permissions": [
+                "curator",
+                "admin"
+              ]
             }
           ]
         }
@@ -87,7 +95,11 @@
   "ui": {
     "theme": {
       "default": "light",
-      "options": ["light", "dark", "system"]
+      "options": [
+        "light",
+        "dark",
+        "system"
+      ]
     },
     "layout": {
       "sidebarCollapsible": true,
@@ -131,4 +143,4 @@
     "categoriesPerPage": 12,
     "toolsPerPage": 24
   }
-} 
+}

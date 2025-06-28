@@ -1,25 +1,91 @@
 {
-  "version": "1.1.0",
-  "lastUpdated": "2024-02-01T21:00:00Z",
+  "version": {
+    "name": "Zeno Knowledge Base",
+    "version": "1.0.0",
+    "description": "Centralized platform for AI tools and resources"
+  },
+  "lastUpdated": "2025-06-24T14:28:20.869Z",
   "structure": {
     "types": [
-      { "id": "GPT", "label": "GPT", "icon": "🤖", "color": "#3B82F6" },
-      { "id": "Platform", "label": "Platform", "icon": "🌐", "color": "#10B981" },
-      { "id": "Tool", "label": "Tool", "icon": "🔧", "color": "#F59E0B" },
-      { "id": "Doc", "label": "Document", "icon": "📄", "color": "#6B7280" },
-      { "id": "Video", "label": "Video", "icon": "🎥", "color": "#EF4444" },
-      { "id": "Bot", "label": "Bot", "icon": "🤖", "color": "#8B5CF6" },
-      { "id": "Script", "label": "Script", "icon": "📜", "color": "#059669" }
+      {
+        "id": "GPT",
+        "label": "GPT",
+        "icon": "🤖",
+        "color": "#3B82F6"
+      },
+      {
+        "id": "Platform",
+        "label": "Platform",
+        "icon": "🌐",
+        "color": "#10B981"
+      },
+      {
+        "id": "Tool",
+        "label": "Tool",
+        "icon": "🔧",
+        "color": "#F59E0B"
+      },
+      {
+        "id": "Doc",
+        "label": "Document",
+        "icon": "📄",
+        "color": "#6B7280"
+      },
+      {
+        "id": "Video",
+        "label": "Video",
+        "icon": "🎥",
+        "color": "#EF4444"
+      },
+      {
+        "id": "Bot",
+        "label": "Bot",
+        "icon": "🤖",
+        "color": "#8B5CF6"
+      },
+      {
+        "id": "Script",
+        "label": "Script",
+        "icon": "📜",
+        "color": "#059669"
+      }
     ],
     "tiers": [
-      { "id": "Foundation", "label": "Foundation", "color": "#10B981", "description": "Open access tools" },
-      { "id": "Specialist", "label": "Specialist", "color": "#F59E0B", "description": "Requires consultation" },
-      { "id": "Restricted", "label": "Restricted", "color": "#DC2626", "description": "Approval required" }
+      {
+        "id": "Foundation",
+        "label": "Foundation",
+        "color": "#10B981",
+        "description": "Open access tools"
+      },
+      {
+        "id": "Specialist",
+        "label": "Specialist",
+        "color": "#F59E0B",
+        "description": "Requires consultation"
+      },
+      {
+        "id": "Restricted",
+        "label": "Restricted",
+        "color": "#DC2626",
+        "description": "Approval required"
+      }
     ],
     "complexity": [
-      { "id": "Beginner", "label": "Beginner", "color": "#10B981" },
-      { "id": "Intermediate", "label": "Intermediate", "color": "#F59E0B" },
-      { "id": "Advanced", "label": "Advanced", "color": "#DC2626" }
+      {
+        "id": "Beginner",
+        "label": "Beginner",
+        "color": "#10B981"
+      },
+      {
+        "id": "Intermediate",
+        "label": "Intermediate",
+        "color": "#F59E0B"
+      },
+      {
+        "id": "Advanced",
+        "label": "Advanced",
+        "color": "#DC2626"
+      }
     ]
   },
   "functionCategories": {
@@ -28,49 +94,103 @@
         "name": "Content & Creative",
         "icon": "✍️",
         "color": "#EC4899",
-        "functions": ["Content & Creative", "Brand & Voice", "Content Creation", "Social Media", "Social Trends & Idea Generators"]
+        "functions": [
+          "Content & Creative",
+          "Brand & Voice",
+          "Content Creation",
+          "Social Media",
+          "Social Trends & Idea Generators"
+        ]
       },
       "strategy": {
-        "name": "Strategy & Analysis", 
+        "name": "Strategy & Analysis",
         "icon": "🎯",
         "color": "#F97316",
-        "functions": ["Strategy & Planning", "Audience Insights", "Campaign & Competitive Analysis", "Research & Analysis"]
+        "functions": [
+          "Strategy & Planning",
+          "Audience Insights",
+          "Campaign & Competitive Analysis",
+          "Research & Analysis"
+        ]
       },
       "media": {
         "name": "Media & Communications",
         "icon": "📰",
         "color": "#84CC16",
-        "functions": ["Media Relations", "Media List Creation", "Executive Voice Emulation"]
+        "functions": [
+          "Media Relations",
+          "Media List Creation",
+          "Executive Voice Emulation"
+        ]
       },
       "operations": {
         "name": "Operations & Tools",
         "icon": "⚙️",
         "color": "#06B6D4",
-        "functions": ["AI Platforms", "Productivity Tools", "Collaboration", "Presentation Tools", "AI Operations"]
+        "functions": [
+          "AI Platforms",
+          "Productivity Tools",
+          "Collaboration",
+          "Presentation Tools",
+          "AI Operations"
+        ]
       },
       "governance": {
         "name": "Governance & Compliance",
         "icon": "🛡️",
         "color": "#8B5CF6",
-        "functions": ["Ops & Governance", "Compliance Checklists", "Best Practice Guides"]
+        "functions": [
+          "Ops & Governance",
+          "Compliance Checklists",
+          "Best Practice Guides"
+        ]
       },
       "data": {
         "name": "Data & Intelligence",
         "icon": "📊",
         "color": "#6366F1",
-        "functions": ["Data & Analytics", "Monitoring & Alerts"]
+        "functions": [
+          "Data & Analytics",
+          "Monitoring & Alerts"
+        ]
       },
       "business": {
-        "name": "Business Development", 
+        "name": "Business Development",
         "icon": "💼",
         "color": "#EF4444",
-        "functions": ["Business Development"]
+        "functions": [
+          "Business Development"
+        ]
       },
       "knowledge": {
         "name": "Knowledge Management",
         "icon": "📚",
         "color": "#10B981",
-        "functions": ["Knowledge Management"]
+        "functions": [
+          "Knowledge Management"
+        ]
+      },
+      "other": {
+        "name": "Other",
+        "icon": "🔧",
+        "color": "#6B7280",
+        "functions": [
+          "Audience Research",
+          "Executive Research",
+          "Technology Research",
+          "Marketing Research",
+          "Trend Analysis",
+          "Industry Analysis",
+          "Financial Analysis",
+          "Workplace Analysis",
+          "Media Analysis",
+          "Social Media Analysis",
+          "Digital Analysis",
+          "Marketing Analysis",
+          "Real-time Social Media",
+          "Real-time News",
+          "Analysis & Research"
+        ]
       }
     }
   },
@@ -78,46 +198,103 @@
     "technical": {
       "name": "Technical",
       "color": "#3B82F6",
-      "tags": ["coding", "automation", "api", "react", "frontend", "typescript", "documentation"]
+      "tags": [
+        "coding",
+        "automation",
+        "api",
+        "react",
+        "frontend",
+        "typescript",
+        "documentation"
+      ]
     },
     "technology": {
       "name": "Technology",
       "color": "#8B5CF6",
-      "tags": ["ai", "openai", "microsoft", "google", "enterprise", "chatbot"]
+      "tags": [
+        "ai",
+        "openai",
+        "microsoft",
+        "google",
+        "enterprise",
+        "chatbot"
+      ]
     },
     "business": {
       "name": "Business",
       "color": "#10B981",
-      "tags": ["marketing", "strategy", "sales", "presentations", "pitching"]
+      "tags": [
+        "marketing",
+        "strategy",
+        "sales",
+        "presentations",
+        "pitching"
+      ]
     },
     "communications": {
       "name": "Communications",
       "color": "#84CC16",
-      "tags": ["media-relations", "brand-voice", "executive comms", "writing", "tone"]
+      "tags": [
+        "media-relations",
+        "brand-voice",
+        "executive comms",
+        "writing",
+        "tone"
+      ]
     },
     "creative": {
       "name": "Creative",
       "color": "#F97316",
-      "tags": ["content-generation", "video", "design", "social-media"]
+      "tags": [
+        "content-generation",
+        "video",
+        "design",
+        "social-media"
+      ]
     },
     "productivity": {
       "name": "Productivity",
       "color": "#06B6D4",
-      "tags": ["collaboration", "knowledge-management", "productivity", "office365", "teams", "workflow"]
+      "tags": [
+        "collaboration",
+        "knowledge-management",
+        "productivity",
+        "office365",
+        "teams",
+        "workflow"
+      ]
     },
     "analysis": {
       "name": "Analysis",
       "color": "#6366F1",
-      "tags": ["research", "analytics", "trends", "demographics", "psychographics", "monitoring"]
+      "tags": [
+        "research",
+        "analytics",
+        "trends",
+        "demographics",
+        "psychographics",
+        "monitoring"
+      ]
     },
     "data": {
       "name": "Data",
       "color": "#8B5CF6",
-      "tags": ["data-analysis", "intelligence", "campaigns"]
+      "tags": [
+        "data-analysis",
+        "intelligence",
+        "campaigns"
+      ]
     }
   },
   "searchConfig": {
-    "searchableFields": ["title", "description", "function", "type", "tier", "tags"],
+    "searchableFields": [
+      "title",
+      "description",
+      "function",
+      "type",
+      "tier",
+      "tags"
+    ],
     "weightings": {
       "title": 3,
       "description": 2,
@@ -127,4 +304,4 @@
       "tier": 1
     }
   }
-} 
+}

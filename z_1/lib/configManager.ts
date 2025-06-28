@@ -126,6 +126,18 @@ class ConfigManager implements IConfigManager {
   }
 
   /**
+   * Get taxonomy configuration
+   */
+  getTaxonomyConfig() {
+    try {
+      return require('../public/config/taxonomy.json');
+    } catch (error) {
+      console.warn('Could not load taxonomy config:', error);
+      return null;
+    }
+  }
+
+  /**
    * Get function categories
    */
   getFunctionCategories(): string[] {

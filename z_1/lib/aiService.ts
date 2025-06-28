@@ -1,61 +1,106 @@
+import OpenAI from 'openai';
 import type { Tool } from "../types";
 
-export class AIService {
-  private apiKey: string;
-  private apiUrl: string;
+// Load knowledge base data
+let knowledgeBase: Tool[] = [];
 
-  constructor(apiKey?: string) {
-    this.apiKey = apiKey || process.env.NEXT_PUBLIC_GEMINI_API_KEY || "";
-    this.apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
+// Initialize knowledge base from data.json
+async function loadKnowledgeBase() {
+  if (knowledgeBase.length === 0) {
+    try {
+      const response = await fetch('/api/knowledge-base');
+      if (response.ok) {
+        knowledgeBase = await response.json();
+      }
+    } catch (error) {
+      console.error('Error loading knowledge base:', error);
+      // Fallback to empty array
+      knowledgeBase = [];
+    }
+  }
+  return knowledgeBase;
+}
+
+export class AIService {
+  private openai: OpenAI;
+
+  constructor() {
+    this.openai = new OpenAI({
+      apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
+      dangerouslyAllowBrowser: true // Only for client-side usage
+    });
   }
 
   /**
-   * Generate AI response with tool recommendations
+   * Generate AI response with streaming support
    */
-  async generateResponse(query: string, tools: Tool[]): Promise<string> {
-    if (!this.apiKey) {
-      return this.getFallbackResponse(query);
-    }
-
+  async generateStreamingResponse(
+    query: string, 
+    tools: Tool[],
+    onChunk: (chunk: string) => void
+  ): Promise<void> {
     try {
-      const prompt = this.createPrompt(query, tools);
-      const payload = {
-        contents: [
+      const knowledgeTools = await loadKnowledgeBase();
+      const allTools = [...tools, ...knowledgeTools];
+      const prompt = this.createPrompt(query, allTools);
+      
+      const stream = await this.openai.chat.completions.create({
+        model: 'gpt-4o-mini',
+        messages: [
           {
-            role: "user",
-            parts: [{ text: prompt }],
+            role: 'system',
+            content: 'You are a helpful AI assistant for the Zeno Knowledge Hub. You help users find relevant AI tools and resources from the knowledge base. Be conversational and provide practical advice. Focus on recommending the most relevant tools and explain why they would be useful for the user\'s specific needs.'
           },
+          {
+            role: 'user',
+            content: prompt
+          }
         ],
-      };
-
-      const response = await fetch(`${this.apiUrl}?key=${this.apiKey}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
+        stream: true,
+        temperature: 0.7,
+        max_tokens: 1000
       });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const result = await response.json();
-
-      if (
-        result.candidates &&
-        result.candidates.length > 0 &&
-        result.candidates[0].content &&
-        result.candidates[0].content.parts &&
-        result.candidates[0].content.parts.length > 0
-      ) {
-        return result.candidates[0].content.parts[0].text;
-      } else {
-        console.error("Unexpected API response structure:", result);
-        return this.getFallbackResponse(query);
+      for await (const chunk of stream) {
+        const content = chunk.choices[0]?.delta?.content || '';
+        if (content) {
+          onChunk(content);
+        }
       }
     } catch (error) {
-      console.error("Error calling Gemini API:", error);
+      console.error('Error calling OpenAI API:', error);
+      onChunk(this.getFallbackResponse(query));
+    }
+  }
+
+  /**
+   * Generate AI response (non-streaming version for compatibility)
+   */
+  async generateResponse(query: string, tools: Tool[]): Promise<string> {
+    try {
+      const knowledgeTools = await loadKnowledgeBase();
+      const allTools = [...tools, ...knowledgeTools];
+      const prompt = this.createPrompt(query, allTools);
+      
+      const response = await this.openai.chat.completions.create({
+        model: 'gpt-4o-mini',
+        messages: [
+          {
+            role: 'system',
+            content: 'You are a helpful AI assistant for the Zeno Knowledge Hub. You help users find relevant AI tools and resources from the knowledge base. Be conversational and provide practical advice. Focus on recommending the most relevant tools and explain why they would be useful for the user\'s specific needs.'
+          },
+          {
+            role: 'user',
+            content: prompt
+          }
+        ],
+        temperature: 0.7,
+        max_tokens: 1000
+      });
+
+      return response.choices[0]?.message?.content || this.getFallbackResponse(query);
+    } catch (error) {
+      console.error('Error calling OpenAI API:', error);
       return this.getFallbackResponse(query);
     }
   }
@@ -64,24 +109,36 @@ export class AIService {
    * Create the prompt for the AI with tool context
    */
   private createPrompt(query: string, tools: Tool[]): string {
-    const toolsContext = tools.map((tool) => ({
+    // Get the most relevant tools (limit to avoid token limits)
+    const relevantTools = tools.slice(0, 15).map((tool) => ({
       title: tool.title,
       description: tool.description,
-      tags: tool.tags,
-      function: tool.function,
-      tier: tool.tier,
       type: tool.type,
+      function: tool.function,
+      tags: tool.tags,
+      tier: tool.tier,
+      featured: tool.featured,
+      link: tool.link
     }));
 
-    return `User query: "${query}". 
+    return `User query: "${query}"
 
-Suggest relevant AI tools from the following list based on their title, description, tags, function, and type. Also, provide a brief caveat or best practice related to the tool's use.
+Based on the user's query, recommend the most relevant tools and resources from the Zeno Knowledge Hub below. 
 
-Available tools: ${JSON.stringify(toolsContext)}
+Available Tools and Resources:
+${JSON.stringify(relevantTools, null, 2)}
 
-Format your response as a friendly suggestion, including the tool's title and a relevant caveat. For example: "Based on your query, 'X Tool' might be helpful. Caveat: Always verify sources and cross-reference data with reliable sources."
+Instructions:
+1. Recommend 1-2 most relevant tools or resources that best match the user's needs
+2. Explain why they're suitable and how they can help
+3. Provide practical tips for using them effectively
+4. Include any relevant caveats or best practices
+5. Be conversational and helpful in your response
+6. If the user asks about specific topics (like audience insights, trends, marketing, etc.), prioritize tools with matching functions and tags
+7. **IMPORTANT**: When mentioning a tool, include a clickable link using this exact format: [Tool Name](link_url)
+8. Always include the link when recommending a specific tool
 
-Keep the response conversational and helpful, focusing on 1-2 most relevant tools. Include practical advice about using the recommended tools effectively.`;
+Format your response in a friendly, conversational manner that helps the user understand which tools would be most valuable for their specific needs. Make sure to include clickable links to the recommended tools.`;
   }
 
   /**
@@ -101,7 +158,7 @@ Keep the response conversational and helpful, focusing on 1-2 most relevant tool
    * Check if the AI service is properly configured
    */
   isConfigured(): boolean {
-    return !!this.apiKey;
+    return !!process.env.NEXT_PUBLIC_OPENAI_API_KEY;
   }
 
   /**
@@ -111,7 +168,7 @@ Keep the response conversational and helpful, focusing on 1-2 most relevant tool
     if (this.isConfigured()) {
       return "AI service is configured and ready";
     }
-    return "AI service requires NEXT_PUBLIC_GEMINI_API_KEY environment variable";
+    return "AI service requires NEXT_PUBLIC_OPENAI_API_KEY environment variable";
   }
 }
 

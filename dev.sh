@@ -14,7 +14,7 @@ if [ ! -d "z_1" ]; then
 fi
 
 # Navigate to z_1 and start the dev server
-cd z_1
+cd z_1 && pnpm dev
 
 echo "✅ Now in z_1 directory"
 echo "🔧 Starting pnpm dev..."

@@ -1,8 +1,8 @@
 "use client";
 
 import type React from "react";
-import { useState, useRef, useEffect } from "react";
-import { Send } from "lucide-react";
+import { useState, useRef, useEffect, useCallback } from "react";
+import { Send, MessageCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Message } from "../types";
 
@@ -20,44 +20,122 @@ export function ChatPanel({
   className,
 }: ChatPanelProps) {
   const [input, setInput] = useState("");
+  const [autoScroll, setAutoScroll] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  const scrollToBottom = useCallback(() => {
+    if (autoScroll) {
+      messagesEndRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+      });
+    }
+  }, [autoScroll]);
 
+  // Auto-scroll when new messages arrive, but only if auto-scroll is enabled
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, scrollToBottom]);
 
+  // Handle manual scrolling - disable auto-scroll if user scrolls up
+  const handleScroll = useCallback(() => {
+    if (!messagesContainerRef.current) return;
+
+    const { scrollTop, scrollHeight, clientHeight } =
+      messagesContainerRef.current;
+    const isAtBottom = Math.abs(scrollHeight - clientHeight - scrollTop) < 10;
+
+    // Only re-enable auto-scroll if user scrolls back to bottom
+    if (isAtBottom && !autoScroll) {
+      setAutoScroll(true);
+    } else if (!isAtBottom && autoScroll) {
+      setAutoScroll(false);
+    }
+  }, [autoScroll]);
+
+  // Disable auto-scroll on any user interaction
+  const handleUserInteraction = useCallback(() => {
+    if (autoScroll) {
+      setAutoScroll(false);
+    }
+  }, [autoScroll]);
+
+  // Re-enable auto-scroll when starting to send a new message
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (input.trim() && !isLoading) {
+      setAutoScroll(true); // Re-enable auto-scroll for new conversation
       onSend(input.trim());
       setInput("");
+
+      // Keep focus on input field and prevent page scrolling
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 0);
     }
   };
 
   const renderMarkdown = (content: string) => {
-    // Simple markdown rendering - in production, use a proper markdown library
+    // Enhanced markdown rendering with better styling and link support
     return content
-      .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
-      .replace(/\*(.*?)\*/g, "<em>$1</em>")
+      .replace(
+        /\*\*(.*?)\*\*/g,
+        '<strong class="font-semibold text-gray-900 dark:text-white">$1</strong>'
+      )
+      .replace(
+        /\*(.*?)\*/g,
+        '<em class="italic text-gray-800 dark:text-gray-200">$1</em>'
+      )
       .replace(
         /`(.*?)`/g,
-        '<code class="bg-gray-100 dark:bg-gray-700 px-1 rounded">$1</code>'
-      );
+        '<code class="bg-gray-200 dark:bg-gray-600 text-gray-900 dark:text-gray-100 px-2 py-1 rounded text-sm font-mono">$1</code>'
+      )
+      .replace(
+        /\[([^\]]+)\]\(([^)]+)\)/g,
+        '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-green-600 hover:text-green-700 underline font-medium">$1 ↗</a>'
+      )
+      .replace(/\n\n/g, '</p><p class="mt-3">')
+      .replace(/\n/g, "<br>")
+      .replace(/^(.+)$/, "<p>$1</p>");
   };
 
   return (
     <div
       className={cn(
-        "flex flex-col h-full bg-white dark:bg-gray-800 rounded-lg border-2 border-gray-200 dark:border-gray-700",
+        "flex flex-col h-[600px] bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-lg overflow-hidden",
         className
       )}
+      onMouseDown={handleUserInteraction}
+      onTouchStart={handleUserInteraction}
+      onKeyDown={handleUserInteraction}
     >
+      {/* Header */}
+      <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 bg-green-600 rounded-t-lg">
+        <div className="flex items-center gap-2">
+          <MessageCircle className="w-5 h-5 text-white" />
+          <h3 className="font-semibold text-white">Ask Zeno AI</h3>
+        </div>
+        {!autoScroll && (
+          <button
+            onClick={() => {
+              setAutoScroll(true);
+              scrollToBottom();
+            }}
+            className="text-xs text-white hover:text-gray-200 px-3 py-1 rounded-full bg-green-700 hover:bg-green-800 border border-green-500 transition-colors"
+          >
+            ↓ Resume auto-scroll
+          </button>
+        )}
+      </div>
+
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      <div
+        ref={messagesContainerRef}
+        className="flex-1 overflow-y-auto p-6 space-y-4 bg-gray-50 dark:bg-gray-900"
+        onScroll={handleScroll}
+      >
         {messages.map((message) => (
           <div
             key={message.id}
@@ -68,18 +146,31 @@ export function ChatPanel({
           >
             <div
               className={cn(
-                "max-w-[80%] px-4 py-2 rounded-lg",
+                "max-w-[85%] px-4 py-3 rounded-lg shadow-sm",
                 message.sender === "user"
-                  ? "bg-blue-600 text-white"
-                  : "bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white"
+                  ? "bg-green-600 text-white"
+                  : "bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700"
               )}
             >
               <div
+                className={cn(
+                  "prose prose-sm max-w-none",
+                  message.sender === "user"
+                    ? "prose-invert"
+                    : "prose-gray dark:prose-invert"
+                )}
                 dangerouslySetInnerHTML={{
                   __html: renderMarkdown(message.content),
                 }}
               />
-              <div className="text-xs opacity-70 mt-1">
+              <div
+                className={cn(
+                  "text-xs mt-2 opacity-70",
+                  message.sender === "user"
+                    ? "text-green-100"
+                    : "text-gray-500 dark:text-gray-400"
+                )}
+              >
                 {message.timestamp.toLocaleTimeString()}
               </div>
             </div>
@@ -87,15 +178,15 @@ export function ChatPanel({
         ))}
         {isLoading && (
           <div className="flex justify-start">
-            <div className="bg-gray-100 dark:bg-gray-700 px-4 py-2 rounded-lg">
+            <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 px-4 py-3 rounded-lg shadow-sm">
               <div className="flex space-x-1">
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                <div className="w-2 h-2 bg-green-500 rounded-full animate-bounce"></div>
                 <div
-                  className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                  className="w-2 h-2 bg-green-500 rounded-full animate-bounce"
                   style={{ animationDelay: "0.1s" }}
                 ></div>
                 <div
-                  className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                  className="w-2 h-2 bg-green-500 rounded-full animate-bounce"
                   style={{ animationDelay: "0.2s" }}
                 ></div>
               </div>
@@ -108,21 +199,22 @@ export function ChatPanel({
       {/* Input */}
       <form
         onSubmit={handleSubmit}
-        className="p-4 border-t border-gray-200 dark:border-gray-700"
+        className="p-4 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 rounded-b-lg"
       >
-        <div className="flex space-x-2">
+        <div className="flex space-x-3">
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask a question..."
+            placeholder="Ask about AI tools and resources..."
             disabled={isLoading}
-            className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50"
+            className="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent disabled:opacity-50 transition-colors"
+            ref={inputRef}
           />
           <button
             type="submit"
             disabled={!input.trim() || isLoading}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
             aria-label="Send message"
           >
             <Send className="w-5 h-5" />
@@ -133,13 +225,13 @@ export function ChatPanel({
   );
 }
 
-// Demo component with real AI integration
+// Demo component with streaming AI integration
 export function ChatPanelDemo() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",
       content:
-        "Hello! How can I help you with Zeno Knows today? Ask me about our AI tools and I'll recommend the best ones for your needs.",
+        "Hello! I'm your AI assistant for the Zeno Knowledge Hub. I can help you find the perfect AI tools and resources for your needs. What would you like to work on today?",
       sender: "assistant",
       timestamp: new Date(),
     },
@@ -157,44 +249,52 @@ export function ChatPanelDemo() {
     setMessages((prev) => [...prev, userMessage]);
     setIsLoading(true);
 
+    // Create a placeholder message for streaming
+    const aiMessageId = (Date.now() + 1).toString();
+    const aiMessage: Message = {
+      id: aiMessageId,
+      content: "",
+      sender: "assistant",
+      timestamp: new Date(),
+    };
+    setMessages((prev) => [...prev, aiMessage]);
+
     try {
-      // Import AI service dynamically to avoid SSR issues
+      // Import AI service
       const { getAIService } = await import("../lib/aiService");
-      const { mockTools } = await import("../lib/mockData");
-
       const aiService = getAIService();
-      const aiResponse = await aiService.generateResponse(message, mockTools);
 
-      const aiMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        content: aiResponse,
-        sender: "assistant",
-        timestamp: new Date(),
-      };
-      setMessages((prev) => [...prev, aiMessage]);
+      // Use streaming response with empty tools array for now
+      // The AI service will load tools from the knowledge base
+      await aiService.generateStreamingResponse(
+        message,
+        [], // Empty array since AI service loads from knowledge base
+        (chunk: string) => {
+          setMessages((prev) =>
+            prev.map((msg) =>
+              msg.id === aiMessageId
+                ? { ...msg, content: msg.content + chunk }
+                : msg
+            )
+          );
+        }
+      );
     } catch (error) {
       console.error("Error getting AI response:", error);
 
-      const errorMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        content:
-          "I'm sorry, I'm experiencing some technical difficulties. Please try again later or browse our tool library directly.",
-        sender: "assistant",
-        timestamp: new Date(),
-      };
-      setMessages((prev) => [...prev, errorMessage]);
+      const errorMessage =
+        "I'm sorry, I'm experiencing some technical difficulties. Please try again later or browse our tool library directly.";
+      setMessages((prev) =>
+        prev.map((msg) =>
+          msg.id === aiMessageId ? { ...msg, content: errorMessage } : msg
+        )
+      );
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="h-96">
-      <ChatPanel
-        messages={messages}
-        onSend={handleSend}
-        isLoading={isLoading}
-      />
-    </div>
+    <ChatPanel messages={messages} onSend={handleSend} isLoading={isLoading} />
   );
 }

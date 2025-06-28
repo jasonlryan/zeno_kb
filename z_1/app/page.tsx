@@ -73,26 +73,53 @@ export default function HomePage() {
   const displayTools = searchQuery.trim() ? localSearchResults : allTools;
   const hasActiveFilters = false;
 
-  // Filter tools by category (dynamic based on actual categories)
+  // Filter tools by category (function-based categories)
   const getToolsByCategory = (categoryTitle: string): Tool[] => {
-    // Dynamic mapping based on the category title to tool type
-    const categoryToTypeMap: Record<string, string> = {
-      "AI Assistants": "GPT",
-      Documentation: "Doc",
-      "Video Tutorials": "Video",
-      "Scripts & Tools": "Script",
-      Platforms: "Platform",
-      Tools: "Tool",
-      "Learning Materials": "Learning Guide",
+    // Map category titles to the functions they contain
+    const categoryFunctionMap: Record<string, string[]> = {
+      Other: [
+        "Audience Research",
+        "Executive Research",
+        "Technology Research",
+        "Marketing Research",
+        "Trend Analysis",
+        "Industry Analysis",
+        "Financial Analysis",
+        "Workplace Analysis",
+        "Media Analysis",
+        "Social Media Analysis",
+        "Digital Analysis",
+        "Real-time Social Media",
+        "Real-time News",
+        "Analysis & Research",
+      ],
+      "Content & Creative": [
+        "Content & Creative",
+        "Brand & Voice",
+        "Content Creation",
+        "Social Media",
+        "Social Trends & Idea Generators",
+      ],
+      "Strategy & Analysis": [
+        "Strategy & Planning",
+        "Audience Insights",
+        "Campaign & Competitive Analysis",
+        "Research & Analysis",
+      ],
+      "Media & Communications": [
+        "Media Relations",
+        "Media List Creation",
+        "Executive Voice Emulation",
+      ],
     };
 
-    const targetType = categoryToTypeMap[categoryTitle];
-    if (!targetType) {
-      // If no mapping found, return empty array
+    const functions = categoryFunctionMap[categoryTitle];
+    if (!functions) {
       return [];
     }
 
-    return allTools.filter((tool) => tool.type === targetType);
+    // Return tools that have functions belonging to this category
+    return allTools.filter((tool) => functions.includes(tool.function));
   };
 
   // Get text values at top level to avoid hook violations
@@ -157,18 +184,21 @@ export default function HomePage() {
       case "home":
         return (
           <div className="space-y-8">
-            {/* Welcome Section */}
-            <section className="text-center py-12 bg-gray-100">
-              <h1 className="text-4xl font-bold text-green-600 mb-4">
+            {/* Page Title */}
+            <section className="text-center py-8">
+              <h1 className="text-4xl font-bold text-green-600 mb-2">
                 Welcome to the Zeno Knowledge Hub
               </h1>
-              <h2 className="text-xl text-gray-600 mb-6">
+              <p className="text-xl text-gray-900 dark:text-gray-100">
                 Your AI toolkit, all in one place
-              </h2>
-              <p className="text-lg text-gray-700 max-w-2xl mx-auto">
-                Explore practical guides, GPTs, and shared know-how to help you
-                get more from AI – fast.
               </p>
+            </section>
+
+            {/* AI Chat Assistant */}
+            <section className="max-w-5xl mx-auto sticky top-4 z-10">
+              <div className="bg-white rounded-lg shadow-xl">
+                <ChatPanelDemo />
+              </div>
             </section>
 
             {/* Featured Tools */}
