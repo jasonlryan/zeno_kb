@@ -1,0 +1,358 @@
+{
+  "pages": {
+    "home": {
+      "title": "Welcome to Zeno Knowledge Base",
+      "subtitle": "Discover and share AI tools, resources, and best practices",
+      "sections": {
+        "featured": {
+          "title": "Featured Tools",
+          "subtitle": "Curated selection of top-performing tools this week"
+        },
+        "categories": {
+          "title": "Browse by Category",
+          "subtitle": "Explore tools organized by function and use case"
+        },
+        "recent": {
+          "title": "Recently Added",
+          "subtitle": "Latest tools and resources added to the platform"
+        },
+        "topWeekly": {
+          "title": "Top 5 This Week",
+          "subtitle": "Most popular tools based on usage and feedback"
+        }
+      }
+    },
+    "search": {
+      "title": "Search Results",
+      "subtitle": "Find tools and resources across the platform",
+      "placeholder": {
+        "placeholder": "Search tools, docs, and resources...",
+        "noResultsMessage": "No tools found matching your search.",
+        "suggestions": {
+          "enabled": true,
+          "maxItems": 5
+        },
+        "filters": {
+          "enabled": true,
+          "defaultExpanded": false
+        }
+      },
+      "noResults": {
+        "title": "No results found",
+        "message": "Try adjusting your search terms or browse by category",
+        "suggestions": [
+          "Check your spelling",
+          "Try broader search terms",
+          "Browse categories instead"
+        ]
+      },
+      "filters": {
+        "title": "Filters",
+        "clearAll": "Clear all filters",
+        "apply": "Apply filters",
+        "sections": {
+          "type": {
+            "title": "Tool Type",
+            "options": {
+              "GPT": "AI Assistants",
+              "Doc": "Documentation",
+              "Script": "Scripts & Tools",
+              "Video": "Video Tutorials"
+            }
+          },
+          "tier": {
+            "title": "Access Tier",
+            "options": {
+              "Foundation": "Foundation",
+              "Specialist": "Specialist"
+            }
+          },
+          "complexity": {
+            "title": "Complexity",
+            "options": {
+              "Beginner": "Beginner",
+              "Intermediate": "Intermediate",
+              "Advanced": "Advanced"
+            }
+          },
+          "function": {
+            "title": "Function Category",
+            "placeholder": "Select function..."
+          },
+          "newness": {
+            "title": "Recency",
+            "options": {
+              "all": "All time",
+              "week": "This week",
+              "month": "This month"
+            }
+          }
+        }
+      }
+    },
+    "library": {
+      "title": "Your Library",
+      "subtitle": "Tools and resources you've saved and accessed",
+      "tabs": {
+        "saved": "Saved Tools",
+        "recent": "Recently Viewed",
+        "requested": "Access Requests"
+      },
+      "empty": {
+        "saved": {
+          "title": "No saved tools yet",
+          "message": "Start building your personal library by saving tools you find useful"
+        },
+        "recent": {
+          "title": "No recent activity",
+          "message": "Tools you view will appear here for quick access"
+        },
+        "requested": {
+          "title": "No access requests",
+          "message": "Specialist tool access requests will appear here"
+        }
+      }
+    },
+    "curator": {
+      "title": "Curator Dashboard",
+      "subtitle": "Manage tools, content, and platform settings",
+      "sections": {
+        "overview": {
+          "title": "Overview",
+          "metrics": {
+            "totalTools": "Total Tools",
+            "activeUsers": "Active Users",
+            "pendingRequests": "Pending Requests",
+            "featuredTools": "Featured Tools"
+          }
+        },
+        "tools": {
+          "title": "Tool Management",
+          "actions": {
+            "add": "Add New Tool",
+            "edit": "Edit",
+            "delete": "Delete",
+            "feature": "Feature",
+            "unfeature": "Unfeature",
+            "schedule": "Schedule"
+          }
+        },
+        "requests": {
+          "title": "Access Requests",
+          "actions": {
+            "approve": "Approve",
+            "deny": "Deny",
+            "review": "Review"
+          }
+        },
+        "scheduling": {
+          "title": "Content Scheduling",
+          "subtitle": "Manage featured content and announcements"
+        }
+      }
+    },
+    "users": {
+      "title": "User Management",
+      "subtitle": "Manage user accounts, permissions, and access",
+      "actions": {
+        "invite": "Invite User",
+        "edit": "Edit",
+        "deactivate": "Deactivate",
+        "promote": "Promote to Curator"
+      }
+    },
+    "analytics": {
+      "title": "Analytics & Insights",
+      "subtitle": "Usage statistics and platform performance",
+      "sections": {
+        "usage": "Usage Statistics",
+        "popular": "Popular Tools",
+        "trends": "Usage Trends",
+        "feedback": "User Feedback"
+      }
+    }
+  },
+  "components": {
+    "toolCard": {
+      "labels": {
+        "tier": "Tier:",
+        "complexity": "Complexity:",
+        "addedBy": "Added by:",
+        "dateAdded": "Added:",
+        "tags": "Tags:",
+        "function": "Function:"
+      },
+      "actions": {
+        "view": "View Details",
+        "save": "Save",
+        "unsave": "Unsave",
+        "share": "Share",
+        "report": "Report Issue"
+      },
+      "badges": {
+        "featured": "Featured",
+        "new": "New",
+        "popular": "Popular",
+        "specialist": "Specialist Access Required"
+      }
+    },
+    "toolDetail": {
+      "sections": {
+        "overview": "Overview",
+        "details": "Details",
+        "usage": "How to Use",
+        "caveats": "Caveats & Best Practices",
+        "feedback": "Feedback"
+      },
+      "labels": {
+        "type": "Type",
+        "tier": "Access Tier",
+        "complexity": "Complexity Level",
+        "function": "Function Category",
+        "tags": "Tags",
+        "dateAdded": "Date Added",
+        "addedBy": "Added By",
+        "lastUpdated": "Last Updated",
+        "externalLink": "External Link"
+      },
+      "actions": {
+        "openTool": "Open Tool",
+        "requestAccess": "Request Access",
+        "save": "Save to Library",
+        "share": "Share Tool",
+        "report": "Report Issue",
+        "edit": "Edit Tool"
+      }
+    },
+    "accessRequest": {
+      "title": "Request Access",
+      "subtitle": "This specialist tool requires approval before access can be granted.",
+      "form": {
+        "labels": {
+          "justification": "Business Justification *",
+          "tool": "Tool:"
+        },
+        "placeholders": {
+          "justification": "Please explain why you need access to this tool and how you plan to use it..."
+        },
+        "validation": {
+          "required": "This field is required",
+          "minLength": "Please provide more detail about your use case"
+        }
+      },
+      "process": {
+        "title": "What happens next?",
+        "steps": [
+          "Your request will be reviewed by a consultant",
+          "You'll receive an email notification with the decision",
+          "Approval typically takes 1-2 business days"
+        ]
+      },
+      "actions": {
+        "submit": "Submit Request",
+        "cancel": "Cancel",
+        "submitting": "Submitting..."
+      }
+    },
+    "feedback": {
+      "title": "Was this helpful?",
+      "options": {
+        "helpful": "Yes, helpful",
+        "notHelpful": "Not helpful"
+      },
+      "comment": {
+        "placeholder": "Tell us more about your experience (optional)",
+        "submit": "Submit Feedback"
+      },
+      "thanks": "Thank you for your feedback!"
+    },
+    "chat": {
+      "title": "AI Assistant",
+      "placeholder": "Ask about tools, get recommendations, or seek guidance...",
+      "actions": {
+        "send": "Send",
+        "clear": "Clear Chat",
+        "newChat": "New Chat"
+      },
+      "states": {
+        "thinking": "AI is thinking...",
+        "error": "Something went wrong. Please try again.",
+        "empty": "Start a conversation by asking about tools or getting recommendations."
+      }
+    },
+    "toast": {
+      "success": {
+        "toolSaved": "Tool saved to your library",
+        "toolRemoved": "Tool removed from library",
+        "accessRequested": "Access request submitted successfully",
+        "feedbackSubmitted": "Feedback submitted successfully"
+      },
+      "error": {
+        "generic": "Something went wrong. Please try again.",
+        "network": "Network error. Please check your connection.",
+        "unauthorized": "You don't have permission to perform this action.",
+        "notFound": "The requested item was not found."
+      },
+      "info": {
+        "loading": "Loading...",
+        "processing": "Processing your request..."
+      }
+    },
+    "banner": {
+      "types": {
+        "announcement": "Announcement",
+        "maintenance": "Maintenance",
+        "feature": "New Feature",
+        "warning": "Important Notice"
+      },
+      "actions": {
+        "dismiss": "Dismiss",
+        "learnMore": "Learn More"
+      }
+    }
+  },
+  "forms": {
+    "validation": {
+      "required": "This field is required",
+      "email": "Please enter a valid email address",
+      "minLength": "Must be at least {min} characters",
+      "maxLength": "Must be no more than {max} characters",
+      "url": "Please enter a valid URL"
+    },
+    "actions": {
+      "save": "Save",
+      "cancel": "Cancel",
+      "submit": "Submit",
+      "reset": "Reset",
+      "delete": "Delete",
+      "edit": "Edit",
+      "add": "Add",
+      "update": "Update",
+      "create": "Create"
+    }
+  },
+  "states": {
+    "loading": "Loading...",
+    "error": "Error loading content",
+    "empty": "No items to display",
+    "retry": "Try again",
+    "noConnection": "No internet connection",
+    "unauthorized": "Access denied",
+    "notFound": "Page not found"
+  },
+  "time": {
+    "formats": {
+      "short": "MMM dd, yyyy",
+      "long": "MMMM dd, yyyy 'at' h:mm a",
+      "relative": "time ago"
+    },
+    "labels": {
+      "justNow": "Just now",
+      "minutesAgo": "{count} minutes ago",
+      "hoursAgo": "{count} hours ago",
+      "daysAgo": "{count} days ago",
+      "weeksAgo": "{count} weeks ago",
+      "monthsAgo": "{count} months ago"
+    }
+  }
+}

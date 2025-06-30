@@ -1,0 +1,127 @@
+{
+  "timestamp": "2025-06-24T14:28:10.995Z",
+  "duration": 15232,
+  "success": true,
+  "mode": "live",
+  "steps": {
+    "backup": {
+      "success": true,
+      "duration": 2,
+      "result": {
+        "backupPath": "/Users/jasonryan/Documents/zeno_kb/z_1/tools/backups/data-backup-2025-06-24T14-27-55-771Z.json",
+        "originalSize": 32025,
+        "timestamp": "2025-06-24T14-27-55-771Z"
+      },
+      "timestamp": "2025-06-24T14:27:55.773Z"
+    },
+    "audit": {
+      "success": true,
+      "duration": 6,
+      "result": {
+        "passed": true,
+        "errors": 0,
+        "warnings": 0,
+        "totalRecords": 26
+      },
+      "timestamp": "2025-06-24T14:27:55.779Z"
+    },
+    "healthCheck": {
+      "success": true,
+      "duration": 15199,
+      "result": {
+        "passed": false,
+        "totalUrls": 26,
+        "healthyUrls": 0,
+        "unhealthyUrls": 26
+      },
+      "timestamp": "2025-06-24T14:28:10.978Z"
+    },
+    "conversion": {
+      "success": true,
+      "duration": 10,
+      "result": {
+        "success": true,
+        "outputPath": "/Users/jasonryan/Documents/zeno_kb/z_1/tools/temp-converted-data.json",
+        "convertedRecords": 26,
+        "skippedRecords": 0
+      },
+      "timestamp": "2025-06-24T14:28:10.988Z"
+    },
+    "validation": {
+      "success": true,
+      "duration": 2,
+      "result": {
+        "valid": true,
+        "toolCount": 26,
+        "validatedFields": [
+          "id",
+          "title",
+          "description",
+          "type",
+          "link"
+        ],
+        "dataSize": 23294
+      },
+      "timestamp": "2025-06-24T14:28:10.990Z"
+    },
+    "deployment": {
+      "success": true,
+      "duration": 2,
+      "result": {
+        "deployed": true,
+        "targets": [
+          "/Users/jasonryan/Documents/zeno_kb/z_1/config/data.json",
+          "/Users/jasonryan/Documents/zeno_kb/z_1/public/config/data.json"
+        ],
+        "dataSize": 23292,
+        "timestamp": "2025-06-24T14:28:10.993Z"
+      },
+      "timestamp": "2025-06-24T14:28:10.993Z"
+    },
+    "verification": {
+      "success": true,
+      "duration": 1,
+      "result": {
+        "verified": true,
+        "targets": [
+          {
+            "target": "/Users/jasonryan/Documents/zeno_kb/z_1/config/data.json",
+            "success": true,
+            "toolCount": 26,
+            "fileSize": 23294
+          },
+          {
+            "target": "/Users/jasonryan/Documents/zeno_kb/z_1/public/config/data.json",
+            "success": true,
+            "toolCount": 26,
+            "fileSize": 23294
+          }
+        ],
+        "allTargetsValid": true
+      },
+      "timestamp": "2025-06-24T14:28:10.994Z"
+    },
+    "cleanup": {
+      "success": true,
+      "duration": 1,
+      "result": {
+        "cleanedFiles": [
+          "/Users/jasonryan/Documents/zeno_kb/z_1/tools/temp-converted-data.json",
+          "/Users/jasonryan/Documents/zeno_kb/z_1/tools/audit-report.json",
+          "/Users/jasonryan/Documents/zeno_kb/z_1/tools/url-health-report.json"
+        ],
+        "dryRun": false
+      },
+      "timestamp": "2025-06-24T14:28:10.995Z"
+    }
+  },
+  "errors": [],
+  "warnings": [
+    {
+      "step": "healthCheck",
+      "warning": "Some URLs are not accessible",
+      "timestamp": "2025-06-24T14:28:10.978Z"
+    }
+  ],
+  "backupPath": "/Users/jasonryan/Documents/zeno_kb/z_1/tools/backups/data-backup-2025-06-24T14-27-55-771Z.json"
+}
