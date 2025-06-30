@@ -50,7 +50,7 @@ export default function HomePage() {
   >("home");
   const [selectedTool, setSelectedTool] = useState<Tool | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [isFilterOpen, setIsFilterOpen] = useState(true);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   // Load configuration data
   const { app } = useConfig();
