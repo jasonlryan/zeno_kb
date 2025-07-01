@@ -575,12 +575,165 @@
       "date_added": "2025-06-24T14:28:10.978Z",
       "added_by": "data-migration",
       "scheduled_feature_date": null
+    },
+    {
+      "id": "understanding-small-business-globally",
+      "title": "Understanding Small Business Globally",
+      "description": "This GPT is designed to help users analyze and understand regional differences in small business culture and terminology across France, Germany, the UK, India, Japan, and Brazil. It uses the uploaded reference document to answer questions about how the concept of \"small business\" is perceived in these regions and what alternative terms or ideas might be more appropriate.",
+      "type": "GPT",
+      "tier": "Foundation",
+      "complexity": "Intermediate",
+      "tags": [
+        "ai",
+        "business",
+        "insights",
+        "global",
+        "research",
+        "deep-research"
+      ],
+      "featured": false,
+      "function": "Research & Analysis",
+      "link": "https://chatgpt.com/g/g-6818ef71188481918d56d279c06087c2-understanding-small-business-globally",
+      "date_added": "2025-07-01T13:50:00.000Z",
+      "added_by": "manual-addition",
+      "scheduled_feature_date": null
+    },
+    {
+      "id": "using-ai-in-client-work",
+      "title": "Using AI in Client Work",
+      "description": "Best practice for disclosing AI use to a client is in the SOW. Below, we have language recommendations for the most common types of AI Usage in SOWs.",
+      "type": "Resource",
+      "tier": "Foundation",
+      "complexity": "Beginner",
+      "tags": [
+        "ai",
+        "compliance",
+        "client-work",
+        "disclosure",
+        "best-practices"
+      ],
+      "featured": false,
+      "function": "Strategy & Planning",
+      "link": "https://djeholdingsdrive.sharepoint.com/:u:/r/sites/EdelmanGenerativeAI/SitePages/Using%20AI%20In%20Client%20Work.aspx?csf=1&web=1&e=VFh0uL",
+      "date_added": "2025-07-01T13:50:00.000Z",
+      "added_by": "manual-addition",
+      "scheduled_feature_date": null
+    },
+    {
+      "id": "ai-copilot-training",
+      "title": "AI Copilot Training",
+      "description": "Copilot is an AI-powered web chat for work that allows organizations to unlock the benefits of generative AI today, such as better answers, greater efficiency, and new ways to be creative.",
+      "type": "Training",
+      "tier": "Foundation",
+      "complexity": "Beginner",
+      "tags": [
+        "ai",
+        "training",
+        "copilot",
+        "fearless-u",
+        "microsoft"
+      ],
+      "featured": false,
+      "function": "Content & Creative",
+      "link": "https://fearless.myabsorb.com/#/online-courses/9107c813-7973-4079-a442-3c790721f279",
+      "date_added": "2025-07-01T13:50:00.000Z",
+      "added_by": "manual-addition",
+      "scheduled_feature_date": null
+    },
+    {
+      "id": "chatgpt-201-training",
+      "title": "ChatGPT 201: Writing Prompts and Building Custom GPTs",
+      "description": "Take your AI capability further with ChatGPT 201—built specifically for Edelman talent looking to deepen their impact through smarter prompt writing and custom GPT creation. This self-paced course is designed for colleagues across specialties—from earned media and brand strategy to research, analytics, and production—who want to streamline internal workflows, boost creative efficiency, and bring greater precision to client work using generative AI.",
+      "type": "Training",
+      "tier": "Foundation",
+      "complexity": "Intermediate",
+      "tags": [
+        "ai",
+        "training",
+        "chatgpt",
+        "prompts",
+        "fearless-u",
+        "gpt-creation"
+      ],
+      "featured": true,
+      "function": "Content & Creative",
+      "link": "https://fearless.myabsorb.com/#/online-courses/5590f44d-22c3-4987-a5be-1e1d462c44ff",
+      "date_added": "2025-07-01T13:50:00.000Z",
+      "added_by": "manual-addition",
+      "scheduled_feature_date": null
+    },
+    {
+      "id": "ai-101-compliance-djeh",
+      "title": "AI 101: Compliance - DJEH",
+      "description": "Our mission is to transform DJEH into an AI-enabled enterprise, delivering new proprietary value at scale to our clients, empowering us to dominate the global communications landscape, and guiding the industry back to sustainable growth. Our goal is to infuse AI into every aspect of DJEH and take those learnings to drive change how communicators, communicate and drive thoughtful and smarter client engagements.",
+      "type": "Training",
+      "tier": "Foundation",
+      "complexity": "Beginner",
+      "tags": [
+        "ai",
+        "training",
+        "compliance",
+        "djeh",
+        "fearless-u",
+        "mandatory"
+      ],
+      "featured": true,
+      "function": "Strategy & Planning",
+      "link": "https://fearless.myabsorb.com/#/online-courses/1a6e142b-c442-4d46-8ae3-e0731fcbb9db",
+      "date_added": "2025-07-01T13:50:00.000Z",
+      "added_by": "manual-addition",
+      "scheduled_feature_date": null
+    },
+    {
+      "id": "chatgpt-101-training",
+      "title": "ChatGPT 101: Introduction to ChatGPT",
+      "description": "In this course, you will learn how to use ChatGPT directly from the team at OpenAI to discover essential tips and tricks and what is covered in the ChatGPT Enterprise tool. You must complete the AI Compliance - DJEH mandatory training before beginning this course.",
+      "type": "Training",
+      "tier": "Foundation",
+      "complexity": "Beginner",
+      "tags": [
+        "ai",
+        "training",
+        "chatgpt",
+        "openai",
+        "fearless-u",
+        "introduction"
+      ],
+      "featured": false,
+      "function": "Content & Creative",
+      "link": "https://fearless.myabsorb.com/#/online-courses/d2586932-aed6-448c-b683-9bf5b9f6c981",
+      "date_added": "2025-07-01T13:50:00.000Z",
+      "added_by": "manual-addition",
+      "scheduled_feature_date": null
+    },
+    {
+      "id": "esg-insights-partner",
+      "title": "ESG Insights Partner",
+      "description": "Advisory ESG (Environmental, Sustainability and Governance) insights for professionals in B2C consulting, strategy, and communications.",
+      "type": "GPT",
+      "tier": "Foundation",
+      "complexity": "Intermediate",
+      "tags": [
+        "ai",
+        "esg",
+        "sustainability",
+        "governance",
+        "consulting",
+        "trends-&-topics"
+      ],
+      "featured": false,
+      "function": "Industry Analysis",
+      "link": "https://chatgpt.com/g/g-67c09aed210c8191bf186de1027fd4dc-esg-insights-partner",
+      "date_added": "2025-07-01T13:50:00.000Z",
+      "added_by": "manual-addition",
+      "scheduled_feature_date": null
     }
   ],
   "metadata": {
-    "source": "CSV conversion",
+    "source": "CSV conversion + manual additions",
     "convertedAt": "2025-06-24T14:28:10.987Z",
-    "totalTools": 26,
-    "version": "1.0"
+    "lastUpdated": "2025-07-01T13:50:00.000Z",
+    "totalTools": 33,
+    "version": "1.1"
   }
 }
