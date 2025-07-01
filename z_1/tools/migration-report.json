@@ -1,127 +1,37 @@
 {
-  "timestamp": "2025-06-24T14:28:10.995Z",
-  "duration": 15232,
-  "success": true,
-  "mode": "live",
+  "timestamp": "2025-07-01T13:50:56.670Z",
+  "duration": 10,
+  "success": false,
+  "mode": "dry-run",
   "steps": {
     "backup": {
       "success": true,
-      "duration": 2,
+      "duration": 1,
       "result": {
-        "backupPath": "/Users/jasonryan/Documents/zeno_kb/z_1/tools/backups/data-backup-2025-06-24T14-27-55-771Z.json",
-        "originalSize": 32025,
-        "timestamp": "2025-06-24T14-27-55-771Z"
+        "backupPath": "/Users/jasonryan/Documents/zeno_kb/z_1/tools/backups/data-backup-2025-07-01T13-50-56-664Z.json",
+        "originalSize": 23292,
+        "timestamp": "2025-07-01T13-50-56-664Z"
       },
-      "timestamp": "2025-06-24T14:27:55.773Z"
+      "timestamp": "2025-07-01T13:50:56.665Z"
     },
     "audit": {
-      "success": true,
-      "duration": 6,
-      "result": {
-        "passed": true,
-        "errors": 0,
-        "warnings": 0,
-        "totalRecords": 26
-      },
-      "timestamp": "2025-06-24T14:27:55.779Z"
+      "success": false,
+      "error": "Data audit failed - please fix data issues before migration",
+      "timestamp": "2025-07-01T13:50:56.670Z"
     },
-    "healthCheck": {
-      "success": true,
-      "duration": 15199,
-      "result": {
-        "passed": false,
-        "totalUrls": 26,
-        "healthyUrls": 0,
-        "unhealthyUrls": 26
-      },
-      "timestamp": "2025-06-24T14:28:10.978Z"
-    },
-    "conversion": {
-      "success": true,
-      "duration": 10,
-      "result": {
-        "success": true,
-        "outputPath": "/Users/jasonryan/Documents/zeno_kb/z_1/tools/temp-converted-data.json",
-        "convertedRecords": 26,
-        "skippedRecords": 0
-      },
-      "timestamp": "2025-06-24T14:28:10.988Z"
-    },
-    "validation": {
-      "success": true,
-      "duration": 2,
-      "result": {
-        "valid": true,
-        "toolCount": 26,
-        "validatedFields": [
-          "id",
-          "title",
-          "description",
-          "type",
-          "link"
-        ],
-        "dataSize": 23294
-      },
-      "timestamp": "2025-06-24T14:28:10.990Z"
-    },
-    "deployment": {
-      "success": true,
-      "duration": 2,
-      "result": {
-        "deployed": true,
-        "targets": [
-          "/Users/jasonryan/Documents/zeno_kb/z_1/config/data.json",
-          "/Users/jasonryan/Documents/zeno_kb/z_1/public/config/data.json"
-        ],
-        "dataSize": 23292,
-        "timestamp": "2025-06-24T14:28:10.993Z"
-      },
-      "timestamp": "2025-06-24T14:28:10.993Z"
-    },
-    "verification": {
-      "success": true,
-      "duration": 1,
-      "result": {
-        "verified": true,
-        "targets": [
-          {
-            "target": "/Users/jasonryan/Documents/zeno_kb/z_1/config/data.json",
-            "success": true,
-            "toolCount": 26,
-            "fileSize": 23294
-          },
-          {
-            "target": "/Users/jasonryan/Documents/zeno_kb/z_1/public/config/data.json",
-            "success": true,
-            "toolCount": 26,
-            "fileSize": 23294
-          }
-        ],
-        "allTargetsValid": true
-      },
-      "timestamp": "2025-06-24T14:28:10.994Z"
-    },
-    "cleanup": {
-      "success": true,
-      "duration": 1,
-      "result": {
-        "cleanedFiles": [
-          "/Users/jasonryan/Documents/zeno_kb/z_1/tools/temp-converted-data.json",
-          "/Users/jasonryan/Documents/zeno_kb/z_1/tools/audit-report.json",
-          "/Users/jasonryan/Documents/zeno_kb/z_1/tools/url-health-report.json"
-        ],
-        "dryRun": false
-      },
-      "timestamp": "2025-06-24T14:28:10.995Z"
-    }
+    "healthCheck": null,
+    "conversion": null,
+    "validation": null,
+    "deployment": null,
+    "verification": null
   },
-  "errors": [],
-  "warnings": [
+  "errors": [
     {
-      "step": "healthCheck",
-      "warning": "Some URLs are not accessible",
-      "timestamp": "2025-06-24T14:28:10.978Z"
+      "step": "audit",
+      "error": "Data audit failed - please fix data issues before migration",
+      "timestamp": "2025-07-01T13:50:56.670Z"
     }
   ],
-  "backupPath": "/Users/jasonryan/Documents/zeno_kb/z_1/tools/backups/data-backup-2025-06-24T14-27-55-771Z.json"
+  "warnings": [],
+  "backupPath": "/Users/jasonryan/Documents/zeno_kb/z_1/tools/backups/data-backup-2025-07-01T13-50-56-664Z.json"
 }

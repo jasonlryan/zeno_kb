@@ -1,0 +1,24 @@
+{
+  "timestamp": "2025-07-01T13:50:56.669Z",
+  "summary": {
+    "totalRecords": 33,
+    "validRecords": 32,
+    "invalidRecords": 1,
+    "missingFields": {
+      "tier": 33,
+      "complexity": 33,
+      "tags": 33,
+      "featured": 33,
+      "function": 33
+    },
+    "duplicates": []
+  },
+  "errors": [
+    {
+      "level": "ERROR",
+      "message": "Tool 24 (Unknown) missing required fields: title, description",
+      "timestamp": "2025-07-01T13:50:56.668Z"
+    }
+  ],
+  "warnings": []
+}

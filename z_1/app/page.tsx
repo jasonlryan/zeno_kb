@@ -31,6 +31,7 @@ import {
   useCategories,
   useText,
 } from "../hooks/useConfig";
+import { useAPITools } from "../hooks/useAPITools";
 import { generateCategoriesFromData } from "../lib/mockData";
 import { featureFlags } from "../lib/featureFlags";
 import type { Tool, Category, SidebarSection } from "../types";
@@ -60,7 +61,12 @@ export default function HomePage() {
   // Load configuration data
   const { app } = useConfig();
   const navigation = useNavigation();
-  const { all: allTools, featured: featuredTools } = useTools();
+  const {
+    all: allTools,
+    featured: featuredTools,
+    loading: toolsLoading,
+    count: toolsCount,
+  } = useAPITools();
   const categories = useCategories();
 
   // FILTERS: Debug log for development
@@ -233,7 +239,8 @@ export default function HomePage() {
             {/* All Tools */}
             <section>
               <h2 className="zeno-heading text-card-foreground mb-6">
-                All tools
+                All tools ({toolsLoading ? "Loading..." : `${toolsCount} tools`}
+                )
               </h2>
               <ToolGrid tools={allTools} onSelect={handleToolSelect} />
             </section>
@@ -247,7 +254,9 @@ export default function HomePage() {
               <h2 className="zeno-heading text-card-foreground mb-6">
                 {searchQuery
                   ? `Search results for "${searchQuery}" (${displayTools.length} tools)`
-                  : `All tools (${allTools.length} tools)`}
+                  : `All tools (${
+                      toolsLoading ? "Loading..." : `${toolsCount} tools`
+                    })`}
               </h2>
               <ToolGrid tools={displayTools} onSelect={handleToolSelect} />
             </section>
