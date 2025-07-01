@@ -727,13 +727,102 @@
       "date_added": "2025-07-01T13:50:00.000Z",
       "added_by": "manual-addition",
       "scheduled_feature_date": null
+    },
+    {
+      "id": "choosing-chatgpt-model-guide",
+      "title": "Choosing the Right ChatGPT Model",
+      "description": "Comprehensive guide to selecting the appropriate ChatGPT model for different tasks, use cases, and performance requirements. Learn the differences between GPT-4, GPT-3.5, and specialized models.",
+      "type": "Doc",
+      "tier": "Foundation",
+      "complexity": "Beginner",
+      "tags": [
+        "ai",
+        "chatgpt",
+        "models",
+        "guide",
+        "pdf",
+        "selection"
+      ],
+      "featured": false,
+      "function": "Content & Creative",
+      "link": "/assets/pdfs/choosing-chatgpt-model.pdf",
+      "date_added": "2025-07-01T15:00:00.000Z",
+      "added_by": "manual-addition",
+      "scheduled_feature_date": null
+    },
+    {
+      "id": "create-custom-gpt-guide",
+      "title": "How to Create a Custom GPT",
+      "description": "Step-by-step guide to building your own custom GPT. Covers setup, configuration, training data, and best practices for creating specialized AI assistants.",
+      "type": "Doc",
+      "tier": "Foundation",
+      "complexity": "Intermediate",
+      "tags": [
+        "ai",
+        "chatgpt",
+        "custom-gpt",
+        "guide",
+        "pdf",
+        "creation"
+      ],
+      "featured": true,
+      "function": "Content & Creative",
+      "link": "/assets/pdfs/create-custom-gpt.pdf",
+      "date_added": "2025-07-01T15:00:00.000Z",
+      "added_by": "manual-addition",
+      "scheduled_feature_date": null
+    },
+    {
+      "id": "organize-chatgpt-projects-guide",
+      "title": "How to Organize Your Work with ChatGPT Projects",
+      "description": "Practical guide to structuring and managing your ChatGPT projects for maximum productivity. Learn project organization, workflow optimization, and collaboration best practices.",
+      "type": "Doc",
+      "tier": "Foundation",
+      "complexity": "Intermediate",
+      "tags": [
+        "ai",
+        "chatgpt",
+        "projects",
+        "organization",
+        "workflow",
+        "pdf"
+      ],
+      "featured": false,
+      "function": "Strategy & Planning",
+      "link": "/assets/pdfs/organize-chatgpt-projects.pdf",
+      "date_added": "2025-07-01T15:00:00.000Z",
+      "added_by": "manual-addition",
+      "scheduled_feature_date": null
+    },
+    {
+      "id": "chatgpt-sources-research-guide",
+      "title": "Using ChatGPT - Sources, Research, and Disclosure",
+      "description": "Essential guide to responsible ChatGPT usage covering source verification, research methodology, and proper disclosure practices. Critical for maintaining credibility and ethical AI use.",
+      "type": "Doc",
+      "tier": "Foundation",
+      "complexity": "Intermediate",
+      "tags": [
+        "ai",
+        "chatgpt",
+        "research",
+        "sources",
+        "disclosure",
+        "ethics",
+        "pdf"
+      ],
+      "featured": true,
+      "function": "Strategy & Planning",
+      "link": "/assets/pdfs/chatgpt-sources-research.pdf",
+      "date_added": "2025-07-01T15:00:00.000Z",
+      "added_by": "manual-addition",
+      "scheduled_feature_date": null
     }
   ],
   "metadata": {
-    "source": "CSV conversion + manual additions",
+    "source": "CSV conversion + manual additions + PDF guides",
     "convertedAt": "2025-06-24T14:28:10.987Z",
-    "lastUpdated": "2025-07-01T13:50:00.000Z",
-    "totalTools": 33,
-    "version": "1.1"
+    "lastUpdated": "2025-07-01T15:00:00.000Z",
+    "totalTools": 37,
+    "version": "1.2"
   }
 }
