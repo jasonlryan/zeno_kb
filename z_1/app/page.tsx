@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   Home,
   Search,
@@ -19,6 +19,7 @@ import { CuratorDashboard } from "../components/CuratorDashboard";
 import { FeaturedCarousel } from "../components/FeaturedCarousel";
 import { CategoryGrid } from "../components/CategoryGrid";
 import { ToolGrid } from "../components/ToolGrid";
+// FILTERS: Conditionally imported based on feature flag
 import { FilterPanel } from "../components/FilterPanel";
 import { ToolDetailPage } from "../components/ToolDetailModal";
 import { useLocalSearch } from "../hooks/useLocalSearch";
@@ -31,6 +32,7 @@ import {
   useText,
 } from "../hooks/useConfig";
 import { generateCategoriesFromData } from "../lib/mockData";
+import { featureFlags } from "../lib/featureFlags";
 import type { Tool, Category, SidebarSection } from "../types";
 
 // Configuration data loaded from config files
@@ -50,13 +52,23 @@ export default function HomePage() {
   >("home");
   const [selectedTool, setSelectedTool] = useState<Tool | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  // FILTERS: Only enable if feature flag is on
+  const [isFilterOpen, setIsFilterOpen] = useState(
+    false && featureFlags.enableFilters
+  );
 
   // Load configuration data
   const { app } = useConfig();
   const navigation = useNavigation();
   const { all: allTools, featured: featuredTools } = useTools();
   const categories = useCategories();
+
+  // FILTERS: Debug log for development
+  React.useEffect(() => {
+    if (process.env.NODE_ENV === "development") {
+      console.log("🚩 Filters enabled:", featureFlags.enableFilters);
+    }
+  }, []);
 
   // Temporarily disable taxonomy system for debugging
   // const {
@@ -406,24 +418,31 @@ export default function HomePage() {
       sidebarSections={sidebarSections}
       onSearch={handleSearch}
       onNavigate={handleNavigate}
-      isFilterOpen={isFilterOpen}
-      onFilterToggle={() => setIsFilterOpen(!isFilterOpen)}
+      // FILTERS: Only pass filter props if enabled
+      isFilterOpen={featureFlags.enableFilters ? isFilterOpen : undefined}
+      onFilterToggle={
+        featureFlags.enableFilters
+          ? () => setIsFilterOpen(!isFilterOpen)
+          : undefined
+      }
     >
       <div className="flex h-full">
-        {/* Filter Panel - only takes space when open */}
-        <div
-          className={`transition-all duration-300 ease-in-out ${
-            isFilterOpen ? "w-80 opacity-100" : "w-0 opacity-0"
-          } overflow-hidden`}
-        >
-          <div className="w-80 h-full flex flex-col">
-            <FilterPanel
-              tools={allTools}
-              isOpen={isFilterOpen}
-              onToggle={() => setIsFilterOpen(!isFilterOpen)}
-            />
+        {/* FILTERS: Filter Panel - commented out, controlled by feature flag */}
+        {featureFlags.enableFilters && (
+          <div
+            className={`transition-all duration-300 ease-in-out ${
+              isFilterOpen ? "w-80 opacity-100" : "w-0 opacity-0"
+            } overflow-hidden`}
+          >
+            <div className="w-80 h-full flex flex-col">
+              <FilterPanel
+                tools={allTools}
+                isOpen={isFilterOpen}
+                onToggle={() => setIsFilterOpen(!isFilterOpen)}
+              />
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Main Content Area - expands to fill available space */}
         <div className="flex-1 overflow-auto">

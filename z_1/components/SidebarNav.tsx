@@ -63,7 +63,8 @@ export function SidebarNav({
         </div>
       ))}
 
-      {/* Filter Toggle Button */}
+      {/* FILTERS: Filter Toggle Button - only shown when onFilterToggle is provided */}
+      {/* This is automatically hidden when NEXT_PUBLIC_ENABLE_FILTERS=false */}
       {onFilterToggle && (
         <div className="border-t border-border pt-4">
           {!collapsed && (
