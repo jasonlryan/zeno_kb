@@ -2,6 +2,26 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
+  const userAgent = request.headers.get('user-agent')?.toLowerCase() || ''
+  
+  // Block known search engine bots and crawlers
+  const blockedBots = [
+    'googlebot', 'bingbot', 'slurp', 'duckduckbot', 'baiduspider', 'yandexbot',
+    'facebookexternalhit', 'twitterbot', 'linkedinbot', 'whatsapp', 'telegram',
+    'crawler', 'spider', 'bot', 'scraper', 'wget', 'curl'
+  ]
+  
+  const isBot = blockedBots.some(bot => userAgent.includes(bot))
+  
+  if (isBot) {
+    return new NextResponse('Access Denied', { 
+      status: 403,
+      headers: {
+        'X-Robots-Tag': 'noindex, nofollow, noarchive, nosnippet, noimageindex, nocache'
+      }
+    })
+  }
+
   const response = NextResponse.next()
 
   // Add security headers to prevent indexing and caching

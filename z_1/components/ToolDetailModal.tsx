@@ -15,10 +15,12 @@ import {
   Settings,
   Code,
   Globe,
+  MessageSquare,
 } from "lucide-react";
 import type { Tool } from "../types";
 import { TemplateManager } from "../lib/templateManager";
 import { LearningGuideDetail } from "./LearningGuideDetail";
+import { CommentModal } from "./CommentModal";
 
 interface ToolDetailPageProps {
   tool: Tool;
@@ -51,6 +53,8 @@ const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
     type: "success" | "error";
   }>({ text: "", type: "success" });
 
+  const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
+
   const displayMessage = (text: string, type: "success" | "error") => {
     setMessage({ text, type });
     setTimeout(() => setMessage({ text: "", type: "success" }), 3000);
@@ -70,6 +74,39 @@ const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
       `Feedback recorded: ${helpful ? "Helpful!" : "Not helpful."} (Simulated)`,
       "success"
     );
+  };
+
+  const handleCommentSubmit = async (comment: {
+    name: string;
+    message: string;
+    priority: string;
+  }) => {
+    try {
+      const response = await fetch("/api/comments", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          toolId: tool.id,
+          name: comment.name,
+          message: comment.message,
+          priority: comment.priority,
+        }),
+      });
+
+      if (response.ok) {
+        displayMessage(
+          "Comment submitted successfully! Thank you for your feedback.",
+          "success"
+        );
+      } else {
+        throw new Error("Failed to submit comment");
+      }
+    } catch (error) {
+      console.error("Error submitting comment:", error);
+      displayMessage("Failed to submit comment. Please try again.", "error");
+    }
   };
 
   const isSpecialist = tool.tier === "Specialist";
@@ -356,23 +393,39 @@ const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
           )}
 
           {/* Feedback Widget */}
-          <div className="bg-gray-50 border border-gray-200 p-6 rounded-lg flex flex-col items-center shadow-inner">
-            <p className="font-semibold text-gray-800 mb-4 text-lg">
-              Was this helpful?
-            </p>
-            <div className="flex gap-4">
-              <button
-                onClick={() => handleFeedback(true)}
-                className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors duration-300 shadow-md focus:outline-none focus:ring-2 focus:ring-green-600 flex items-center"
-              >
-                <CheckCircle className="mr-2" size={20} /> Yes
-              </button>
-              <button
-                onClick={() => handleFeedback(false)}
-                className="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition-colors duration-300 shadow-md focus:outline-none focus:ring-2 focus:ring-red-600 flex items-center"
-              >
-                <XCircle className="mr-2" size={20} /> No
-              </button>
+          <div className="bg-gray-50 border border-gray-200 p-6 rounded-lg shadow-inner">
+            <div className="flex flex-col items-center">
+              <p className="font-semibold text-gray-800 mb-4 text-lg">
+                Was this helpful?
+              </p>
+              <div className="flex gap-4 mb-4">
+                <button
+                  onClick={() => handleFeedback(true)}
+                  className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors duration-300 shadow-md focus:outline-none focus:ring-2 focus:ring-green-600 flex items-center"
+                >
+                  <CheckCircle className="mr-2" size={20} /> Yes
+                </button>
+                <button
+                  onClick={() => handleFeedback(false)}
+                  className="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition-colors duration-300 shadow-md focus:outline-none focus:ring-2 focus:ring-red-600 flex items-center"
+                >
+                  <XCircle className="mr-2" size={20} /> No
+                </button>
+              </div>
+            </div>
+
+            <div className="border-t border-gray-300 pt-4">
+              <div className="flex flex-col items-center">
+                <p className="text-gray-600 mb-3 text-center">
+                  Have suggestions or feedback?
+                </p>
+                <button
+                  onClick={() => setIsCommentModalOpen(true)}
+                  className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-300 shadow-md focus:outline-none focus:ring-2 focus:ring-blue-600 flex items-center"
+                >
+                  <MessageSquare className="mr-2" size={20} /> Add Comment
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -392,6 +445,15 @@ const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
             {message.text}
           </div>
         )}
+
+        {/* Comment Modal */}
+        <CommentModal
+          isOpen={isCommentModalOpen}
+          onClose={() => setIsCommentModalOpen(false)}
+          onSubmit={handleCommentSubmit}
+          toolId={tool.id}
+          toolTitle={tool.title}
+        />
       </div>
     </div>
   );
