@@ -171,7 +171,9 @@ export function ChatPanel({
                     : "text-gray-500 dark:text-gray-400"
                 )}
               >
-                {message.timestamp.toLocaleTimeString()}
+                {message.timestamp instanceof Date
+                  ? message.timestamp.toISOString().slice(11, 19) // HH:mm:ss in UTC
+                  : new Date(message.timestamp).toISOString().slice(11, 19)}
               </div>
             </div>
           </div>

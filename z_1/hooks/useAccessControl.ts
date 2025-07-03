@@ -2,17 +2,15 @@
 
 import { useState, useCallback } from "react";
 import type { Tool, AccessRequest } from "../types";
-
-// Mock user permissions - in real app this would come from auth/backend
-const mockUserPermissions = {
-  userId: "current-user",
-  approvedTools: ["1", "2"], // Tool IDs user has access to
-  role: "standard", // "standard" | "specialist" | "admin"
-};
+import { useSupabaseAuth } from "./useSupabaseAuth";
 
 export function useAccessControl() {
+  const { user, role, loading } = useSupabaseAuth();
   const [accessRequests, setAccessRequests] = useState<AccessRequest[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  // TODO: Fetch approvedTools from user profile or DB in the future
+  const approvedTools: string[] = [];
 
   // Check if user has access to a specific tool
   const hasAccess = useCallback((tool: Tool): boolean => {
@@ -23,49 +21,42 @@ export function useAccessControl() {
 
     // Specialist tools require approval
     if (tool.tier === "Specialist") {
-      return mockUserPermissions.approvedTools.includes(tool.id);
+      return approvedTools.includes(tool.id);
+    }
+
+    // Optionally, add admin override
+    if (role === "admin") {
+      return true;
     }
 
     return false;
-  }, []);
+  }, [approvedTools, role]);
 
   // Check if user can request access to a tool
   const canRequestAccess = useCallback((tool: Tool): boolean => {
-    // Can't request access to Foundation tools (already have access)
     if (tool.tier === "Foundation") {
       return false;
     }
-
-    // Can't request access if already approved
     if (hasAccess(tool)) {
       return false;
     }
-
-    // Can't request access if already pending
     const existingRequest = accessRequests.find(
-      (req) => req.toolId === tool.id && req.status === "pending"
+      (req) => req.toolId === tool.id && req.status === "pending" && req.userId === user?.id
     );
-
     return !existingRequest;
-  }, [accessRequests, hasAccess]);
+  }, [accessRequests, hasAccess, user]);
 
   // Submit access request
   const requestAccess = useCallback(
     async (request: Omit<AccessRequest, "id">): Promise<void> => {
       setIsLoading(true);
-
       try {
-        // Simulate API call
         await new Promise((resolve) => setTimeout(resolve, 1000));
-
         const newRequest: AccessRequest = {
           ...request,
           id: Date.now().toString(),
         };
-
         setAccessRequests((prev) => [...prev, newRequest]);
-
-        // Simulate notification
         console.log("Access request submitted:", newRequest);
       } catch (error) {
         console.error("Error submitting access request:", error);
@@ -87,7 +78,6 @@ export function useAccessControl() {
           canUse: true,
         };
       }
-
       if (tool.tier === "Foundation") {
         return {
           status: "granted" as const,
@@ -95,11 +85,9 @@ export function useAccessControl() {
           canUse: true,
         };
       }
-
       const pendingRequest = accessRequests.find(
-        (req) => req.toolId === tool.id && req.status === "pending"
+        (req) => req.toolId === tool.id && req.status === "pending" && req.userId === user?.id
       );
-
       if (pendingRequest) {
         return {
           status: "pending" as const,
@@ -107,11 +95,9 @@ export function useAccessControl() {
           canUse: false,
         };
       }
-
       const deniedRequest = accessRequests.find(
-        (req) => req.toolId === tool.id && req.status === "denied"
+        (req) => req.toolId === tool.id && req.status === "denied" && req.userId === user?.id
       );
-
       if (deniedRequest) {
         return {
           status: "denied" as const,
@@ -119,22 +105,20 @@ export function useAccessControl() {
           canUse: false,
         };
       }
-
       return {
         status: "not_requested" as const,
         message: "Specialist access required",
         canUse: false,
       };
     },
-    [accessRequests, hasAccess]
+    [accessRequests, hasAccess, user]
   );
 
   // Get all access requests for current user
   const getUserAccessRequests = useCallback((): AccessRequest[] => {
-    return accessRequests.filter(
-      (req) => req.userId === mockUserPermissions.userId
-    );
-  }, [accessRequests]);
+    if (!user) return [];
+    return accessRequests.filter((req) => req.userId === user.id);
+  }, [accessRequests, user]);
 
   return {
     hasAccess,
@@ -142,6 +126,6 @@ export function useAccessControl() {
     requestAccess,
     getAccessStatus,
     getUserAccessRequests,
-    isLoading,
+    isLoading: isLoading || loading,
   };
 } 

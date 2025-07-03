@@ -35,6 +35,7 @@ import { useAPITools } from "../hooks/useAPITools";
 import { generateCategoriesFromData } from "../lib/mockData";
 import { featureFlags } from "../lib/featureFlags";
 import type { Tool, Category, SidebarSection } from "../types";
+import { useSupabaseAuth } from '../hooks/useSupabaseAuth';
 
 // Configuration data loaded from config files
 
@@ -68,6 +69,7 @@ export default function HomePage() {
     count: toolsCount,
   } = useAPITools();
   const categories = useCategories();
+  const { role } = useSupabaseAuth();
 
   // FILTERS: Debug log for development
   React.useEffect(() => {
@@ -154,7 +156,7 @@ export default function HomePage() {
   };
 
   // Create sidebar sections with proper active state from config
-  const sidebarSections: SidebarSection[] = navigation.map((section) => ({
+  let filteredSidebarSections = navigation.map((section) => ({
     ...section,
     items: section.items.map((item) => ({
       ...item,
@@ -163,6 +165,13 @@ export default function HomePage() {
       active: activeView === item.id,
     })),
   }));
+
+  // Only show management section for admin
+  if (role !== 'admin') {
+    filteredSidebarSections = filteredSidebarSections.filter(
+      (section) => section.title !== 'MANAGEMENT'
+    );
+  }
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
@@ -281,41 +290,53 @@ export default function HomePage() {
         );
 
       case "curator":
-        return <CuratorDashboard />;
+        if (role === 'admin') {
+          return <CuratorDashboard />;
+        } else {
+          return <div className="text-center py-16"><p className="zeno-body text-muted-foreground">Not authorized</p></div>;
+        }
 
       case "users":
-        return (
-          <div className="space-y-8">
-            <section>
-              <h2 className="zeno-heading text-card-foreground mb-6">
-                User management
-              </h2>
-              <div className="text-center py-16">
-                <Users className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-                <p className="zeno-body text-muted-foreground">
-                  User management features coming soon
-                </p>
-              </div>
-            </section>
-          </div>
-        );
+        if (role === 'admin') {
+          return (
+            <div className="space-y-8">
+              <section>
+                <h2 className="zeno-heading text-card-foreground mb-6">
+                  User management
+                </h2>
+                <div className="text-center py-16">
+                  <Users className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+                  <p className="zeno-body text-muted-foreground">
+                    User management features coming soon
+                  </p>
+                </div>
+              </section>
+            </div>
+          );
+        } else {
+          return <div className="text-center py-16"><p className="zeno-body text-muted-foreground">Not authorized</p></div>;
+        }
 
       case "analytics":
-        return (
-          <div className="space-y-8">
-            <section>
-              <h2 className="zeno-heading text-card-foreground mb-6">
-                Analytics dashboard
-              </h2>
-              <div className="text-center py-16">
-                <Zap className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-                <p className="zeno-body text-muted-foreground">
-                  Analytics and insights coming soon
-                </p>
-              </div>
-            </section>
-          </div>
-        );
+        if (role === 'admin') {
+          return (
+            <div className="space-y-8">
+              <section>
+                <h2 className="zeno-heading text-card-foreground mb-6">
+                  Analytics dashboard
+                </h2>
+                <div className="text-center py-16">
+                  <Zap className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+                  <p className="zeno-body text-muted-foreground">
+                    Analytics and insights coming soon
+                  </p>
+                </div>
+              </section>
+            </div>
+          );
+        } else {
+          return <div className="text-center py-16"><p className="zeno-body text-muted-foreground">Not authorized</p></div>;
+        }
 
       case "demos":
         return (
@@ -424,7 +445,7 @@ export default function HomePage() {
 
   return (
     <AppShell
-      sidebarSections={sidebarSections}
+      sidebarSections={filteredSidebarSections}
       onSearch={handleSearch}
       onNavigate={handleNavigate}
       // FILTERS: Only pass filter props if enabled

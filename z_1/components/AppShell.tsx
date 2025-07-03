@@ -8,6 +8,9 @@ import { TopSearchBar } from "./TopSearchBar";
 import { useConfig } from "../hooks/useConfig";
 import type { SidebarSection } from "../types";
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { useSupabaseAuth } from "../hooks/useSupabaseAuth";
+import { useRouter } from 'next/navigation';
 
 interface AppShellProps {
   children: React.ReactNode;
@@ -30,10 +33,17 @@ export function AppShell({
 }: AppShellProps) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const { app } = useConfig();
+  const { user, signOut } = useSupabaseAuth();
+  const router = useRouter();
 
   const handleNavigate = (itemId: string) => {
     console.log("Navigating to:", itemId);
     onNavigate?.(itemId);
+  };
+
+  const handleSignOut = async () => {
+    await signOut();
+    router.replace('/login');
   };
 
   return (
@@ -76,6 +86,11 @@ export function AppShell({
             <div className="flex-1 max-w-2xl mx-8">
               <TopSearchBar onSubmit={onSearch} />
             </div>
+            {user && (
+              <Button onClick={handleSignOut} variant="secondary" className="ml-4">
+                Sign Out
+              </Button>
+            )}
           </div>
         </div>
       </header>
