@@ -158,20 +158,24 @@ export default function HomePage() {
   // Create sidebar sections with proper active state from config
   let filteredSidebarSections = navigation.map((section) => ({
     ...section,
-    items: section.items.map((item) => ({
-      ...item,
-      icon:
-        typeof item.icon === "string" ? iconMap[item.icon] || Home : item.icon,
-      active: activeView === item.id,
-    })),
-  }));
-
-  // Only show management section for admin
-  if (role !== 'admin') {
-    filteredSidebarSections = filteredSidebarSections.filter(
-      (section) => section.title !== 'MANAGEMENT'
-    );
-  }
+    items: section.items
+      .filter((item) => {
+        // If permissions are specified, only show if user role is included
+        if (item.permissions && item.permissions.length > 0) {
+          return role && item.permissions.includes(role);
+        }
+        // If no permissions specified, show to all
+        return true;
+      })
+      .map((item) => ({
+        ...item,
+        icon:
+          typeof item.icon === "string" ? iconMap[item.icon] || Home : item.icon,
+        active: activeView === item.id,
+      })),
+  }))
+  // Remove sections with no visible items
+  .filter((section) => section.items.length > 0);
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
