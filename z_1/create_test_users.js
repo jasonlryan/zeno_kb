@@ -1,11 +1,16 @@
-require('dotenv').config({ path: '.env.local' });
-const { createClient } = require('@supabase/supabase-js');
+const path = require("path");
+require("dotenv").config({ path: path.join(__dirname, ".env.local") });
+const { createClient } = require("@supabase/supabase-js");
+const fs = require("fs");
+const { parse } = require("csv-parse/sync");
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseUrl = process.env.SUPABASE_URL;
 const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 if (!supabaseUrl || !serviceRoleKey) {
-  console.error('Missing environment variables. Please set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in your .env.local file.');
+  console.error(
+    "Missing environment variables. Please set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in your .env.local file in z_1."
+  );
   process.exit(1);
 }
 
@@ -14,7 +19,7 @@ const supabase = createClient(supabaseUrl, serviceRoleKey);
 async function createUser(email) {
   const { data, error } = await supabase.auth.admin.createUser({
     email,
-    password: 'zeno2025',
+    password: "zeno2025",
     email_confirm: true,
   });
   if (error) {
@@ -25,9 +30,18 @@ async function createUser(email) {
 }
 
 async function main() {
-  await createUser('testuser1@example.com');
-  await createUser('testuser2@example.com');
-  await createUser('testuser3@example.com');
+  const csvPath = path.join(__dirname, "users/users.csv");
+  if (!fs.existsSync(csvPath)) {
+    console.error("CSV file not found:", csvPath);
+    process.exit(1);
+  }
+  const csvContent = fs.readFileSync(csvPath, "utf8");
+  const records = parse(csvContent, { columns: true });
+  for (const row of records) {
+    if (row.email) {
+      await createUser(row.email.trim());
+    }
+  }
 }
 
-main(); 
+main();
