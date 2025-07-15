@@ -10,6 +10,7 @@ import {
   Zap,
   Filter,
   ChevronLeft,
+  MessageCircle, // Add this import
 } from "lucide-react";
 import { AppShell } from "../components/AppShell";
 import { ToolCardDemo } from "../components/ToolCard";
@@ -35,7 +36,7 @@ import { useAPITools } from "../hooks/useAPITools";
 import { generateCategoriesFromData } from "../lib/mockData";
 import { featureFlags } from "../lib/featureFlags";
 import type { Tool, Category, SidebarSection } from "../types";
-import { useSupabaseAuth } from '../hooks/useSupabaseAuth';
+import { useSupabaseAuth } from "../hooks/useSupabaseAuth";
 
 // Configuration data loaded from config files
 
@@ -51,6 +52,7 @@ export default function HomePage() {
     | "demos"
     | "tool-detail"
     | "category"
+    | "comment-retrieval" // Add this state
   >("home");
   const [selectedTool, setSelectedTool] = useState<Tool | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -74,7 +76,7 @@ export default function HomePage() {
   // FILTERS: Debug log for development
   React.useEffect(() => {
     if (process.env.NODE_ENV === "development") {
-      console.log("🚩 Filters enabled:", featureFlags.enableFilters);
+      // console.log("🚩 Filters enabled:", featureFlags.enableFilters);
     }
   }, []);
 
@@ -153,29 +155,33 @@ export default function HomePage() {
     Settings,
     Users,
     Zap,
+    MessageCircle, // Add this to the icon map
   };
 
   // Create sidebar sections with proper active state from config
-  let filteredSidebarSections = navigation.map((section) => ({
-    ...section,
-    items: section.items
-      .filter((item) => {
-        // If permissions are specified, only show if user role is included
-        if (item.permissions && item.permissions.length > 0) {
-          return role && item.permissions.includes(role);
-        }
-        // If no permissions specified, show to all
-        return true;
-      })
-      .map((item) => ({
-        ...item,
-        icon:
-          typeof item.icon === "string" ? iconMap[item.icon] || Home : item.icon,
-        active: activeView === item.id,
-      })),
-  }))
-  // Remove sections with no visible items
-  .filter((section) => section.items.length > 0);
+  let filteredSidebarSections = navigation
+    .map((section) => ({
+      ...section,
+      items: section.items
+        .filter((item) => {
+          // If permissions are specified, only show if user role is included
+          if (item.permissions && item.permissions.length > 0) {
+            return role && item.permissions.includes(role);
+          }
+          // If no permissions specified, show to all
+          return true;
+        })
+        .map((item) => ({
+          ...item,
+          icon:
+            typeof item.icon === "string"
+              ? iconMap[item.icon] || Home
+              : item.icon,
+          active: activeView === item.id,
+        })),
+    }))
+    // Remove sections with no visible items
+    .filter((section) => section.items.length > 0);
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
@@ -184,7 +190,7 @@ export default function HomePage() {
   };
 
   const handleNavigate = (itemId: string) => {
-    console.log("Navigating to:", itemId);
+    // console.log("Navigating to:", itemId);
     setActiveView(itemId as any);
   };
 
@@ -294,14 +300,18 @@ export default function HomePage() {
         );
 
       case "curator":
-        if (role === 'admin') {
+        if (role === "admin") {
           return <CuratorDashboard />;
         } else {
-          return <div className="text-center py-16"><p className="zeno-body text-muted-foreground">Not authorized</p></div>;
+          return (
+            <div className="text-center py-16">
+              <p className="zeno-body text-muted-foreground">Not authorized</p>
+            </div>
+          );
         }
 
       case "users":
-        if (role === 'admin') {
+        if (role === "admin") {
           return (
             <div className="space-y-8">
               <section>
@@ -318,11 +328,15 @@ export default function HomePage() {
             </div>
           );
         } else {
-          return <div className="text-center py-16"><p className="zeno-body text-muted-foreground">Not authorized</p></div>;
+          return (
+            <div className="text-center py-16">
+              <p className="zeno-body text-muted-foreground">Not authorized</p>
+            </div>
+          );
         }
 
       case "analytics":
-        if (role === 'admin') {
+        if (role === "admin") {
           return (
             <div className="space-y-8">
               <section>
@@ -339,7 +353,11 @@ export default function HomePage() {
             </div>
           );
         } else {
-          return <div className="text-center py-16"><p className="zeno-body text-muted-foreground">Not authorized</p></div>;
+          return (
+            <div className="text-center py-16">
+              <p className="zeno-body text-muted-foreground">Not authorized</p>
+            </div>
+          );
         }
 
       case "demos":
@@ -428,13 +446,27 @@ export default function HomePage() {
               tool={selectedTool}
               onBack={handleBackToHome}
               onFavorite={(toolId) => {
-                console.log("Toggle favorite for tool:", toolId);
+                // console.log("Toggle favorite for tool:", toolId);
                 // TODO: Implement favorites functionality
               }}
               isFavorite={false} // TODO: Implement favorites state
             />
           </div>
         );
+
+      case "comment-retrieval":
+        if (role === "superadmin") {
+          // Import the CommentRetrievalPage component
+          const CommentRetrievalPage =
+            require("./comment-retrieval/page").default;
+          return <CommentRetrievalPage />;
+        } else {
+          return (
+            <div className="text-center py-16">
+              <p className="zeno-body text-muted-foreground">Not authorized</p>
+            </div>
+          );
+        }
 
       default:
         return (

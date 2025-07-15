@@ -4,6 +4,8 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { useTools } from "../hooks/useConfig";
 import { Edit, Trash2, ExternalLink, Calendar, Tag, Hash } from "lucide-react";
+import { ToolFormModal } from "./ToolFormModal";
+import type { Tool } from "../types";
 
 interface CuratorDashboardProps {
   className?: string;
@@ -13,7 +15,33 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
   const [activeTab, setActiveTab] = useState<"assets" | "schedule" | "tags">(
     "assets"
   );
-  const { all: allTools } = useTools();
+  const { all: allTools, add: addTool, update: updateTool, remove: removeTool } = useTools();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingTool, setEditingTool] = useState<Tool | undefined>(undefined);
+
+  const handleOpenModal = (tool?: Tool) => {
+    setEditingTool(tool);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setEditingTool(undefined);
+    setIsModalOpen(false);
+  };
+
+  const handleSaveTool = (toolData: Omit<Tool, "id">) => {
+    if (editingTool) {
+      updateTool(editingTool.id, toolData);
+    } else {
+      addTool({ ...toolData, id: `new-${Date.now()}` }); // Simple unique ID for now
+    }
+  };
+
+  const handleDeleteTool = (toolId: string) => {
+    if (window.confirm("Are you sure you want to delete this tool?")) {
+      removeTool(toolId);
+    }
+  };
 
   // Calculate real counts from data
   const assetsCount = allTools.length;
@@ -90,7 +118,10 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
               <h3 className="text-lg font-medium text-gray-900 dark:text-white">
                 Asset Management
               </h3>
-              <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+              <button 
+                onClick={() => handleOpenModal()}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
                 Add Asset
               </button>
             </div>
@@ -182,10 +213,16 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
                           <button className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300">
                             <ExternalLink size={16} />
                           </button>
-                          <button className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300">
+                          <button 
+                            onClick={() => handleOpenModal(tool)}
+                            className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300"
+                          >
                             <Edit size={16} />
                           </button>
-                          <button className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300">
+                          <button 
+                            onClick={() => handleDeleteTool(tool.id)}
+                            className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
+                          >
                             <Trash2 size={16} />
                           </button>
                         </div>
@@ -357,6 +394,12 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
           </div>
         )}
       </div>
+      <ToolFormModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onSave={handleSaveTool}
+        tool={editingTool}
+      />
     </div>
   );
 }

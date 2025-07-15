@@ -61,6 +61,13 @@
               "route": "/analytics",
               "description": "Usage analytics and insights",
               "permissions": ["curator", "admin"]
+            },
+            {
+              "id": "comment-retrieval",
+              "title": "Comment Retrieval",
+              "icon": "MessageCircle",
+              "route": "/comment-retrieval",
+              "description": "Retrieve and manage all comments"
             }
           ]
         }
