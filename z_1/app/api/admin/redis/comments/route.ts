@@ -14,10 +14,22 @@ export async function GET() {
     },
   });
 
+  // Log the status and body for debugging
+  const text = await response.text();
+  console.log('Upstash response status:', response.status);
+  console.log('Upstash response body:', text);
+
   if (!response.ok) {
-    return NextResponse.json({ error: 'Failed to fetch comments from Redis' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to fetch comments from Redis', status: response.status, body: text }, { status: 500 });
   }
 
-  const data = await response.json();
+  // Try to parse the response as JSON
+  let data;
+  try {
+    data = JSON.parse(text);
+  } catch (e) {
+    return NextResponse.json({ error: 'Invalid JSON from Redis', body: text }, { status: 500 });
+  }
+
   return NextResponse.json(data);
 } 

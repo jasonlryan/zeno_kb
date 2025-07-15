@@ -1,6 +1,6 @@
 import "./globals.css";
 import PasswordProtection from "../components/PasswordProtection";
-import AuthGuard from "../components/AuthGuard";
+// import AuthGuard from "../components/AuthGuard";
 
 export const metadata = {
   title: "Zeno Knowledge Hub",
@@ -12,13 +12,18 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
       <body>
         {/* PasswordProtection temporarily commented out to allow Supabase Auth to handle auth */}
         {/* <PasswordProtection> */}
-        <AuthGuard>{children}</AuthGuard>
+        {/* <AuthGuard>{children}</AuthGuard> */}
+        {children}
         {/* </PasswordProtection> */}
       </body>
     </html>

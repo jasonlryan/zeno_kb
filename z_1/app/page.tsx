@@ -455,7 +455,7 @@ export default function HomePage() {
         );
 
       case "comment-retrieval":
-        if (role === "superadmin") {
+        if (role === "admin") {
           // Import the CommentRetrievalPage component
           const CommentRetrievalPage =
             require("./comment-retrieval/page").default;
