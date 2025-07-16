@@ -30,7 +30,7 @@ export function ToolFormModal({
     tags: tool?.tags?.join(", ") || "",
     featured: tool?.featured || false,
     function: tool?.function || "Content & Creative",
-    link: tool?.link || "",
+    url: tool?.url || "",
     added_by: tool?.added_by || "current-user",
   });
 
@@ -189,6 +189,18 @@ export function ToolFormModal({
                 <option value="Advanced">Advanced</option>
               </select>
             </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              URL
+            </label>
+            <input
+              type="text"
+              value={formData.url}
+              onChange={(e) => handleInputChange("url", e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
           </div>
 
           <div>

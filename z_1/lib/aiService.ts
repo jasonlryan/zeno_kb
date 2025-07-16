@@ -118,7 +118,7 @@ export class AIService {
       tags: tool.tags,
       tier: tool.tier,
       featured: tool.featured,
-      link: tool.link
+      url: tool.url
     }));
 
     return `User query: "${query}"

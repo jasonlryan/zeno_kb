@@ -313,7 +313,7 @@ const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
           ) : (
             <div className="mb-8">
               <a
-                href={tool.link}
+                href={tool.url}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-700 transition-colors duration-300 shadow-xl transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-600"
