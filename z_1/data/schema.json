@@ -1,0 +1,54 @@
+{
+  "fields": [
+    {
+      "name": "id",
+      "type": "string",
+      "required": true,
+      "generated": true,
+      "description": "Unique identifier, generated if not present."
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "required": true,
+      "source": "Title",
+      "description": "Title of the tool or asset."
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "required": false,
+      "source": "Description",
+      "description": "Description of the tool or asset."
+    },
+    {
+      "name": "url",
+      "type": "string",
+      "required": true,
+      "source": "URL",
+      "description": "URL to the tool or resource."
+    },
+    {
+      "name": "type",
+      "type": "string",
+      "required": true,
+      "source": "Media Type",
+      "description": "Type or media type of the asset."
+    },
+    {
+      "name": "categories",
+      "type": "array",
+      "required": true,
+      "source": "Business Category",
+      "delimiter": ",",
+      "description": "Business categories, split from comma-separated list."
+    },
+    {
+      "name": "skillLevel",
+      "type": "string",
+      "required": false,
+      "source": "Skill Level",
+      "description": "Skill level for the asset, if provided."
+    }
+  ]
+} 

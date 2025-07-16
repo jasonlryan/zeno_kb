@@ -1,6 +1,6 @@
 import "./globals.css";
 import PasswordProtection from "../components/PasswordProtection";
-// import AuthGuard from "../components/AuthGuard";
+import AuthGuard from "../components/AuthGuard";
 
 export const metadata = {
   title: "Zeno Knowledge Hub",
@@ -20,11 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        {/* PasswordProtection temporarily commented out to allow Supabase Auth to handle auth */}
-        {/* <PasswordProtection> */}
-        {/* <AuthGuard>{children}</AuthGuard> */}
-        {children}
-        {/* </PasswordProtection> */}
+        <AuthGuard>{children}</AuthGuard>
       </body>
     </html>
   );

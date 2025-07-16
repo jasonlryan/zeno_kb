@@ -1,5 +1,11 @@
 import type React from "react"
-export interface Tool {
+import { ZenoAsset } from "./config"
+
+// Type alias for backward compatibility
+export type Tool = ZenoAsset;
+
+// Keep the original Tool interface for reference, but it's now deprecated
+export interface DeprecatedTool {
   id: string
   title: string
   description: string
@@ -26,6 +32,9 @@ export interface Tool {
   requirements?: string[]
   [key: string]: any // Allow additional dynamic fields
 }
+
+// Re-export ZenoAsset for direct usage
+export type { ZenoAsset } from "./config"
 
 export interface Category {
   id: string

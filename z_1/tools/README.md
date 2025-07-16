@@ -1,20 +1,35 @@
 # Zeno KB Migration Tools
 
+> **Schema-Aware Migration**
+>
+> **All tools in this directory are now fully schema-driven.** Field mapping, validation, and data transformation are governed by the `schema.json` file (typically located in `/data/schema.json`). This ensures:
+>
+> - Robust handling of future schema changes
+> - No hardcoded field names in migration tools
+> - Consistent validation and mapping across the pipeline
+> - Easy updates when Google Sheet/CSV structure changes
+>
+> **To update the migration process for a new schema:**
+>
+> 1. Update `schema.json` to reflect the new fields, types, and requirements.
+> 2. All tools will automatically use the new schema for cleaning, auditing, conversion, and validation.
+
 This directory contains a comprehensive set of tools for migrating from dummy data to real Zeno GPT data. These tools ensure data quality, validate URLs, and provide safe migration with rollback capabilities.
 
 ## 🛠️ Available Tools
 
 ### 1. **Data Auditor** (`dataAuditor.js`)
 
-Validates data integrity and quality before migration.
+Validates data integrity and quality before migration. **Now fully schema-aware: uses `schema.json` for required fields, types, and validation rules.**
 
 **Features:**
 
-- Validates required fields (title, description, URL, type)
+- Validates required fields (from schema)
 - Checks for duplicate IDs and titles
 - Validates URL formats
 - Analyzes content quality (length, placeholders)
 - Generates detailed audit reports
+- **Schema-driven: adapts to any changes in `schema.json`**
 
 **Usage:**
 
@@ -28,7 +43,7 @@ node dataAuditor.js ../data/zeno_kb_assets.csv
 
 ### 2. **URL Health Checker** (`urlHealthChecker.js`)
 
-Tests all URLs for accessibility and performance.
+Tests all URLs for accessibility and performance. **Now schema-aware: extracts URL fields based on `schema.json`.**
 
 **Features:**
 
@@ -37,6 +52,7 @@ Tests all URLs for accessibility and performance.
 - Identifies slow URLs (>3s)
 - Categorizes URL types (ChatGPT, SharePoint, etc.)
 - Batch processing to avoid overwhelming servers
+- **Schema-driven: finds all URL fields as defined in `schema.json`**
 
 **Usage:**
 
@@ -50,15 +66,16 @@ node urlHealthChecker.js ../data/zeno_kb_assets.csv 3
 
 ### 3. **Data Converter** (`dataConverter.js`)
 
-Converts CSV data to JSON format with intelligent field mapping.
+Converts CSV data to JSON format with intelligent field mapping. **Now fully schema-driven: all field mapping and type handling is based on `schema.json`.**
 
 **Features:**
 
 - CSV to JSON conversion
-- Intelligent field mapping and defaults
+- Intelligent field mapping and defaults (from schema)
 - Tag generation from content
 - Category and function assignment
 - Featured tool selection
+- **Schema-driven: no hardcoded field names, adapts to schema changes**
 
 **Usage:**
 
@@ -72,7 +89,7 @@ node dataConverter.js ../data/zeno_kb_assets.csv ../config/converted-data.json
 
 ### 4. **Migration Pipeline** (`migrationPipeline.js`)
 
-Orchestrates the complete migration process with safety checks.
+Orchestrates the complete migration process with safety checks. **Now schema-aware: all validation and conversion steps use `schema.json`.**
 
 **Features:**
 
@@ -81,6 +98,7 @@ Orchestrates the complete migration process with safety checks.
 - Rollback capabilities
 - Dry-run mode for testing
 - Comprehensive reporting
+- **Schema-driven: all steps use the schema for validation and mapping**
 
 **Usage:**
 
@@ -158,7 +176,9 @@ node configSynchronizer.js ../public/config --auto-fix --dry-run
 
 ## 🚀 Complete Migration Strategy
 
-The migration process involves both **data migration** and **configuration synchronization**. Here's the complete workflow:
+The migration process involves both **data migration** and **configuration synchronization**. All data migration steps are now schema-driven and reference `schema.json` for field mapping and validation.
+
+Here's the complete workflow:
 
 ### Phase 1: Configuration Analysis
 
@@ -180,10 +200,10 @@ This identifies:
 - ✅ Dummy content requiring replacement
 - ✅ Taxonomy alignment with actual data
 
-### Phase 2: Data Migration
+### Phase 2: Data Migration (Schema-Driven)
 
 ```bash
-# 3. Run data migration with safety checks
+# 3. Run data migration with safety checks (uses schema.json for all validation and mapping)
 node migrationPipeline.js ../data/zeno_kb_assets.csv --dry-run
 
 # 4. If dry-run looks good, run live migration
@@ -206,13 +226,7 @@ node configMigrationPlanner.js ../public/config --analyze-only
 
 ### Step 1: Prepare Your CSV Data
 
-Ensure your CSV file has the following columns:
-
-- `Type` (GPT, Resource, etc.)
-- `Asset` (category information)
-- `Title` (tool name)
-- `Description` (tool description)
-- `URL` (link to the tool)
+Ensure your CSV file matches the fields and types defined in `schema.json` (see `/data/schema.json`).
 
 ### Step 2: Run a Dry-Run Migration
 
@@ -223,9 +237,9 @@ node migrationPipeline.js ../data/zeno_kb_assets.csv --dry-run
 
 This will:
 
-- ✅ Audit your source data
-- ✅ Convert CSV to JSON
-- ✅ Check URL health
+- ✅ Audit your source data (using schema)
+- ✅ Convert CSV to JSON (using schema)
+- ✅ Check URL health (using schema)
 - ✅ Generate reports
 - ❌ **NOT** deploy changes
 
@@ -251,19 +265,15 @@ This will backup your existing data and deploy the new data.
 
 ### Field Mapping
 
-The converter automatically maps CSV fields to application schema:
+The converter automatically maps CSV fields to application schema **using `schema.json`**:
 
-| CSV Column  | JSON Field  | Notes                   |
-| ----------- | ----------- | ----------------------- |
-| Type        | type        | GPT, Doc, Video, Tool   |
-| Asset       | asset_type  | Used for categorization |
-| Title       | title       | Tool name               |
-| Description | description | Cleaned and formatted   |
-| URL         | link        | Validated format        |
+| CSV Column        | JSON Field        | Notes                        |
+| ----------------- | ----------------- | ---------------------------- |
+| (see schema.json) | (see schema.json) | All mapping is schema-driven |
 
 ### Generated Fields
 
-Missing fields are automatically populated:
+Missing fields are automatically populated (as defined in schema and tool defaults):
 
 | Field      | Default Value        | Logic                          |
 | ---------- | -------------------- | ------------------------------ |
@@ -278,7 +288,7 @@ Missing fields are automatically populated:
 
 ### Category Mapping
 
-Tools are categorized based on their Asset type:
+Tools are categorized based on their Asset type (see schema and category mapping in `dataConverter.js`):
 
 - **Audience GPT** → Audience Insights
 - **Trends & Topics** → Trends & Analysis
@@ -290,11 +300,11 @@ Tools are categorized based on their Asset type:
 
 ### Data Auditor Checks
 
-- ✅ Required fields present
-- ✅ Valid URL formats
+- ✅ Required fields present (from schema)
+- ✅ Valid URL formats (from schema)
 - ✅ No duplicate IDs/titles
 - ✅ Content quality (length, placeholders)
-- ✅ Data type validation
+- ✅ Data type validation (from schema)
 
 ### URL Health Checks
 
@@ -338,10 +348,10 @@ After running tools, you'll see:
 
 ```
 tools/
-├── dataAuditor.js          # Data quality validator
-├── urlHealthChecker.js     # URL accessibility checker
-├── dataConverter.js        # CSV to JSON converter
-├── migrationPipeline.js    # Complete migration orchestrator
+├── dataAuditor.js          # Data quality validator (schema-driven)
+├── urlHealthChecker.js     # URL accessibility checker (schema-driven)
+├── dataConverter.js        # CSV to JSON converter (schema-driven)
+├── migrationPipeline.js    # Complete migration orchestrator (schema-driven)
 ├── README.md              # This file
 ├── backups/               # Automatic backups
 │   └── data-backup-*.json
@@ -444,7 +454,7 @@ If you encounter issues:
 
 ## 📝 Migration Checklist
 
-- [ ] CSV data prepared with required columns
+- [ ] CSV data prepared with required columns (see schema.json)
 - [ ] Backup of current application data
 - [ ] Dry-run migration completed successfully
 - [ ] All reports reviewed and issues addressed

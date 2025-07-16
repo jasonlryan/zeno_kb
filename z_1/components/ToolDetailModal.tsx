@@ -21,6 +21,7 @@ import type { Tool } from "../types";
 import { TemplateManager } from "../lib/templateManager";
 import { LearningGuideDetail } from "./LearningGuideDetail";
 import { CommentModal } from "./CommentModal";
+import { ZenoAsset } from "../types/config";
 
 interface ToolDetailPageProps {
   tool: Tool;

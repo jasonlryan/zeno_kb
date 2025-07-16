@@ -28,11 +28,15 @@
 const fs = require("fs");
 const path = require("path");
 
+const schemaPath = path.resolve(__dirname, "../data/schema.json");
+const schema = JSON.parse(fs.readFileSync(schemaPath, "utf8"));
+
 class CSVDataCleaner {
   constructor() {
     this.issues = [];
     this.fixes = [];
     this.suggestions = [];
+    this.schema = schema;
   }
 
   /**
@@ -123,7 +127,7 @@ class CSVDataCleaner {
   }
 
   /**
-   * Clean and validate the CSV data
+   * Clean and validate the CSV data using schema
    */
   cleanCSVData(csvPath) {
     console.log("🧹 Starting CSV data cleaning...");
@@ -140,8 +144,20 @@ class CSVDataCleaner {
     const header = this.parseCSVLine(lines[0]);
     console.log(`📋 Header: ${header.join(", ")}`);
 
+    // Build a mapping from schema field name to CSV column index
+    const fieldToIndex = {};
+    this.schema.fields.forEach((field) => {
+      const source = field.source || field.name;
+      const idx = header.findIndex(
+        (h) => h.trim().toLowerCase() === source.trim().toLowerCase()
+      );
+      if (idx !== -1) fieldToIndex[field.name] = idx;
+    });
+
+    // Prepare output header in schema order (use source or name)
+    const outputHeader = this.schema.fields.map((f) => f.source || f.name);
+
     const cleanedRecords = [];
-    const requiredFields = ["Type", "Title", "Description", "URL"];
 
     // Process each data line
     for (let i = 1; i < lines.length; i++) {
@@ -153,14 +169,25 @@ class CSVDataCleaner {
         fields.push("");
       }
 
+      // Build record using schema mapping
       const record = {};
-      header.forEach((col, index) => {
-        record[col] = fields[index] || "";
+      this.schema.fields.forEach((field) => {
+        const idx = fieldToIndex[field.name];
+        let value = idx !== undefined ? fields[idx] : undefined;
+        if (typeof value === "string")
+          value = value.replace(/^"|"$/g, "").replace(/\r/g, "").trim();
+        // Handle array fields
+        if (field.type === "array" && value) {
+          value = value
+            .split(field.delimiter)
+            .map((v) => v.trim())
+            .filter(Boolean);
+        }
+        record[field.name] = value || "";
       });
 
       // Clean and validate the record
       const cleanedRecord = this.cleanRecord(record, lineNumber);
-
       if (cleanedRecord) {
         cleanedRecords.push(cleanedRecord);
       }
@@ -172,11 +199,11 @@ class CSVDataCleaner {
     console.log(`  • Issues found: ${this.issues.length}`);
     console.log(`  • Fixes applied: ${this.fixes.length}`);
 
-    return { header, records: cleanedRecords };
+    return { header: outputHeader, records: cleanedRecords };
   }
 
   /**
-   * Clean and validate a single record
+   * Clean and validate a single record using schema
    */
   cleanRecord(record, lineNumber) {
     const cleaned = { ...record };
@@ -185,7 +212,6 @@ class CSVDataCleaner {
     // Clean whitespace and normalize fields
     Object.keys(cleaned).forEach((key) => {
       if (typeof cleaned[key] === "string") {
-        // Remove extra whitespace and normalize line breaks
         cleaned[key] = cleaned[key]
           .replace(/\r\n/g, " ")
           .replace(/\n/g, " ")
@@ -196,103 +222,34 @@ class CSVDataCleaner {
 
     // Check for completely empty records
     const hasAnyContent = Object.values(cleaned).some(
-      (value) => value && value.trim()
+      (value) =>
+        value && (typeof value === "string" ? value.trim() : value.length > 0)
     );
     if (!hasAnyContent) {
       this.issues.push(`Line ${lineNumber}: Completely empty record - REMOVED`);
       return null;
     }
 
-    // Validate required fields
+    // Validate required fields using schema
     const missingFields = [];
+    this.schema.fields.forEach((field) => {
+      const value = cleaned[field.name];
+      if (
+        field.required &&
+        (!value || (Array.isArray(value) && value.length === 0))
+      ) {
+        missingFields.push(field.source || field.name);
+      }
+    });
 
-    if (!cleaned.Type || cleaned.Type.trim() === "") {
-      missingFields.push("Type");
-    }
-
-    if (
-      !cleaned.Title ||
-      cleaned.Title.trim() === "" ||
-      cleaned.Title === "Unknown"
-    ) {
-      missingFields.push("Title");
-    }
-
-    if (!cleaned.Description || cleaned.Description.trim() === "") {
-      missingFields.push("Description");
-    }
-
-    if (!cleaned.URL || cleaned.URL.trim() === "") {
-      missingFields.push("URL");
-    }
-
-    // Handle missing fields
     if (missingFields.length > 0) {
       this.issues.push(
         `Line ${lineNumber}: Missing fields: ${missingFields.join(", ")}`
       );
-
-      // Try to fix some common issues
-      if (missingFields.includes("Type") && cleaned.Asset) {
-        cleaned.Type = "GPT"; // Most common type
-        this.fixes.push(
-          `Line ${lineNumber}: Set Type to 'GPT' based on Asset field`
-        );
-      }
-
-      if (missingFields.includes("Title") && cleaned.Description) {
-        // Try to extract title from description
-        const words = cleaned.Description.split(" ").slice(0, 4);
-        cleaned.Title = words.join(" ");
-        this.fixes.push(`Line ${lineNumber}: Generated Title from Description`);
-      }
-
-      if (missingFields.includes("URL")) {
-        this.suggestions.push(
-          `Line ${lineNumber}: Need to add URL for "${cleaned.Title}"`
-        );
-        hasIssues = true;
-      }
-
-      if (missingFields.includes("Description")) {
-        this.suggestions.push(
-          `Line ${lineNumber}: Need to add Description for "${cleaned.Title}"`
-        );
-        hasIssues = true;
-      }
+      hasIssues = true;
     }
 
-    // Validate URL format
-    if (cleaned.URL && cleaned.URL.trim()) {
-      const url = cleaned.URL.trim();
-
-      // Check for malformed URLs
-      if (url.includes(",https://")) {
-        // URL got concatenated with description
-        const parts = url.split(",https://");
-        if (parts.length === 2) {
-          cleaned.Description = (cleaned.Description + " " + parts[0]).trim();
-          cleaned.URL = "https://" + parts[1];
-          this.fixes.push(`Line ${lineNumber}: Separated URL from Description`);
-        }
-      }
-
-      // Validate URL format
-      if (!url.match(/^https?:\/\/.+/)) {
-        this.issues.push(`Line ${lineNumber}: Invalid URL format: ${url}`);
-        hasIssues = true;
-      }
-    }
-
-    // Check title length
-    if (cleaned.Title && cleaned.Title.length > 100) {
-      this.issues.push(
-        `Line ${lineNumber}: Title too long (${cleaned.Title.length} chars)`
-      );
-      // Truncate title
-      cleaned.Title = cleaned.Title.substring(0, 97) + "...";
-      this.fixes.push(`Line ${lineNumber}: Truncated title to 100 characters`);
-    }
+    // (Optional) Add more schema-driven validation here (e.g., type checks)
 
     // Mark problematic records
     if (hasIssues) {

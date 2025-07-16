@@ -182,18 +182,28 @@ class MigrationPipeline {
       }
 
       if (this.options.auditOnly) {
-        return await this.performAuditOnly(csvFilePath);
+        // In audit-only mode, convert first, then audit JSON
+        await this.executeStep("conversion", () =>
+          this.runConversion(csvFilePath)
+        );
+        await this.executeStep("audit", () => this.runAudit(this.tempDataPath));
+        this.generateFinalReport();
+        return {
+          success: this.errors.length === 0,
+          auditOnly: true,
+          results: this.results,
+        };
       }
 
       // Execute full migration pipeline
       await this.executeStep("backup", () => this.createBackup());
-      await this.executeStep("audit", () => this.runAudit(csvFilePath));
       await this.executeStep("healthCheck", () =>
         this.runHealthCheck(csvFilePath)
       );
       await this.executeStep("conversion", () =>
         this.runConversion(csvFilePath)
       );
+      await this.executeStep("audit", () => this.runAudit(this.tempDataPath));
       await this.executeStep("validation", () => this.validateConversion());
       await this.executeStep("deployment", () => this.deployData());
       await this.executeStep("verification", () => this.verifyDeployment());
@@ -312,11 +322,11 @@ class MigrationPipeline {
   }
 
   // Run comprehensive data audit to validate source data quality
-  async runAudit(csvFilePath) {
+  async runAudit(jsonFilePath) {
     console.log("🔍 Running data audit...");
 
     const auditor = new DataAuditor();
-    const auditResult = await auditor.auditData(csvFilePath);
+    const auditResult = await auditor.auditData(jsonFilePath);
 
     if (!auditResult) {
       throw new Error(
@@ -408,12 +418,20 @@ class MigrationPipeline {
       throw new Error("Converted data contains no tools");
     }
 
-    // Validate each tool has required fields
-    const requiredFields = ["id", "title", "description", "type", "link"];
+    // Use required fields from schema
+    const schemaPath = path.resolve(__dirname, "../data/schema.json");
+    const schema = JSON.parse(fs.readFileSync(schemaPath, "utf8"));
+    const requiredFields = schema.fields
+      .filter((f) => f.required)
+      .map((f) => f.name);
     const invalidTools = [];
 
     convertedData.tools.forEach((tool, index) => {
-      const missing = requiredFields.filter((field) => !tool[field]);
+      const missing = requiredFields.filter(
+        (field) =>
+          !tool[field] ||
+          (Array.isArray(tool[field]) && tool[field].length === 0)
+      );
       if (missing.length > 0) {
         invalidTools.push({ index, missing });
       }
@@ -421,7 +439,11 @@ class MigrationPipeline {
 
     if (invalidTools.length > 0) {
       throw new Error(
-        `${invalidTools.length} tools are missing required fields`
+        `${
+          invalidTools.length
+        } tools are missing required fields: ${invalidTools
+          .map((t) => `#${t.index + 1} [${t.missing.join(", ")}]`)
+          .join("; ")}`
       );
     }
 

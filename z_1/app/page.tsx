@@ -16,10 +16,10 @@ import { AppShell } from "../components/AppShell";
 import { ToolCardDemo } from "../components/ToolCard";
 import { CategoryTileDemo } from "../components/CategoryTile";
 import { ChatPanelDemo } from "../components/ChatPanel";
-import { CuratorDashboard } from "../components/CuratorDashboard";
+import CuratorDashboard from "../components/CuratorDashboard";
 import { FeaturedCarousel } from "../components/FeaturedCarousel";
-import { CategoryGrid } from "../components/CategoryGrid";
-import { ToolGrid } from "../components/ToolGrid";
+import CategoryGrid from "../components/CategoryGrid";
+import ToolGrid from "../components/ToolGrid";
 // FILTERS: Conditionally imported based on feature flag
 import { FilterPanel } from "../components/FilterPanel";
 import { ToolDetailPage } from "../components/ToolDetailModal";
@@ -37,6 +37,7 @@ import { generateCategoriesFromData } from "../lib/mockData";
 import { featureFlags } from "../lib/featureFlags";
 import type { Tool, Category, SidebarSection } from "../types";
 import { useSupabaseAuth } from "../hooks/useSupabaseAuth";
+import { ZenoAsset } from "../types/config";
 
 // Configuration data loaded from config files
 
@@ -54,7 +55,7 @@ export default function HomePage() {
     | "category"
     | "comment-retrieval" // Add this state
   >("home");
-  const [selectedTool, setSelectedTool] = useState<Tool | null>(null);
+  const [selectedTool, setSelectedTool] = useState<ZenoAsset | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   // FILTERS: Only enable if feature flag is on
   const [isFilterOpen, setIsFilterOpen] = useState(
@@ -96,7 +97,7 @@ export default function HomePage() {
   const hasActiveFilters = false;
 
   // Filter tools by category (function-based categories)
-  const getToolsByCategory = (categoryTitle: string): Tool[] => {
+  const getToolsByCategory = (categoryTitle: string): ZenoAsset[] => {
     // Map category titles to the functions they contain
     const categoryFunctionMap: Record<string, string[]> = {
       Other: [
@@ -141,7 +142,9 @@ export default function HomePage() {
     }
 
     // Return tools that have functions belonging to this category
-    return allTools.filter((tool) => functions.includes(tool.function));
+    return allTools.filter(
+      (tool) => tool.function && functions.includes(tool.function)
+    );
   };
 
   // Get text values at top level to avoid hook violations
@@ -163,7 +166,7 @@ export default function HomePage() {
     .map((section) => ({
       ...section,
       items: section.items
-        .filter((item) => {
+        .filter((item: any) => {
           // If permissions are specified, only show if user role is included
           if (item.permissions && item.permissions.length > 0) {
             return role && item.permissions.includes(role);
@@ -171,7 +174,7 @@ export default function HomePage() {
           // If no permissions specified, show to all
           return true;
         })
-        .map((item) => ({
+        .map((item: any) => ({
           ...item,
           icon:
             typeof item.icon === "string"
@@ -301,7 +304,7 @@ export default function HomePage() {
 
       case "curator":
         if (role === "admin") {
-          return <CuratorDashboard />;
+          return <CuratorDashboard assets={allTools} />;
         } else {
           return (
             <div className="text-center py-16">

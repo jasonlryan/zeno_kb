@@ -1,60 +1,118 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Import Gotham and Dharma Gothic C Heavy fonts */
+/* Note: You'll need to purchase and host these fonts or use a font service */
+@import url("https://fonts.example.com/css?family=Gotham:400,700,900&display=swap");
+/* Replace the above with actual font imports when available */
+
+body {
+  font-family: 'Gotham', Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
 @layer base {
   :root {
-    /* Zeno Brand Colors */
-    --zeno-green: #04BB63;
-    --zeno-black: #000000;
-    --zeno-white: #FFFFFF;
-    --zeno-lightgray: #F5F5F5;
+    /* Zeno Brand Colors - Updated as per Brand Guidelines 2023 */
+    /* Primary Color */
+    --zeno-green: #00BE65; /* PMS 7481 */
     
-    /* Updated theme variables with Zeno colors */
-    --background: 0 0% 100%; /* White */
-    --foreground: 0 0% 0%; /* Black */
-    --card: 0 0% 100%; /* White */
-    --card-foreground: 0 0% 0%; /* Black */
-    --popover: 0 0% 100%; /* White */
-    --popover-foreground: 0 0% 0%; /* Black */
-    --primary: 145 96% 37%; /* Zeno Green #04BB63 in HSL */
-    --primary-foreground: 0 0% 100%; /* White */
-    --secondary: 0 0% 96%; /* Light Gray #F5F5F5 */
-    --secondary-foreground: 0 0% 0%; /* Black */
-    --muted: 0 0% 96%; /* Light Gray */
-    --muted-foreground: 0 0% 40%; /* Dark Gray */
-    --accent: 145 96% 37%; /* Zeno Green */
-    --accent-foreground: 0 0% 100%; /* White */
+    /* Secondary Greens */
+    --zeno-bright-green: #00FF00; /* PMS 802 */
+    --zeno-mid-green: #0C7547; /* PMS 7732 */
+    --zeno-deep-green: #043B32; /* PMS 343 */
+    
+    /* Secondary Highlight Colors */
+    --zeno-yellow: #FFFF00; /* PMS 803 */
+    --zeno-purple: #BD01FE; /* PMS 2592 */
+    --zeno-reddish-orange: #FF4536; /* PMS 171 */
+    --zeno-orange: #FF6A32; /* PMS 165 */
+    --zeno-deep-purple: #731CB2; /* PMS 2597 */
+    --zeno-lavender: #BC77FB; /* PMS 265 */
+    --zeno-burgundy: #590A3B; /* PMS 229 */
+    
+    /* Neutral Colors */
+    --zeno-black: #000000; /* Classic Black */
+    --zeno-white: #FFFFFF; /* White */
+    --zeno-light-gray: #F3F3F1; /* Light Gray */
+    --zeno-medium-gray: #E1E0D8; /* Medium Gray */
+    --zeno-dark-gray: #535953; /* Dark Gray */
+    
+    /* System Variables */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 152 100% 37%; /* Zeno Green in HSL */
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 152 100% 37%; /* Zeno Green in HSL */
+    --accent-foreground: 0 0% 98%;
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 0 0% 90%; /* Light border */
-    --input: 0 0% 90%; /* Light input border */
-    --ring: 145 96% 37%; /* Zeno Green for focus rings */
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 152 100% 37%; /* Zeno Green in HSL */
+    --chart-1: 152 100% 37%; /* Zeno Green */
+    --chart-2: 120 100% 50%; /* Bright Green */
+    --chart-3: 154 85% 25%; /* Mid Green */
+    --chart-4: 60 100% 50%; /* Yellow */
+    --chart-5: 292 100% 50%; /* Purple */
     --radius: 0.5rem;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 152 100% 37%; /* Zeno Green in HSL */
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 152 100% 37%; /* Zeno Green in HSL */
   }
-
   .dark {
-    --background: 0 0% 7%; /* Very dark gray */
-    --foreground: 0 0% 98%; /* Near white */
-    --card: 0 0% 7%; /* Very dark gray */
-    --card-foreground: 0 0% 98%; /* Near white */
-    --popover: 0 0% 7%; /* Very dark gray */
-    --popover-foreground: 0 0% 98%; /* Near white */
-    --primary: 145 96% 37%; /* Keep Zeno Green in dark mode */
-    --primary-foreground: 0 0% 100%; /* White */
-    --secondary: 0 0% 15%; /* Dark gray */
-    --secondary-foreground: 0 0% 98%; /* Near white */
-    --muted: 0 0% 15%; /* Dark gray */
-    --muted-foreground: 0 0% 65%; /* Medium gray */
-    --accent: 145 96% 37%; /* Zeno Green */
-    --accent-foreground: 0 0% 100%; /* White */
+    /* Dark mode with Zeno brand colors */
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 152 100% 37%; /* Zeno Green in HSL - maintained in dark mode */
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 152 100% 37%; /* Zeno Green in HSL */
+    --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 0 0% 15%; /* Dark border */
-    --input: 0 0% 15%; /* Dark input border */
-    --ring: 145 96% 37%; /* Zeno Green for focus rings */
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 152 100% 37%; /* Zeno Green in HSL */
+    --chart-1: 152 100% 37%; /* Zeno Green */
+    --chart-2: 120 100% 50%; /* Bright Green */
+    --chart-3: 154 85% 25%; /* Mid Green */
+    --chart-4: 60 100% 50%; /* Yellow */
+    --chart-5: 292 100% 50%; /* Purple */
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 152 100% 37%; /* Zeno Green in HSL */
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 152 100% 37%; /* Zeno Green in HSL */
   }
 }
 
@@ -64,47 +122,65 @@
   }
   body {
     @apply bg-background text-foreground;
-    /* Use Inter as fallback for Helios Antique */
-    font-family: 'Helios Antique', 'Inter', system-ui, sans-serif;
   }
 }
 
+/* Zeno Brand Pattern & Gradient Utilities */
 @layer components {
-  /* Zeno Typography Classes */
-  .zeno-display {
-    @apply text-5xl font-light leading-tight; /* Ultra Light for display */
+  /* Zeno Gradients - As per Brand Guidelines 2023 */
+  .zeno-gradient {
+    background: linear-gradient(135deg, var(--zeno-green) 0%, var(--zeno-mid-green) 50%, var(--zeno-deep-green) 100%);
   }
   
-  .zeno-heading {
-    @apply text-2xl font-bold leading-tight; /* Bold for headings */
+  /* Zeno Patterns - As per Brand Guidelines 2023 */
+  .zeno-pattern-dots {
+    background-color: var(--zeno-white);
+    background-image: radial-gradient(var(--zeno-green) 2px, transparent 2px);
+    background-size: 20px 20px;
+  }
+  
+  .zeno-pattern-lines {
+    background-color: var(--zeno-white);
+    background-image: linear-gradient(90deg, var(--zeno-green) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+  
+  .zeno-pattern-grid {
+    background-color: var(--zeno-white);
+    background-image: 
+      linear-gradient(var(--zeno-green) 1px, transparent 1px),
+      linear-gradient(90deg, var(--zeno-green) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+  
+  /* Typography Utilities - As per Brand Guidelines 2023 */
+  .zeno-headline {
+    font-family: 'Gotham Bold', 'Arial Bold', sans-serif;
+    letter-spacing: -0.04em; /* Kerning: -40 */
+    line-height: 0.95; /* Leading: -5% */
   }
   
   .zeno-body {
-    @apply text-base font-normal leading-relaxed; /* Regular for body */
+    font-family: 'Gotham Book', 'Arial', sans-serif;
+    letter-spacing: 0; /* Kerning: 0 */
+    line-height: 1.2; /* Leading: +20% */
   }
   
-  .zeno-emphasis {
-    @apply text-base font-medium leading-relaxed; /* Medium for emphasis */
+  .zeno-cta {
+    font-family: 'Gotham Book', 'Arial', sans-serif;
+    letter-spacing: 0.08em; /* Kerning: +80 */
+    text-transform: uppercase;
   }
   
-  /* Zeno spacing utilities */
-  .zeno-section-spacing {
-    @apply py-16; /* 64px top and bottom */
+  .zeno-dharma {
+    font-family: 'Dharma Gothic C Heavy', 'Arial Black', sans-serif;
+    letter-spacing: 0.005em; /* Kerning: +5 */
+    line-height: 0.65; /* Leading: -35% */
+    text-transform: uppercase;
   }
   
-  .zeno-content-padding {
-    @apply p-6; /* 24px minimum padding */
+  /* Logo Safe Area Utility */
+  .zeno-logo-safe-area {
+    padding: 1rem; /* Adjust based on logo size */
   }
-}
-
-@layer utilities {
-/* Custom scrollbar styles */
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
 }

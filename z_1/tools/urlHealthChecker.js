@@ -51,6 +51,9 @@ const path = require("path");
 const https = require("https");
 const http = require("http");
 
+const schemaPath = path.resolve(__dirname, "../data/schema.json");
+const schema = JSON.parse(fs.readFileSync(schemaPath, "utf8"));
+
 class URLHealthChecker {
   constructor() {
     // Array to store individual URL check results
@@ -68,6 +71,7 @@ class URLHealthChecker {
     // Configuration for URL checking behavior
     this.timeout = 10000; // 10 seconds timeout for requests
     this.slowThreshold = 3000; // 3 seconds considered "slow"
+    this.schema = schema;
   }
 
   // Main health check function - orchestrates the entire URL validation process
@@ -174,21 +178,34 @@ class URLHealthChecker {
     return values;
   }
 
-  // Extract all URLs from the data along with context information
+  // Extract all URLs from the data along with context information, using schema
   extractUrls(data) {
     const urls = [];
-
+    // Find all schema fields that are likely to contain URLs (type: string, name or source includes 'url')
+    const urlFields = this.schema.fields.filter(
+      (f) =>
+        f.type === "string" &&
+        (f.name.toLowerCase().includes("url") ||
+          (f.source && f.source.toLowerCase().includes("url")))
+    );
+    if (urlFields.length === 0) {
+      console.warn("No URL fields found in schema.");
+      return urls;
+    }
     data.tools.forEach((tool, index) => {
-      if (tool.url && tool.url.trim()) {
-        urls.push({
-          url: tool.url.trim(),
-          toolIndex: index,
-          toolTitle: tool.title || `Tool ${index + 1}`,
-          toolId: tool.id || `tool_${index}`,
-        });
-      }
+      urlFields.forEach((field) => {
+        const urlValue = tool[field.name];
+        if (urlValue && urlValue.trim()) {
+          urls.push({
+            url: urlValue.trim(),
+            toolIndex: index,
+            toolTitle: tool.title || `Tool ${index + 1}`,
+            toolId: tool.id || `tool_${index}`,
+            field: field.name,
+          });
+        }
+      });
     });
-
     this.stats.total = urls.length;
     return urls;
   }

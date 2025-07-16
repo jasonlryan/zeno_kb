@@ -56,6 +56,10 @@ class DataAuditor {
       missingFields: {}, // Count of missing optional fields
       duplicates: [], // List of duplicate identifiers
     };
+
+    // Load and parse schema.json once for the instance
+    const schemaPath = path.resolve(__dirname, "../data/schema.json");
+    this.schema = JSON.parse(fs.readFileSync(schemaPath, "utf8"));
   }
 
   // Main audit function - orchestrates the entire validation process
@@ -65,6 +69,15 @@ class DataAuditor {
     try {
       // Load and parse the data file
       const data = this.loadData(filePath);
+
+      // Load and parse schema.json
+      // const schemaPath = path.resolve(__dirname, "../data/schema.json");
+      // const schema = JSON.parse(fs.readFileSync(schemaPath, "utf8"));
+
+      // Helper: Get schema field by name
+      // function getSchemaField(name) {
+      //   return schema.fields.find((f) => f.name === name);
+      // }
 
       // Run all validation checks
       this.validateStructure(data); // Check overall data structure
@@ -106,31 +119,41 @@ class DataAuditor {
     const headers = this.parseCSVLine(lines[0]);
     const tools = [];
 
+    // Build a mapping from schema field name to CSV column index
+    const fieldToIndex = {};
+    this.schema.fields.forEach((field) => {
+      const source = field.source || field.name;
+      const idx = headers.findIndex(
+        (h) => h.trim().toLowerCase() === source.trim().toLowerCase()
+      );
+      if (idx !== -1) fieldToIndex[field.name] = idx;
+    });
+
     // Parse each data row
     for (let i = 1; i < lines.length; i++) {
       const values = this.parseCSVLine(lines[i]);
       const tool = {};
-
-      // Map CSV columns to object properties
-      headers.forEach((header, index) => {
-        const key = header
-          .replace(/\r/g, "")
-          .toLowerCase()
-          .replace(/\s+/g, "_");
-        tool[key] = values[index]
-          ? values[index].replace(/^"|"$/g, "").replace(/\r/g, "").trim()
-          : "";
+      this.schema.fields.forEach((field) => {
+        const idx = fieldToIndex[field.name];
+        let value = idx !== undefined ? values[idx] : undefined;
+        if (typeof value === "string")
+          value = value.replace(/^"|"$/g, "").replace(/\r/g, "").trim();
+        // Handle array fields
+        if (field.type === "array" && value) {
+          value = value
+            .split(field.delimiter)
+            .map((v) => v.trim())
+            .filter(Boolean);
+        }
+        tool[field.name] = value || "";
       });
-
-      // Generate ID if missing (required for the application)
-      if (!tool.id) {
+      // Generate ID if missing and required
+      const idField = this.schema.fields.find((f) => f.name === "id");
+      if (idField && idField.generated && (!tool.id || tool.id.trim() === "")) {
         tool.id = `tool_${i}`;
       }
-
       tools.push(tool);
     }
-
-    // Return in the expected JSON structure
     return { tools };
   }
 
@@ -174,30 +197,39 @@ class DataAuditor {
     console.log(`📊 Found ${this.stats.totalRecords} tools to audit`);
   }
 
-  // Check that all required fields are present and not empty
-  checkRequiredFields(data) {
-    // Fields that must be present for the application to work
-    const requiredFields = ["title", "description", "url", "type"];
-    // Fields that are optional but tracked for completeness
-    const optionalFields = [
-      "tier",
-      "complexity",
-      "tags",
-      "featured",
-      "function",
-    ];
+  // Helper: Get schema field by name
+  getSchemaField(name) {
+    return this.schema.fields.find((f) => f.name === name);
+  }
 
+  // Update checkRequiredFields to use this.schema
+  checkRequiredFields(data) {
     data.tools.forEach((tool, index) => {
       const missing = [];
-
-      // Check each required field
-      requiredFields.forEach((field) => {
-        if (!tool[field] || tool[field].toString().trim() === "") {
-          missing.push(field);
+      this.schema.fields.forEach((field) => {
+        // Map source field if needed
+        let value = tool[field.name];
+        if (field.type === "array" && typeof value === "string") {
+          value = value
+            .split(field.delimiter)
+            .map((v) => v.trim())
+            .filter(Boolean);
+          tool[field.name] = value;
+        }
+        if (
+          field.required &&
+          (!value || (Array.isArray(value) && value.length === 0))
+        ) {
+          missing.push(field.name);
+        }
+        // Generate ID if required and missing
+        if (
+          field.generated &&
+          (!tool[field.name] || tool[field.name].trim() === "")
+        ) {
+          tool[field.name] = `tool_${index + 1}`;
         }
       });
-
-      // Record validation results
       if (missing.length > 0) {
         this.addError(
           "ERROR",
@@ -209,41 +241,31 @@ class DataAuditor {
       } else {
         this.stats.validRecords++;
       }
-
-      // Track missing optional fields for statistics
-      optionalFields.forEach((field) => {
-        if (!tool[field]) {
-          this.stats.missingFields[field] =
-            (this.stats.missingFields[field] || 0) + 1;
-        }
-      });
     });
   }
 
-  // Validate data types and formats for consistency
+  // Update validateDataTypes to use this.schema
   validateDataTypes(data) {
     data.tools.forEach((tool, index) => {
-      // Check URL format using built-in URL constructor
+      this.schema.fields.forEach((field) => {
+        const value = tool[field.name];
+        if (field.type === "array" && value && !Array.isArray(value)) {
+          tool[field.name] = value
+            .split(field.delimiter)
+            .map((v) => v.trim())
+            .filter(Boolean);
+        }
+        if (field.type === "string" && value && typeof value !== "string") {
+          this.addWarning(
+            `Tool ${index + 1}: Field ${
+              field.name
+            } should be string, got: ${typeof value}`
+          );
+        }
+      });
+      // Existing URL and boolean checks
       if (tool.url && !this.isValidUrl(tool.url)) {
         this.addWarning(`Tool ${index + 1}: Invalid URL format - ${tool.url}`);
-      }
-
-      // Check boolean fields (featured flag)
-      if (
-        tool.featured &&
-        typeof tool.featured !== "boolean" &&
-        tool.featured !== "true" &&
-        tool.featured !== "false"
-      ) {
-        this.addWarning(
-          `Tool ${index + 1}: Featured should be boolean, got: ${tool.featured}`
-        );
-      }
-
-      // Convert string tags to array format if needed
-      if (tool.tags && typeof tool.tags === "string") {
-        // Convert comma-separated string to array
-        tool.tags = tool.tags.split(",").map((tag) => tag.trim());
       }
     });
   }

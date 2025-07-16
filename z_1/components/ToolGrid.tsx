@@ -1,33 +1,24 @@
 "use client";
 import { cn } from "@/lib/utils";
-import { TemplateAwareToolCard } from "./TemplateAwareToolCard";
-import type { Tool } from "../types";
+import { ZenoAsset } from "../types/config";
+import ToolCard from "./ToolCard";
 
 interface ToolGridProps {
-  tools: Tool[];
-  onSelect: (id: string) => void;
-  onBookmark?: (id: string) => void;
-  bookmarkedIds?: Set<string>;
-  className?: string;
+  tools: ZenoAsset[];
+  onSelect?: (id: string) => void;
 }
 
-export function ToolGrid({
-  tools,
-  onSelect,
-  onBookmark,
-  bookmarkedIds = new Set(),
-  className,
-}: ToolGridProps) {
+const ToolGrid: React.FC<ToolGridProps> = ({ tools, onSelect }) => {
+  if (!tools || tools.length === 0) {
+    return <div className="tool-grid-empty">No tools found.</div>;
+  }
   return (
-    <div
-      className={cn(
-        "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6",
-        className
-      )}
-    >
+    <div className="tool-grid">
       {tools.map((tool) => (
-        <TemplateAwareToolCard key={tool.id} tool={tool} onSelect={onSelect} />
+        <ToolCard key={tool.id} tool={tool} onSelect={onSelect} />
       ))}
     </div>
   );
-}
+};
+
+export default ToolGrid;

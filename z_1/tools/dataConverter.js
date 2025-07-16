@@ -59,6 +59,12 @@
 const fs = require("fs");
 const path = require("path");
 
+const schemaPath = path.resolve(__dirname, "../data/schema.json");
+const schema = JSON.parse(fs.readFileSync(schemaPath, "utf8"));
+
+// Use csv-parse for robust CSV parsing
+const parse = require("csv-parse/sync").parse;
+
 class DataConverter {
   constructor() {
     this.conversionStats = {
@@ -68,6 +74,7 @@ class DataConverter {
       addedFields: {},
       errors: [],
     };
+    this.schema = schema;
 
     // Default values for missing fields
     this.defaults = {
@@ -148,76 +155,86 @@ class DataConverter {
     }
   }
 
-  // Load and parse CSV file
+  // Load and parse CSV file using schema for mapping
   loadCSV(filePath) {
     console.log(`📂 Loading CSV from: ${filePath}`);
 
     const content = fs.readFileSync(filePath, "utf8");
-    const lines = content.split("\n").filter((line) => line.trim());
 
-    if (lines.length < 2) {
-      throw new Error("CSV file must have at least a header and one data row");
-    }
+    // Use csv-parse to handle quoted multi-line fields
+    const records = parse(content, {
+      columns: true,
+      skip_empty_lines: true,
+      relax_column_count: true,
+    });
 
-    // Parse header
-    const headers = this.parseCSVLine(lines[0]);
+    // Use the first record's keys as headers
+    const headers = Object.keys(records[0]);
     console.log(`📋 Found columns: ${headers.join(", ")}`);
 
-    // Parse data rows
+    // Build a mapping from schema field name to CSV column name using 'source'
+    const fieldMapping = {};
+    this.schema.fields.forEach((field) => {
+      const source = field.source || field.name;
+      fieldMapping[field.name] = source;
+    });
+    console.log("🪪 fieldMapping:", fieldMapping);
+
+    // Print the first data row's values and their mapped schema fields
+    if (records.length > 0) {
+      const firstRecord = records[0];
+      console.log("🔎 First data row values:", Object.values(firstRecord));
+      this.schema.fields.forEach((field) => {
+        const source = fieldMapping[field.name];
+        const value = firstRecord[source];
+        console.log(`→ ${field.name}:`, value);
+      });
+    }
+
+    // Convert records to tools using schema mapping
     const tools = [];
-    for (let i = 1; i < lines.length; i++) {
-      try {
-        const values = this.parseCSVLine(lines[i]);
-        if (values.length !== headers.length) {
-          console.warn(
-            `⚠️  Row ${i + 1}: Column count mismatch (expected ${
-              headers.length
-            }, got ${values.length})`
-          );
+    for (let i = 0; i < records.length; i++) {
+      const record = records[i];
+      const tool = {};
+
+      this.schema.fields.forEach((field) => {
+        const source = fieldMapping[field.name];
+        let value = record[source];
+
+        // Clean up value
+        if (typeof value === "string") {
+          value = value.trim();
+          if (value === "") value = undefined;
         }
 
-        const tool = {};
-        headers.forEach((header, index) => {
-          const key = this.normalizeFieldName(header.replace(/\r/g, ""));
-          tool[key] = values[index]
-            ? values[index].replace(/^"|"$/g, "").replace(/\r/g, "").trim()
-            : "";
-        });
+        // Handle array fields
+        if (field.type === "array" && value) {
+          value = value
+            .split(field.delimiter || ",")
+            .map((v) => v.trim())
+            .filter(Boolean);
+        }
 
-        tools.push(tool);
-      } catch (error) {
-        console.warn(`⚠️  Skipping row ${i + 1}: ${error.message}`);
-        this.conversionStats.skippedRecords++;
-      }
+        // Generate ID if missing and required
+        if (
+          field.name === "id" &&
+          field.generated &&
+          (!value || value === "")
+        ) {
+          const titleValue = record[fieldMapping["title"]];
+          value = this.generateId(titleValue || `tool-${i + 1}`);
+        }
+
+        tool[field.name] = value;
+      });
+
+      tools.push(tool);
     }
 
     this.conversionStats.totalRecords = tools.length;
-    console.log(`📊 Loaded ${tools.length} records\n`);
+    console.log(`📊 Loaded ${tools.length} records`);
 
     return tools;
-  }
-
-  // Parse CSV line handling quoted values
-  parseCSVLine(line) {
-    const values = [];
-    let current = "";
-    let inQuotes = false;
-
-    for (let i = 0; i < line.length; i++) {
-      const char = line[i];
-
-      if (char === '"') {
-        inQuotes = !inQuotes;
-      } else if (char === "," && !inQuotes) {
-        values.push(current);
-        current = "";
-      } else {
-        current += char;
-      }
-    }
-
-    values.push(current); // Add the last value
-    return values;
   }
 
   // Normalize field names to match application schema
@@ -275,19 +292,24 @@ class DataConverter {
   // Transform a single tool record
   transformSingleTool(item, index) {
     const tool = {
-      id: this.generateId(item, index),
+      id: item.id || this.generateId(item, index),
       title: item.title || `Tool ${index + 1}`,
-      description: this.cleanDescription(item.description),
-      type: this.determineType(item),
-      tier: this.determineTier(item),
-      complexity: this.determineComplexity(item),
-      tags: this.generateTags(item),
-      featured: false, // Will be set later for selected tools
-      function: this.determineFunction(item),
-      link: item.url || "",
-      date_added: this.defaults.date_added,
-      added_by: this.defaults.added_by,
-      scheduled_feature_date: null,
+      description:
+        item.description !== undefined
+          ? this.cleanDescription(item.description)
+          : "",
+      type: item.type || this.determineType(item),
+      categories: item.categories !== undefined ? item.categories : [],
+      skillLevel: item.skillLevel !== undefined ? item.skillLevel : undefined,
+      tier: item.tier || this.determineTier(item),
+      complexity: item.complexity || this.determineComplexity(item),
+      tags: item.tags || this.generateTags(item),
+      featured: item.featured !== undefined ? item.featured : false, // Will be set later for selected tools
+      function: item.function || this.determineFunction(item),
+      url: item.url || "",
+      date_added: item.date_added || this.defaults.date_added,
+      added_by: item.added_by || this.defaults.added_by,
+      scheduled_feature_date: item.scheduled_feature_date || null,
     };
 
     // Track added fields
@@ -313,6 +335,21 @@ class DataConverter {
       .substring(0, 50);
 
     return titleId || `tool-${index + 1}`;
+  }
+
+  // Generate unique ID from title
+  generateId(title) {
+    if (!title || title.trim() === "") {
+      return `tool-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    }
+
+    return title
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-|-$/g, "")
+      .substring(0, 50);
   }
 
   // Clean and format description
