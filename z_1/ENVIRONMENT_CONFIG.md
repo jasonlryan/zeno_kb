@@ -38,6 +38,9 @@ NEXT_PUBLIC_ENABLE_FILTERS=false
 # .env.local
 NEXT_PUBLIC_OPENAI_API_KEY=your-actual-api-key-here
 NEXT_PUBLIC_ENABLE_FILTERS=false
+# Required for Supabase authentication
+NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
 ```
 
 3. Restart your development server: `pnpm dev`

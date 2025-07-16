@@ -8,17 +8,22 @@ export function useSupabaseAuth() {
 
   useEffect(() => {
     const getSession = async () => {
+      if (!supabase) {
+        console.warn('Supabase client not initialized. Auth disabled.');
+        setLoading(false);
+        return;
+      }
       try {
         const {
           data: { session },
           error,
         } = await supabase.auth.getSession();
         if (error) {
-          console.error("Error fetching session", error);
+          console.error('Error fetching session', error);
         }
         setUser(session?.user ?? null);
       } catch (err) {
-        console.error("Supabase auth error", err);
+        console.error('Supabase auth error', err);
         setUser(null);
       } finally {
         setLoading(false);
@@ -26,9 +31,13 @@ export function useSupabaseAuth() {
     };
     getSession();
 
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-    });
+    if (!supabase) return;
+
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setUser(session?.user ?? null);
+      }
+    );
 
     return () => {
       listener?.subscription.unsubscribe();
@@ -37,12 +46,17 @@ export function useSupabaseAuth() {
 
   useEffect(() => {
     const fetchRole = async () => {
+      if (!supabase) {
+        setRole(null);
+        return;
+      }
       if (user) {
         const { data, error } = await supabase
           .from('users')
           .select('role')
           .eq('email', user.email)
           .single();
+        if (error) console.error('Error fetching role', error);
         setRole(data?.role ?? null);
       } else {
         setRole(null);
@@ -52,12 +66,13 @@ export function useSupabaseAuth() {
   }, [user]);
 
   const signUp = (email: string, password: string) =>
-    supabase.auth.signUp({ email, password });
+    supabase ? supabase.auth.signUp({ email, password }) : { data: null, error: new Error('Supabase not configured') };
 
   const signIn = (email: string, password: string) =>
-    supabase.auth.signInWithPassword({ email, password });
+    supabase ? supabase.auth.signInWithPassword({ email, password }) : { data: null, error: new Error('Supabase not configured') };
 
-  const signOut = () => supabase.auth.signOut();
+  const signOut = () =>
+    supabase ? supabase.auth.signOut() : Promise.resolve();
 
   return { user, role, loading, signUp, signIn, signOut };
 } 
