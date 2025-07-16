@@ -8,9 +8,21 @@ export function useSupabaseAuth() {
 
   useEffect(() => {
     const getSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      setUser(session?.user ?? null);
-      setLoading(false);
+      try {
+        const {
+          data: { session },
+          error,
+        } = await supabase.auth.getSession();
+        if (error) {
+          console.error("Error fetching session", error);
+        }
+        setUser(session?.user ?? null);
+      } catch (err) {
+        console.error("Supabase auth error", err);
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
     };
     getSession();
 
