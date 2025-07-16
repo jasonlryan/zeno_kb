@@ -1,3 +1,4 @@
+"use client";
 import "../styles/globals.css";
 import PasswordProtection from "../components/PasswordProtection";
 import AuthGuard from "../components/AuthGuard";
