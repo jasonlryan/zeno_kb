@@ -1,39 +1,20 @@
-"use client";
-import { cn } from "@/lib/utils";
-import { CategoryTile } from "./CategoryTile";
-import type { Category } from "../types";
-import { ZenoAsset } from "../types/config";
+"use client"
+import { cn } from "@/lib/utils"
+import { CategoryTile } from "./CategoryTile"
+import type { Category } from "../types"
 
 interface CategoryGridProps {
-  categories: Category[];
-  tools?: ZenoAsset[]; // optional, for category counts or filtering
-  onSelect?: (id: string) => void;
+  categories: Category[]
+  onSelect: (id: string) => void
+  className?: string
 }
 
-const CategoryGrid: React.FC<CategoryGridProps> = ({
-  categories,
-  tools,
-  onSelect,
-}) => {
+export function CategoryGrid({ categories, onSelect, className }: CategoryGridProps) {
   return (
-    <div className="category-grid">
-      {categories.map((category) => {
-        return (
-          <div
-            className="category-tile"
-            key={category.id}
-            onClick={() => onSelect && onSelect(category.id)}
-            style={{ cursor: onSelect ? "pointer" : "default" }}
-          >
-            <span className="category-icon">{category.icon}</span>
-            <span className="category-title">{category.title}</span>
-            <span className="category-description">{category.description}</span>
-            <span className="category-count">{category.count}</span>
-          </div>
-        );
-      })}
+    <div className={cn("grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6", className)}>
+      {categories.map((category) => (
+        <CategoryTile key={category.id} category={category} onSelect={onSelect} />
+      ))}
     </div>
-  );
-};
-
-export default CategoryGrid;
+  )
+}

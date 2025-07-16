@@ -43,11 +43,11 @@ const config: Config = {
           mediumGray: "#E1E0D8", // Medium Gray
           darkGray: "#535953", // Dark Gray
         },
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        border: "#e5e7eb", // Auth branch: border-gray-200
+        input: "#d1d5db", // Auth branch: border-gray-300
+        ring: "#16a34a", // Auth branch: green-600
+        background: "#f9fafb", // Auth branch: bg-gray-50
+        foreground: "#111827", // Auth branch: text-gray-900
         primary: {
           DEFAULT: "#00BE65", // Zeno Green (PMS 7481)
           50: "#E6FFF2",
@@ -72,24 +72,24 @@ const config: Config = {
           foreground: "#FFFFFF",
         },
         secondary: {
-          DEFAULT: "#F5F5F5", // Light grey alt background
-          foreground: "#000000",
+          DEFAULT: "#f3f4f6", // Auth branch: bg-gray-100
+          foreground: "#111827", // Auth branch: text-gray-900
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
         },
         muted: {
-          DEFAULT: "#F5F5F5", // Light grey
-          foreground: "#666666",
+          DEFAULT: "#f3f4f6", // Auth branch: bg-gray-100
+          foreground: "#4b5563", // Auth branch: text-gray-600
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",
         },
         card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
+          DEFAULT: "#ffffff", // Auth branch: bg-white
+          foreground: "#111827", // Auth branch: text-gray-900
         },
       },
       // Zeno Typography - Updated as per Brand Guidelines 2023

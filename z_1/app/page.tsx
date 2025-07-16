@@ -10,19 +10,18 @@ import {
   Zap,
   Filter,
   ChevronLeft,
-  MessageCircle, // Add this import
 } from "lucide-react";
 import { AppShell } from "../components/AppShell";
 import { ToolCardDemo } from "../components/ToolCard";
 import { CategoryTileDemo } from "../components/CategoryTile";
 import { ChatPanelDemo } from "../components/ChatPanel";
-import CuratorDashboard from "../components/CuratorDashboard";
+import { CuratorDashboard } from "../components/CuratorDashboard";
 import { FeaturedCarousel } from "../components/FeaturedCarousel";
-import CategoryGrid from "../components/CategoryGrid";
-import ToolGrid from "../components/ToolGrid";
+import { CategoryGrid } from "../components/CategoryGrid";
+import { ToolGrid } from "../components/ToolGrid";
 // FILTERS: Conditionally imported based on feature flag
 import { FilterPanel } from "../components/FilterPanel";
-import { ToolDetailPage } from "../components/ToolDetailModal";
+import ToolDetailPage from "../components/ToolDetailModal";
 import { useLocalSearch } from "../hooks/useLocalSearch";
 // import { useTaxonomy } from "../hooks/useTaxonomy";
 import {
@@ -37,7 +36,6 @@ import { generateCategoriesFromData } from "../lib/mockData";
 import { featureFlags } from "../lib/featureFlags";
 import type { Tool, Category, SidebarSection } from "../types";
 import { useSupabaseAuth } from "../hooks/useSupabaseAuth";
-import { ZenoAsset } from "../types/config";
 
 // Configuration data loaded from config files
 
@@ -53,9 +51,8 @@ export default function HomePage() {
     | "demos"
     | "tool-detail"
     | "category"
-    | "comment-retrieval" // Add this state
   >("home");
-  const [selectedTool, setSelectedTool] = useState<ZenoAsset | null>(null);
+  const [selectedTool, setSelectedTool] = useState<Tool | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   // FILTERS: Only enable if feature flag is on
   const [isFilterOpen, setIsFilterOpen] = useState(
@@ -77,7 +74,7 @@ export default function HomePage() {
   // FILTERS: Debug log for development
   React.useEffect(() => {
     if (process.env.NODE_ENV === "development") {
-      // console.log("🚩 Filters enabled:", featureFlags.enableFilters);
+      console.log("🚩 Filters enabled:", featureFlags.enableFilters);
     }
   }, []);
 
@@ -97,7 +94,7 @@ export default function HomePage() {
   const hasActiveFilters = false;
 
   // Filter tools by category (function-based categories)
-  const getToolsByCategory = (categoryTitle: string): ZenoAsset[] => {
+  const getToolsByCategory = (categoryTitle: string): Tool[] => {
     // Map category titles to the functions they contain
     const categoryFunctionMap: Record<string, string[]> = {
       Other: [
@@ -143,7 +140,8 @@ export default function HomePage() {
 
     // Return tools that have functions belonging to this category
     return allTools.filter(
-      (tool) => tool.function && functions.includes(tool.function)
+      (tool) =>
+        typeof tool.function === "string" && functions.includes(tool.function)
     );
   };
 
@@ -158,7 +156,6 @@ export default function HomePage() {
     Settings,
     Users,
     Zap,
-    MessageCircle, // Add this to the icon map
   };
 
   // Create sidebar sections with proper active state from config
@@ -193,7 +190,7 @@ export default function HomePage() {
   };
 
   const handleNavigate = (itemId: string) => {
-    // console.log("Navigating to:", itemId);
+    console.log("Navigating to:", itemId);
     setActiveView(itemId as any);
   };
 
@@ -304,7 +301,7 @@ export default function HomePage() {
 
       case "curator":
         if (role === "admin") {
-          return <CuratorDashboard assets={allTools} />;
+          return <CuratorDashboard />;
         } else {
           return (
             <div className="text-center py-16">
@@ -395,9 +392,10 @@ export default function HomePage() {
         );
 
       case "category":
-        const categoryTools = selectedCategory
-          ? getToolsByCategory(selectedCategory)
-          : [];
+        const categoryTools =
+          typeof selectedCategory === "string"
+            ? getToolsByCategory(selectedCategory)
+            : [];
         return (
           <div className="space-y-8">
             <section>
@@ -449,27 +447,13 @@ export default function HomePage() {
               tool={selectedTool}
               onBack={handleBackToHome}
               onFavorite={(toolId) => {
-                // console.log("Toggle favorite for tool:", toolId);
+                console.log("Toggle favorite for tool:", toolId);
                 // TODO: Implement favorites functionality
               }}
               isFavorite={false} // TODO: Implement favorites state
             />
           </div>
         );
-
-      case "comment-retrieval":
-        if (role === "admin") {
-          // Import the CommentRetrievalPage component
-          const CommentRetrievalPage =
-            require("./comment-retrieval/page").default;
-          return <CommentRetrievalPage />;
-        } else {
-          return (
-            <div className="text-center py-16">
-              <p className="zeno-body text-muted-foreground">Not authorized</p>
-            </div>
-          );
-        }
 
       default:
         return (

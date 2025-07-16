@@ -160,10 +160,27 @@ body {
     line-height: 0.95; /* Leading: -5% */
   }
   
+  .zeno-heading {
+    font-family: 'Gotham Bold', 'Arial Bold', sans-serif;
+    letter-spacing: -0.04em; /* Kerning: -40 */
+    line-height: 0.95; /* Leading: -5% */
+  }
+  
   .zeno-body {
     font-family: 'Gotham Book', 'Arial', sans-serif;
     letter-spacing: 0; /* Kerning: 0 */
     line-height: 1.2; /* Leading: +20% */
+  }
+  
+  .zeno-emphasis {
+    font-family: 'Gotham Bold', 'Arial Bold', sans-serif;
+    letter-spacing: -0.02em; /* Kerning: -20 */
+    line-height: 1.1; /* Leading: +10% */
+    font-weight: 600;
+  }
+  
+  .zeno-content-padding {
+    padding: 1.5rem; /* 24px - Auth branch card padding */
   }
   
   .zeno-cta {

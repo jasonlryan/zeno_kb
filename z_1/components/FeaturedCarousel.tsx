@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import ToolCard from "./ToolCard";
+import { ToolCard } from "./ToolCard";
 import type { Tool } from "../types";
 
 interface FeaturedCarouselProps {

@@ -3,8 +3,8 @@
 import React, { useState } from "react";
 import { useSupabaseAuth } from "../../hooks/useSupabaseAuth";
 import AuthGuard from "../../components/AuthGuard";
+import { ToolGrid } from "../../components/ToolGrid";
 import { ZenoAsset } from "../../types/config";
-import ToolGrid from "../../components/ToolGrid";
 
 const AdminPage: React.FC = () => {
   // Replace with actual data fetching logic
@@ -17,7 +17,7 @@ const AdminPage: React.FC = () => {
     <div className="admin-page">
       <h1>Admin: Manage Assets</h1>
       {/* Add admin controls/UI here if needed */}
-      <ToolGrid tools={assets} />
+      <ToolGrid tools={assets} onSelect={() => {}} />
     </div>
   );
 };
