@@ -3,7 +3,15 @@
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { useTools } from "../hooks/useConfig";
-import { Edit, Trash2, ExternalLink, Calendar, Tag, Hash } from "lucide-react";
+import {
+  Edit,
+  Trash2,
+  ExternalLink,
+  Calendar,
+  Tag,
+  Hash,
+  Search,
+} from "lucide-react";
 
 interface CuratorDashboardProps {
   className?: string;
@@ -13,16 +21,31 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
   const [activeTab, setActiveTab] = useState<"assets" | "schedule" | "tags">(
     "assets"
   );
+  const [searchQuery, setSearchQuery] = useState("");
   const { all: allTools } = useTools();
 
-  // Calculate real counts from data
-  const assetsCount = allTools.length;
-  const scheduledCount = allTools.filter(
+  // Filter tools based on search query
+  const filteredTools = allTools.filter((tool) => {
+    if (!searchQuery.trim()) return true;
+
+    const query = searchQuery.toLowerCase();
+    return (
+      tool.title.toLowerCase().includes(query) ||
+      tool.description.toLowerCase().includes(query) ||
+      tool.type.toLowerCase().includes(query) ||
+      tool.tier.toLowerCase().includes(query) ||
+      tool.tags?.some((tag: string) => tag.toLowerCase().includes(query))
+    );
+  });
+
+  // Calculate real counts from filtered data
+  const assetsCount = filteredTools.length;
+  const scheduledCount = filteredTools.filter(
     (tool) => tool.scheduled_feature_date
   ).length;
 
-  // Get unique tags count and frequency
-  const allTags = allTools.flatMap((tool) => tool.tags || []);
+  // Get unique tags count and frequency from filtered tools
+  const allTags = filteredTools.flatMap((tool) => tool.tags || []);
   const uniqueTags = new Set(allTags);
   const tagsCount = uniqueTags.size;
 
@@ -41,6 +64,14 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
     { id: "schedule" as const, label: "Schedule", count: scheduledCount },
     { id: "tags" as const, label: "Tags", count: tagsCount },
   ];
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const clearSearch = () => {
+    setSearchQuery("");
+  };
 
   return (
     <div
@@ -95,12 +126,60 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
               </button>
             </div>
 
+            {/* Search Bar */}
+            <div className="relative max-w-md">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Search className="h-5 w-5 text-gray-400" />
+              </div>
+              <input
+                type="text"
+                placeholder="Search assets..."
+                value={searchQuery}
+                onChange={handleSearchChange}
+                className="block w-full pl-10 pr-10 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+              {searchQuery && (
+                <button
+                  onClick={clearSearch}
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                >
+                  <svg
+                    className="h-5 w-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              )}
+            </div>
+
+            {/* Search Results Info */}
+            {searchQuery && (
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                {assetsCount === 0 ? (
+                  <span>No assets found for "{searchQuery}"</span>
+                ) : (
+                  <span>
+                    {assetsCount} asset{assetsCount !== 1 ? "s" : ""} found for
+                    "{searchQuery}"
+                  </span>
+                )}
+              </div>
+            )}
+
             {/* Assets Table */}
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                 <thead className="bg-gray-50 dark:bg-gray-700">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider w-1/4">
                       Asset
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
@@ -121,13 +200,13 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
                   </tr>
                 </thead>
                 <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                  {allTools.map((tool) => (
+                  {filteredTools.map((tool) => (
                     <tr
                       key={tool.id}
                       className="hover:bg-gray-50 dark:hover:bg-gray-700"
                     >
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center">
+                      <td className="px-6 py-4">
+                        <div className="flex items-start">
                           <div className="flex-shrink-0 h-10 w-10">
                             <div className="h-10 w-10 rounded-lg bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
                               <span className="text-blue-600 dark:text-blue-400 font-semibold text-sm">
@@ -135,11 +214,11 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
                               </span>
                             </div>
                           </div>
-                          <div className="ml-4">
-                            <div className="text-sm font-medium text-gray-900 dark:text-white">
+                          <div className="ml-4 min-w-0 flex-1">
+                            <div className="text-sm font-medium text-gray-900 dark:text-white break-words">
                               {tool.title}
                             </div>
-                            <div className="text-sm text-gray-500 dark:text-gray-400 truncate max-w-xs">
+                            <div className="text-sm text-gray-500 dark:text-gray-400 break-words mt-1">
                               {tool.description}
                             </div>
                           </div>
@@ -155,16 +234,18 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
                           {tool.tier}
                         </span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex flex-wrap gap-1 max-w-xs">
-                          {tool.tags?.slice(0, 3).map((tag, index) => (
-                            <span
-                              key={index}
-                              className="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200"
-                            >
-                              {tag}
-                            </span>
-                          ))}
+                      <td className="px-6 py-4">
+                        <div className="flex flex-wrap gap-1 max-w-48">
+                          {tool.tags
+                            ?.slice(0, 3)
+                            .map((tag: string, index: number) => (
+                              <span
+                                key={index}
+                                className="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200"
+                              >
+                                {tag}
+                              </span>
+                            ))}
                           {tool.tags && tool.tags.length > 3 && (
                             <span className="text-xs text-gray-500 dark:text-gray-400">
                               +{tool.tags.length - 3} more
@@ -255,7 +336,7 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
                 <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                   {sortedTags.map((tag, index) => {
                     const usagePercentage = (
-                      (tag.count / allTools.length) *
+                      (tag.count / filteredTools.length) *
                       100
                     ).toFixed(1);
                     const getTagCategory = (tagName: string) => {
