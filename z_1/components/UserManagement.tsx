@@ -13,6 +13,7 @@ export function UserManagement() {
   const [loading, setLoading] = useState(true);
   const [newEmail, setNewEmail] = useState("");
   const [newRole, setNewRole] = useState("standard");
+  const [sortOrder, setSortOrder] = useState<'newest' | 'alphabetical'>('newest');
 
   const fetchUsers = async () => {
     setLoading(true);
@@ -48,9 +49,18 @@ export function UserManagement() {
   };
 
   const deleteUser = async (id: string, email: string) => {
+    const confirmed = window.confirm('Are you sure you want to delete this user?');
+    if (!confirmed) return;
     await fetch(`/api/users?id=${id}&email=${email}`, { method: "DELETE" });
     fetchUsers();
   };
+
+  const sortedUsers = [...users];
+  if (sortOrder === 'alphabetical') {
+    sortedUsers.sort((a, b) => a.email.localeCompare(b.email));
+  } else {
+    sortedUsers.reverse(); // newest first (assuming API returns oldest first)
+  }
 
   return (
     <div className="space-y-4">
@@ -76,6 +86,19 @@ export function UserManagement() {
           Add
         </button>
       </div>
+      <p className="text-xs text-gray-500 mb-2">A new user is added with the default password.</p>
+      <div className="flex items-center gap-2 mb-2">
+        <label htmlFor="sortOrder" className="text-sm">Sort by:</label>
+        <select
+          id="sortOrder"
+          className="border rounded px-2 py-1"
+          value={sortOrder}
+          onChange={e => setSortOrder(e.target.value as 'newest' | 'alphabetical')}
+        >
+          <option value="newest">Newest</option>
+          <option value="alphabetical">Alphabetical</option>
+        </select>
+      </div>
       {loading ? (
         <p>Loading...</p>
       ) : (
@@ -92,7 +115,7 @@ export function UserManagement() {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {users.map((u) => (
+            {sortedUsers.map((u) => (
               <tr key={u.id} className="hover:bg-gray-50">
                 <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">
                   {u.email}
