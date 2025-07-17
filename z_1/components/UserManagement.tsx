@@ -66,9 +66,8 @@ export function UserManagement() {
           value={newRole}
           onChange={(e) => setNewRole(e.target.value)}
         >
-          <option value="standard">Standard</option>
-          <option value="curator">Curator</option>
           <option value="admin">Admin</option>
+          <option value="standard">Standard</option>
         </select>
         <button
           onClick={addUser}
@@ -104,9 +103,8 @@ export function UserManagement() {
                     value={u.role}
                     onChange={(e) => updateRole(u.email, e.target.value)}
                   >
-                    <option value="standard">Standard</option>
-                    <option value="curator">Curator</option>
                     <option value="admin">Admin</option>
+                    <option value="standard">Standard</option>
                   </select>
                 </td>
                 <td className="px-4 py-2 text-right">
