@@ -74,6 +74,27 @@ zeno_kb/                    ← Git repository root
 - **Responsive Design** - Works on desktop and mobile
 - **Zeno Branding** - Consistent green color scheme
 
+### Adding New Users to Supabase
+
+To bulk add new users to Supabase:
+
+1. **Add user emails to the CSV:**
+   - Open `z_1/users/users.csv`.
+   - Add each new user's email on a new line, using the format: `email,role` (e.g., `jane.doe@example.com,standard`).
+   - Use `standard` for regular users or `admin` for admins.
+
+2. **Run the bulk add script:**
+   - Ensure your `.env.local` file in `z_1/` contains valid `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`.
+   - From the project root, run:
+     ```bash
+     node z_1/bulk_add_supabase_users.js
+     ```
+   - The script will read `users.csv` and add any new users to Supabase with the default password `zeno2025` (users should reset this after first login).
+
+3. **Troubleshooting:**
+   - If you see errors about missing environment variables, check your `.env.local` file.
+   - The script will skip users already present in Supabase.
+
 ---
 
 _Original v0.dev integration maintained below for reference_

@@ -16,6 +16,7 @@ import { ToolCardDemo } from "../components/ToolCard";
 import { CategoryTileDemo } from "../components/CategoryTile";
 import { ChatPanelDemo } from "../components/ChatPanel";
 import { CuratorDashboard } from "../components/CuratorDashboard";
+import { UserManagement } from "../components/UserManagement";
 import { FeaturedCarousel } from "../components/FeaturedCarousel";
 import { CategoryGrid } from "../components/CategoryGrid";
 import { ToolGrid } from "../components/ToolGrid";
@@ -318,12 +319,7 @@ export default function HomePage() {
                 <h2 className="zeno-heading text-card-foreground mb-6">
                   User management
                 </h2>
-                <div className="text-center py-16">
-                  <Users className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-                  <p className="zeno-body text-muted-foreground">
-                    User management features coming soon
-                  </p>
-                </div>
+                <UserManagement />
               </section>
             </div>
           );
