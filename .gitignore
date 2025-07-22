@@ -20,4 +20,4 @@ Thumbs.db
 
 # User data (comments, etc.)
 z_1/data/comments.json 
-z_1/users/ 
+z_1/users/ node_modules/
