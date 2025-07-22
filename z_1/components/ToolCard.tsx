@@ -113,19 +113,20 @@ export function ToolCard({
         {tool.description}
       </p>
 
-      {tool.tags.length > 0 && (
+      {/* Tags section - only show if tags is an array and has items */}
+      {Array.isArray(tool.tags) && tool.tags.length > 0 && (
         <div className="flex flex-wrap gap-2">
           {tool.tags.slice(0, 3).map((tag, index) => (
             <span
               key={index}
-              className="px-2 py-1 bg-secondary text-secondary-foreground text-xs rounded-md"
+              className="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200"
             >
               {tag}
             </span>
           ))}
           {tool.tags.length > 3 && (
-            <span className="px-2 py-1 bg-secondary text-muted-foreground text-xs rounded-md">
-              +{tool.tags.length - 3}
+            <span className="text-xs text-gray-500 dark:text-gray-400">
+              +{tool.tags.length - 3} more
             </span>
           )}
         </div>

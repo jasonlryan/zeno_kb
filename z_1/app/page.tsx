@@ -36,6 +36,7 @@ import { generateCategoriesFromData } from "../lib/mockData";
 import { featureFlags } from "../lib/featureFlags";
 import type { Tool, Category, SidebarSection } from "../types";
 import { useSupabaseAuth } from "../hooks/useSupabaseAuth";
+import { UserList } from "../components/UserList";
 
 // Configuration data loaded from config files
 
@@ -318,12 +319,7 @@ export default function HomePage() {
                 <h2 className="zeno-heading text-card-foreground mb-6">
                   User management
                 </h2>
-                <div className="text-center py-16">
-                  <Users className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-                  <p className="zeno-body text-muted-foreground">
-                    User management features coming soon
-                  </p>
-                </div>
+                <UserList role={role} />
               </section>
             </div>
           );

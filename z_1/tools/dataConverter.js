@@ -168,6 +168,22 @@ class DataConverter {
       relax_column_count: true,
     });
 
+    // Debug: Print the keys and values of the first record
+    if (records.length > 0) {
+      console.log("[DEBUG] First record keys:", Object.keys(records[0]));
+      console.log("[DEBUG] First record:", records[0]);
+    }
+
+    // Remap each record to schema field names using source property
+    const remappedRecords = records.map((record) => {
+      const remapped = {};
+      this.schema.fields.forEach((field) => {
+        const source = field.source || field.name;
+        remapped[field.name] = record[source];
+      });
+      return remapped;
+    });
+
     // Use the first record's keys as headers
     const headers = Object.keys(records[0]);
     console.log(`📋 Found columns: ${headers.join(", ")}`);
@@ -191,50 +207,10 @@ class DataConverter {
       });
     }
 
-    // Convert records to tools using schema mapping
-    const tools = [];
-    for (let i = 0; i < records.length; i++) {
-      const record = records[i];
-      const tool = {};
+    this.conversionStats.totalRecords = remappedRecords.length;
+    console.log(`📊 Loaded ${remappedRecords.length} records`);
 
-      this.schema.fields.forEach((field) => {
-        const source = fieldMapping[field.name];
-        let value = record[source];
-
-        // Clean up value
-        if (typeof value === "string") {
-          value = value.trim();
-          if (value === "") value = undefined;
-        }
-
-        // Handle array fields
-        if (field.type === "array" && value) {
-          value = value
-            .split(field.delimiter || ",")
-            .map((v) => v.trim())
-            .filter(Boolean);
-        }
-
-        // Generate ID if missing and required
-        if (
-          field.name === "id" &&
-          field.generated &&
-          (!value || value === "")
-        ) {
-          const titleValue = record[fieldMapping["title"]];
-          value = this.generateId(titleValue || `tool-${i + 1}`);
-        }
-
-        tool[field.name] = value;
-      });
-
-      tools.push(tool);
-    }
-
-    this.conversionStats.totalRecords = tools.length;
-    console.log(`📊 Loaded ${tools.length} records`);
-
-    return tools;
+    return remappedRecords;
   }
 
   // Normalize field names to match application schema
@@ -291,35 +267,52 @@ class DataConverter {
 
   // Transform a single tool record
   transformSingleTool(item, index) {
-    const tool = {
-      id: item.id || this.generateId(item, index),
-      title: item.title || `Tool ${index + 1}`,
-      description:
-        item.description !== undefined
-          ? this.cleanDescription(item.description)
-          : "",
-      type: item.type || this.determineType(item),
-      categories: item.categories !== undefined ? item.categories : [],
-      skillLevel: item.skillLevel !== undefined ? item.skillLevel : undefined,
-      tier: item.tier || this.determineTier(item),
-      complexity: item.complexity || this.determineComplexity(item),
-      tags: item.tags || this.generateTags(item),
-      featured: item.featured !== undefined ? item.featured : false, // Will be set later for selected tools
-      function: item.function || this.determineFunction(item),
-      url: item.url || "",
-      date_added: item.date_added || this.defaults.date_added,
-      added_by: item.added_by || this.defaults.added_by,
-      scheduled_feature_date: item.scheduled_feature_date || null,
-    };
-
-    // Track added fields
-    Object.keys(this.defaults).forEach((field) => {
-      if (!item[field]) {
-        this.conversionStats.addedFields[field] =
-          (this.conversionStats.addedFields[field] || 0) + 1;
+    const tool = {};
+    this.schema.fields.forEach((field) => {
+      let value = item[field.name];
+      // Debug: Print mapping for the first row
+      if (index === 0) {
+        console.log(`[DEBUG] Field: ${field.name}, Value:`, value);
       }
+      // Generate ID if required by schema
+      if (field.name === "id" && field.generated && (!value || value === "")) {
+        const titleValue = item["title"];
+        value = this.generateId(titleValue || `tool-${index + 1}`);
+      }
+      // Handle array fields
+      if (field.type === "array") {
+        if (typeof value === "string" && value.trim() !== "") {
+          value = value
+            .split(field.delimiter || ",")
+            .map((v) => v.trim())
+            .filter(Boolean);
+        } else {
+          value = [];
+        }
+      }
+      // Clean up value
+      if (typeof value === "string") {
+        value = value.trim();
+        if (value === "") value = undefined;
+      }
+      // Fallback for required fields
+      if (field.required && (value === undefined || value === null)) {
+        if (field.name === "id") {
+          value = this.generateId(item["title"] || `tool-${index + 1}`);
+        } else if (field.name === "title") {
+          value = `Tool ${index + 1}`;
+        } else if (field.name === "description") {
+          value = "";
+        } else if (field.name === "type") {
+          value = "Tool";
+        } else if (field.name === "categories") {
+          value = [];
+        } else if (field.name === "url") {
+          value = "";
+        }
+      }
+      tool[field.name] = value;
     });
-
     return tool;
   }
 

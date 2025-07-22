@@ -24,56 +24,53 @@ export function ToolFormModal({
   const [formData, setFormData] = useState({
     title: tool?.title || "",
     description: tool?.description || "",
-    type: tool?.type || ("GPT" as Tool["type"]),
-    tier: tool?.tier || ("Foundation" as Tool["tier"]),
-    complexity: tool?.complexity || ("Beginner" as Tool["complexity"]),
-    tags: tool?.tags?.join(", ") || "",
-    featured: tool?.featured || false,
-    function: tool?.function || "Content & Creative",
     url: tool?.url || "",
-    added_by: tool?.added_by || "current-user",
+    type: tool?.type || "GPT",
+    categories: tool?.categories ? tool.categories.join(", ") : "",
+    skillLevel: tool?.skillLevel || "",
   });
-
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
-
     if (!formData.title.trim()) {
       newErrors.title = "Title is required";
     }
-
-    if (!formData.description.trim()) {
-      newErrors.description = "Description is required";
+    if (!formData.url.trim()) {
+      newErrors.url = "URL is required";
     }
-
+    if (!formData.type.trim()) {
+      newErrors.type = "Type is required";
+    }
+    if (!formData.categories.trim()) {
+      newErrors.categories = "At least one category is required";
+    }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
     if (!validateForm()) {
       return;
     }
-
     const toolData = {
-      ...formData,
-      tags: formData.tags
+      title: formData.title,
+      description: formData.description,
+      url: formData.url,
+      type: formData.type,
+      categories: formData.categories
         .split(",")
-        .map((tag) => tag.trim())
+        .map((cat) => cat.trim())
         .filter(Boolean),
-      date_added: tool?.date_added || new Date().toISOString(),
+      skillLevel: formData.skillLevel,
     };
-
     onSave(toolData);
     onClose();
   };
 
-  const handleInputChange = (field: string, value: string | boolean) => {
+  const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
-    // Clear error when user starts typing
     if (errors[field]) {
       setErrors((prev) => ({ ...prev, [field]: "" }));
     }
@@ -88,7 +85,6 @@ export function ToolFormModal({
         className="absolute inset-0 bg-black bg-opacity-50"
         onClick={onClose}
       />
-
       {/* Modal */}
       <div
         className={cn(
@@ -109,7 +105,6 @@ export function ToolFormModal({
             <X className="w-5 h-5" />
           </button>
         </div>
-
         {/* Form */}
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           <div>
@@ -126,7 +121,6 @@ export function ToolFormModal({
               <p className="text-red-500 text-sm mt-1">{errors.title}</p>
             )}
           </div>
-
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Description
@@ -137,12 +131,8 @@ export function ToolFormModal({
               rows={3}
               className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            {errors.description && (
-              <p className="text-red-500 text-sm mt-1">{errors.description}</p>
-            )}
           </div>
-
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Type
@@ -157,40 +147,28 @@ export function ToolFormModal({
                 <option value="Script">Script</option>
                 <option value="Video">Video</option>
               </select>
+              {errors.type && (
+                <p className="text-red-500 text-sm mt-1">{errors.type}</p>
+              )}
             </div>
-
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Tier
+                Skill Level
               </label>
               <select
-                value={formData.tier}
-                onChange={(e) => handleInputChange("tier", e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="Foundation">Foundation</option>
-                <option value="Specialist">Specialist</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Complexity
-              </label>
-              <select
-                value={formData.complexity}
+                value={formData.skillLevel}
                 onChange={(e) =>
-                  handleInputChange("complexity", e.target.value)
+                  handleInputChange("skillLevel", e.target.value)
                 }
                 className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
+                <option value="">Select skill level</option>
                 <option value="Beginner">Beginner</option>
                 <option value="Intermediate">Intermediate</option>
                 <option value="Advanced">Advanced</option>
               </select>
             </div>
           </div>
-
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               URL
@@ -201,33 +179,25 @@ export function ToolFormModal({
               onChange={(e) => handleInputChange("url", e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
+            {errors.url && (
+              <p className="text-red-500 text-sm mt-1">{errors.url}</p>
+            )}
           </div>
-
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Tags (comma-separated)
+              Categories (comma-separated)
             </label>
             <input
               type="text"
-              value={formData.tags}
-              onChange={(e) => handleInputChange("tags", e.target.value)}
-              placeholder="ai, coding, productivity"
+              value={formData.categories}
+              onChange={(e) => handleInputChange("categories", e.target.value)}
+              placeholder="e.g. AI, Productivity"
               className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
+            {errors.categories && (
+              <p className="text-red-500 text-sm mt-1">{errors.categories}</p>
+            )}
           </div>
-
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              checked={formData.featured}
-              onChange={(e) => handleInputChange("featured", e.target.checked)}
-              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-            />
-            <label className="ml-2 text-sm font-medium text-gray-700 dark:text-gray-300">
-              Featured tool
-            </label>
-          </div>
-
           <div className="flex justify-end space-x-3 pt-4">
             <button
               type="button"

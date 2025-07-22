@@ -12,6 +12,8 @@ import {
   Hash,
   Search,
 } from "lucide-react";
+import { ToolFormModal } from "./ToolFormModal";
+import type { Tool } from "../types";
 
 interface CuratorDashboardProps {
   className?: string;
@@ -24,10 +26,15 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const { all: allTools } = useTools();
 
-  // Filter tools based on search query
-  const filteredTools = allTools.filter((tool) => {
-    if (!searchQuery.trim()) return true;
+  // Editing state
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingTool, setEditingTool] = useState<Tool | undefined>(undefined);
+  const [tools, setTools] = useState(allTools);
+  const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
 
+  // Filter tools based on search query
+  const filteredTools = tools.filter((tool) => {
+    if (!searchQuery.trim()) return true;
     const query = searchQuery.toLowerCase();
     return (
       tool.title.toLowerCase().includes(query) ||
@@ -121,7 +128,13 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
               <h3 className="text-lg font-medium text-gray-900 dark:text-white">
                 Asset Management
               </h3>
-              <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+              <button
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                onClick={() => {
+                  setEditingTool(undefined);
+                  setIsModalOpen(true);
+                }}
+              >
                 Add Asset
               </button>
             </div>
@@ -186,13 +199,10 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
                       Type
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                      Tier
+                      Categories
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                      Tags
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                      Added
+                      Skill Level
                     </th>
                     <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                       Actions
@@ -210,7 +220,7 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
                           <div className="flex-shrink-0 h-10 w-10">
                             <div className="h-10 w-10 rounded-lg bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
                               <span className="text-blue-600 dark:text-blue-400 font-semibold text-sm">
-                                {tool.type.charAt(0)}
+                                {tool.type?.charAt(0) || "-"}
                               </span>
                             </div>
                           </div>
@@ -226,56 +236,112 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-                          {tool.type}
+                          {tool.type || "-"}
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-                          {tool.tier}
-                        </span>
+                        {Array.isArray(tool.categories) &&
+                        tool.categories.length > 0
+                          ? tool.categories.join(", ")
+                          : "-"}
                       </td>
-                      <td className="px-6 py-4">
-                        <div className="flex flex-wrap gap-1 max-w-48">
-                          {tool.tags
-                            ?.slice(0, 3)
-                            .map((tag: string, index: number) => (
-                              <span
-                                key={index}
-                                className="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200"
-                              >
-                                {tag}
-                              </span>
-                            ))}
-                          {tool.tags && tool.tags.length > 3 && (
-                            <span className="text-xs text-gray-500 dark:text-gray-400">
-                              +{tool.tags.length - 3} more
-                            </span>
-                          )}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                        {tool.date_added
-                          ? new Date(tool.date_added).toLocaleDateString()
-                          : "Unknown"}
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        {tool.skillLevel || "-"}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <div className="flex items-center justify-end space-x-2">
-                          <button className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300">
+                          <button
+                            className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
+                            disabled={!tool.url}
+                            title={tool.url ? "Open link" : "No URL available"}
+                            onClick={() => {
+                              if (tool.url) {
+                                window.open(
+                                  tool.url,
+                                  "_blank",
+                                  "noopener,noreferrer"
+                                );
+                              }
+                            }}
+                          >
                             <ExternalLink size={16} />
                           </button>
-                          <button className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300">
+                          <button
+                            className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300"
+                            onClick={() => {
+                              setEditingTool(tool);
+                              setIsModalOpen(true);
+                            }}
+                          >
                             <Edit size={16} />
                           </button>
-                          <button className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300">
+                          <button
+                            className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
+                            onClick={() => setDeleteConfirmId(tool.id)}
+                          >
                             <Trash2 size={16} />
                           </button>
                         </div>
+                        {/* Delete confirmation dialog */}
+                        {deleteConfirmId === tool.id && (
+                          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+                            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 max-w-sm w-full">
+                              <h3 className="text-lg font-semibold mb-4">
+                                Are you sure you want to delete this asset?
+                              </h3>
+                              <p className="mb-6 text-gray-700 dark:text-gray-300">
+                                This action cannot be undone.
+                              </p>
+                              <div className="flex justify-end gap-4">
+                                <button
+                                  className="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600"
+                                  onClick={() => setDeleteConfirmId(null)}
+                                >
+                                  Cancel
+                                </button>
+                                <button
+                                  className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                                  onClick={() => {
+                                    setTools((prev) =>
+                                      prev.filter((t) => t.id !== tool.id)
+                                    );
+                                    setDeleteConfirmId(null);
+                                  }}
+                                >
+                                  Delete
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        )}
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
+            {/* ToolFormModal for add/edit */}
+            <ToolFormModal
+              isOpen={isModalOpen}
+              onClose={() => setIsModalOpen(false)}
+              tool={editingTool}
+              onSave={(toolData) => {
+                if (editingTool) {
+                  // Edit existing
+                  setTools((prev) =>
+                    prev.map((t) =>
+                      t.id === editingTool.id ? { ...t, ...toolData } : t
+                    )
+                  );
+                } else {
+                  // Add new
+                  setTools((prev) => [
+                    ...prev,
+                    { ...toolData, id: Date.now().toString() },
+                  ]);
+                }
+              }}
+            />
           </div>
         )}
 
