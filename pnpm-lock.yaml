@@ -17,6 +17,9 @@ importers:
       csv-stringify:
         specifier: ^6.6.0
         version: 6.6.0
+      date-fns:
+        specifier: ^3.6.0
+        version: 3.6.0
       dotenv:
         specifier: ^17.2.0
         version: 17.2.0
@@ -59,6 +62,9 @@ packages:
 
   csv-stringify@6.6.0:
     resolution: {integrity: sha512-YW32lKOmIBgbxtu3g5SaiqWNwa/9ISQt2EcgOq0+RAIFufFp9is6tqNnKahqE5kuKvrnYAzs28r+s6pXJR8Vcw==}
+
+  date-fns@3.6.0:
+    resolution: {integrity: sha512-fRHTG8g/Gif+kSh50gaGEdToemgfj74aRX3swtiouboip5JDLAyDE9F11nHMIcvOaXeOC6D7SpNhi7uFyB7Uww==}
 
   dotenv@17.2.0:
     resolution: {integrity: sha512-Q4sgBT60gzd0BB0lSyYD3xM4YxrXA9y4uBDof1JNYGzOXrQdQ6yX+7XIAqoFOGQFOTK1D3Hts5OllpxMDZFONQ==}
@@ -151,6 +157,8 @@ snapshots:
   csv-parse@6.1.0: {}
 
   csv-stringify@6.6.0: {}
+
+  date-fns@3.6.0: {}
 
   dotenv@17.2.0: {}
 
