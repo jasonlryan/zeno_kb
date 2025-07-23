@@ -314,11 +314,17 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
                                 </button>
                                 <button
                                   className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
-                                  onClick={() => {
-                                    setTools((prev) =>
-                                      prev.filter((t) => t.id !== tool.id)
-                                    );
-                                    setDeleteConfirmId(null);
+                                  onClick={async () => {
+                                    try {
+                                      const res = await fetch(`/api/tools/${tool.id}`, {
+                                        method: "DELETE",
+                                      });
+                                      if (res.ok) {
+                                        setTools((prev) => prev.filter((t) => t.id !== tool.id));
+                                      }
+                                    } finally {
+                                      setDeleteConfirmId(null);
+                                    }
                                   }}
                                 >
                                   Delete
