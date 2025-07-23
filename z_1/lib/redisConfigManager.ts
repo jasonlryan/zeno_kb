@@ -1,4 +1,4 @@
-import { Redis } from "@upstash/redis";
+import { Redis } from '@upstash/redis';
 
 const redis = Redis.fromEnv();
 
@@ -11,8 +11,8 @@ const CONFIG_KEYS = {
 
 type ConfigKey = keyof typeof CONFIG_KEYS;
 
-export async function getConfig(key: ConfigKey) {
-  return await redis.get(CONFIG_KEYS[key]);
+export function getConfig(key: ConfigKey) {
+  return redis.get(CONFIG_KEYS[key]);
 }
 
 export async function setConfig(key: ConfigKey, value: unknown) {
@@ -23,15 +23,20 @@ export async function deleteConfig(key: ConfigKey) {
   return await redis.del(CONFIG_KEYS[key]);
 }
 
-export const getAppConfig = () => getConfig("app");
-export const setAppConfig = (value: unknown) => setConfig("app", value);
+// Convenience methods
+export function getAppConfig() { return getConfig('app'); }
+export function setAppConfig(value: unknown) { return setConfig('app', value); }
+export function deleteAppConfig() { return deleteConfig('app'); }
 
-export const getContentConfig = () => getConfig("content");
-export const setContentConfig = (value: unknown) => setConfig("content", value);
+export function getContentConfig() { return getConfig('content'); }
+export function setContentConfig(value: unknown) { return setConfig('content', value); }
+export function deleteContentConfig() { return deleteConfig('content'); }
 
-export const getDataConfig = () => getConfig("data");
-export const setDataConfig = (value: unknown) => setConfig("data", value);
+export function getDataConfig() { return getConfig('data'); }
+export function setDataConfig(value: unknown) { return setConfig('data', value); }
+export function deleteDataConfig() { return deleteConfig('data'); }
 
-export const getTaxonomyConfig = () => getConfig("taxonomy");
-export const setTaxonomyConfig = (value: unknown) => setConfig("taxonomy", value);
+export function getTaxonomyConfig() { return getConfig('taxonomy'); }
+export function setTaxonomyConfig(value: unknown) { return setConfig('taxonomy', value); }
+export function deleteTaxonomyConfig() { return deleteConfig('taxonomy'); }
 

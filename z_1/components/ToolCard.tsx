@@ -1,5 +1,6 @@
 "use client";
-import { Bookmark, BookmarkCheck } from "lucide-react";
+import React from "react";
+import { Bookmark, BookmarkCheck, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useComponentContent } from "../hooks/useConfig";
 import type { Tool } from "../types";
@@ -20,6 +21,20 @@ export function ToolCard({
   className,
 }: ToolCardProps) {
   const content = useComponentContent("toolCard") as any;
+
+  // Provide fallback content if content is null or loading
+  const safeContent = content || {
+    labels: {
+      tier: "Tier:",
+      complexity: "Complexity:",
+      type: "Type:",
+    },
+    actions: {
+      view: "View Details",
+      save: "Save",
+      unsave: "Unsave",
+    },
+  };
 
   const getTypeColor = (type: Tool["type"]) => {
     switch (type) {
@@ -94,7 +109,7 @@ export function ToolCard({
           }}
           className="p-2 rounded-lg hover:bg-secondary transition-colors"
           aria-label={
-            bookmarked ? content.actions.unsave : content.actions.save
+            bookmarked ? safeContent.actions.unsave : safeContent.actions.save
           }
         >
           {bookmarked ? (

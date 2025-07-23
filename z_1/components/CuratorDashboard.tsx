@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
-import { useTools } from "../hooks/useConfig";
+import { useAPITools } from "../hooks/useAPITools";
 import {
   Edit,
   Trash2,
@@ -24,13 +24,18 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
     "assets"
   );
   const [searchQuery, setSearchQuery] = useState("");
-  const { all: allTools } = useTools();
+  const { all: allTools, loading } = useAPITools();
 
   // Editing state
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTool, setEditingTool] = useState<Tool | undefined>(undefined);
-  const [tools, setTools] = useState(allTools);
+  const [tools, setTools] = useState<Tool[]>([]);
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
+
+  // Update tools when allTools changes
+  useEffect(() => {
+    setTools(allTools);
+  }, [allTools]);
 
   // Filter tools based on search query
   const filteredTools = tools.filter((tool) => {
@@ -316,11 +321,16 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
                                   className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
                                   onClick={async () => {
                                     try {
-                                      const res = await fetch(`/api/tools/${tool.id}`, {
-                                        method: "DELETE",
-                                      });
+                                      const res = await fetch(
+                                        `/api/tools/${tool.id}`,
+                                        {
+                                          method: "DELETE",
+                                        }
+                                      );
                                       if (res.ok) {
-                                        setTools((prev) => prev.filter((t) => t.id !== tool.id));
+                                        setTools((prev) =>
+                                          prev.filter((t) => t.id !== tool.id)
+                                        );
                                       }
                                     } finally {
                                       setDeleteConfirmId(null);
@@ -365,16 +375,26 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
                       setTools((prev) => [newTool, ...prev]);
                     } else {
                       // fallback: add locally if API fails
-                      setTools((prev) => [
-                        { ...toolData, id: Date.now().toString() },
-                        ...prev,
-                      ]);
+                      const newTool: Tool = {
+                        ...toolData,
+                        id: Date.now().toString(),
+                        title: toolData.title || "New Tool",
+                        url: toolData.url || "",
+                        type: toolData.type || "Tool",
+                        categories: toolData.categories || [],
+                      };
+                      setTools((prev) => [newTool, ...prev]);
                     }
                   } catch (err) {
-                    setTools((prev) => [
-                      { ...toolData, id: Date.now().toString() },
-                      ...prev,
-                    ]);
+                    const newTool: Tool = {
+                      ...toolData,
+                      id: Date.now().toString(),
+                      title: toolData.title || "New Tool",
+                      url: toolData.url || "",
+                      type: toolData.type || "Tool",
+                      categories: toolData.categories || [],
+                    };
+                    setTools((prev) => [newTool, ...prev]);
                   }
                 }
               }}

@@ -1,24 +1,15 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
+import { getConfig } from '@/lib/redisConfigManager';
 
 export async function GET() {
   try {
-    // Read the data.json file from the public config directory
-    const configDir = path.join(process.cwd(), 'public', 'config');
-    const dataPath = path.join(configDir, 'data.json');
+    // Get data from Redis instead of static file
+    const data = await getConfig('data') as any;
     
-    if (!fs.existsSync(dataPath)) {
-      return NextResponse.json([], { status: 200 });
-    }
-
-    const jsonContent = fs.readFileSync(dataPath, 'utf-8');
-    const data = JSON.parse(jsonContent);
-    
-    // Return the tools array from the data.json file
-    return NextResponse.json(data.tools || []);
+    // Return the tools array from the Redis data
+    return NextResponse.json(data?.tools || []);
   } catch (error) {
-    console.error('Error reading knowledge base:', error);
+    console.error('Error reading knowledge base from Redis:', error);
     return NextResponse.json([], { status: 200 });
   }
 } 

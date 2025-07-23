@@ -7,8 +7,9 @@ import {
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { type: string } }
+  context: { params: { type: string } }
 ) {
+  const params = await context.params;
   const { type } = params;
   const config = await getConfig(type as any);
   return NextResponse.json(config);

@@ -25,6 +25,9 @@ class ConfigManager {
         fetchContentConfig(),
         fetchDataConfig(),
       ]);
+      console.log('DEBUG: Loaded appConfig from Redis:', JSON.stringify(app, null, 2));
+      console.log('DEBUG: Loaded contentConfig from Redis:', JSON.stringify(content, null, 2));
+      console.log('DEBUG: Loaded dataConfig from Redis:', JSON.stringify(data, null, 2));
       this.appConfig = app;
       this.contentConfig = content;
       this.dataConfig = data as ZenoConfig;
