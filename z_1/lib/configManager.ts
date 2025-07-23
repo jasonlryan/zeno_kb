@@ -3,6 +3,11 @@ import type { ZenoAsset, ZenoConfig } from '../types/config';
 import appConfigData from '../public/config/app-config.json';
 import contentConfigData from '../public/config/content.json';
 import dataConfigData from '../public/config/data.json';
+import {
+  getAppConfig as fetchAppConfig,
+  getContentConfig as fetchContentConfig,
+  getDataConfig as fetchDataConfig,
+} from './redisConfigManager';
 
 /**
  * ConfigManager - Centralized configuration management
@@ -18,6 +23,22 @@ class ConfigManager {
     this.appConfig = appConfigData as any;
     this.contentConfig = contentConfigData as any;
     this.dataConfig = dataConfigData as ZenoConfig;
+    this.loadFromRedis();
+  }
+
+  private async loadFromRedis() {
+    try {
+      const [app, content, data] = await Promise.all([
+        fetchAppConfig(),
+        fetchContentConfig(),
+        fetchDataConfig(),
+      ]);
+      if (app) this.appConfig = app;
+      if (content) this.contentConfig = content;
+      if (data) this.dataConfig = data as ZenoConfig;
+    } catch (error) {
+      console.warn('Failed to load config from Redis:', error);
+    }
   }
 
   /**
