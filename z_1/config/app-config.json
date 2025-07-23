@@ -31,6 +31,13 @@
               "icon": "BookOpen",
               "route": "/library",
               "description": "Your personal collection"
+            },
+            {
+              "id": "user-guide",
+              "title": "Test Guide",
+              "icon": "Zap",
+              "route": "/user-guide",
+              "description": "How to use the Zeno AI Knowledge Base"
             }
           ]
         },

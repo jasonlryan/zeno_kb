@@ -37,6 +37,7 @@ import { featureFlags } from "../lib/featureFlags";
 import type { Tool, Category, SidebarSection } from "../types";
 import { useSupabaseAuth } from "../hooks/useSupabaseAuth";
 import { UserList } from "../components/UserList";
+import UserGuidePage from "./user-guide/page";
 
 // Configuration data loaded from config files
 
@@ -52,6 +53,7 @@ export default function HomePage() {
     | "demos"
     | "tool-detail"
     | "category"
+    | "user-guide"
   >("home");
   const [selectedTool, setSelectedTool] = useState<Tool | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -225,7 +227,7 @@ export default function HomePage() {
             {/* Page Title */}
             <section className="text-center py-8">
               <h1 className="text-4xl font-bold text-green-600 mb-2">
-                Welcome to the Zeno Knowledge Hub
+                Welcome to the Zeno AI Knowledge Hub
               </h1>
               <p className="text-xl text-gray-900 dark:text-gray-100">
                 Your AI toolkit, all in one place
@@ -450,6 +452,9 @@ export default function HomePage() {
             />
           </div>
         );
+
+      case "user-guide":
+        return <UserGuidePage />;
 
       default:
         return (

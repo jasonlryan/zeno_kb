@@ -10,7 +10,7 @@ import type { SidebarSection } from "../types";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useSupabaseAuth } from "../hooks/useSupabaseAuth";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 
 interface AppShellProps {
   children: React.ReactNode;
@@ -43,7 +43,7 @@ export function AppShell({
 
   const handleSignOut = async () => {
     await signOut();
-    router.replace('/login');
+    router.replace("/login");
   };
 
   return (
@@ -80,14 +80,18 @@ export function AppShell({
                 className="rounded"
               />
               <h1 className="zeno-heading text-card-foreground text-xl font-semibold">
-                Knowledge
+                AI Knowledge
               </h1>
             </div>
             <div className="flex-1 max-w-2xl mx-8">
               <TopSearchBar onSubmit={onSearch} />
             </div>
             {user && (
-              <Button onClick={handleSignOut} variant="secondary" className="ml-4">
+              <Button
+                onClick={handleSignOut}
+                variant="secondary"
+                className="ml-4"
+              >
                 Sign Out
               </Button>
             )}

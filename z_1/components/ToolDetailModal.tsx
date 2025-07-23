@@ -28,6 +28,8 @@ interface ToolDetailPageProps {
   onBack: () => void;
   onFavorite?: (toolId: string) => void;
   isFavorite?: boolean;
+  onCategoryClick?: (category: string) => void;
+  onTagClick?: (tag: string) => void;
 }
 
 const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
@@ -35,6 +37,8 @@ const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
   onBack,
   onFavorite,
   isFavorite = false,
+  onCategoryClick,
+  onTagClick,
 }) => {
   // Route to appropriate template based on tool type
   if (TemplateManager.isLearningContent(tool)) {
@@ -220,21 +224,21 @@ const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
     <div className="bg-gray-50 min-h-full">
       <div className="container mx-auto">
         {/* Main Tool Details Card */}
-        <div className="bg-white rounded-xl shadow-lg p-8 border border-gray-200">
+        <div className="bg-white rounded-xl shadow-lg p-8 border border-gray-200 zeno-content-padding">
           {/* Header with Title and Favorite */}
           <div className="flex justify-between items-start mb-6">
             <div className="flex items-start space-x-4">
               {getTypeIcon(tool.type)}
               <div>
-                <h2 className="text-4xl font-extrabold text-gray-900">
+                <h2 className="zeno-heading text-4xl font-extrabold text-gray-900">
                   {tool.title}
                 </h2>
                 <div className="flex items-center space-x-2 mt-2">
-                  <span className="text-sm text-gray-500">
+                  <span className="zeno-body text-sm text-gray-500">
                     Type: {tool.type}
                   </span>
                   <span className="text-gray-300">•</span>
-                  <span className="text-sm text-gray-500">
+                  <span className="zeno-body text-sm text-gray-500">
                     Function: {tool.function}
                   </span>
                 </div>
@@ -258,33 +262,88 @@ const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
           </div>
 
           {/* Description */}
-          <p className="text-gray-700 text-lg mb-6 leading-relaxed">
+          <p className="zeno-body text-gray-700 text-lg mb-6 leading-relaxed">
             {tool.description}
           </p>
 
-          {/* Tags and Metadata */}
-          <div className="flex flex-wrap gap-3 mb-8">
-            {tool.tags &&
-              tool.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="bg-blue-50 text-blue-700 text-sm px-4 py-2 rounded-full font-medium"
+          {/* Type Metadata */}
+          <div className="flex flex-wrap gap-3 mb-4 items-center">
+            {tool.type && (
+              <>
+                <span className="zeno-body font-semibold">Type:</span>
+                <button
+                  className="bg-blue-50 text-blue-700 text-sm px-4 py-2 rounded-full font-medium hover:bg-blue-100 transition-colors"
+                  onClick={() =>
+                    typeof onTagClick === "function"
+                      ? onTagClick(tool.type)
+                      : console.log("Type clicked:", tool.type)
+                  }
+                  type="button"
                 >
-                  {tag}
-                </span>
-              ))}
-            <span
-              className={`text-sm px-4 py-2 rounded-full font-medium ${
-                isSpecialist
-                  ? "bg-yellow-100 text-yellow-700"
-                  : "bg-green-100 text-green-700"
-              }`}
-            >
-              {tool.tier}
-            </span>
-            <span className="bg-gray-100 text-gray-700 text-sm px-4 py-2 rounded-full font-medium">
-              Complexity: {tool.complexity}
-            </span>
+                  {tool.type}
+                </button>
+              </>
+            )}
+          </div>
+          {/* Tags and Categories Metadata */}
+          <div className="flex flex-wrap gap-3 mb-8 items-center">
+            {tool.categories && tool.categories.length > 0 && (
+              <span className="zeno-body font-semibold mr-2">Categories:</span>
+            )}
+            {tool.categories &&
+              tool.categories.length > 0 &&
+              tool.categories
+                .filter(
+                  (category): category is string => typeof category === "string"
+                )
+                .map((category) => (
+                  <button
+                    key={category}
+                    className="bg-green-50 text-green-700 text-sm px-4 py-2 rounded-full font-medium hover:bg-green-100 transition-colors"
+                    onClick={() =>
+                      typeof onCategoryClick === "function"
+                        ? onCategoryClick(category)
+                        : console.log("Category clicked:", category)
+                    }
+                    type="button"
+                  >
+                    {category}
+                  </button>
+                ))}
+            {tool.tags &&
+              tool.tags.length > 0 &&
+              tool.tags
+                .filter((tag): tag is string => typeof tag === "string")
+                .map((tag) => (
+                  <button
+                    key={tag}
+                    className="bg-blue-50 text-blue-700 text-sm px-4 py-2 rounded-full font-medium hover:bg-blue-100 transition-colors"
+                    onClick={() =>
+                      typeof onTagClick === "function"
+                        ? onTagClick(tag)
+                        : console.log("Tag clicked:", tag)
+                    }
+                    type="button"
+                  >
+                    {tag}
+                  </button>
+                ))}
+            {tool.tier && (
+              <span
+                className={`text-sm px-4 py-2 rounded-full font-medium ${
+                  tool.tier === "Specialist"
+                    ? "bg-yellow-100 text-yellow-700"
+                    : "bg-green-100 text-green-700"
+                }`}
+              >
+                {tool.tier}
+              </span>
+            )}
+            {tool.complexity && (
+              <span className="bg-gray-100 text-gray-700 text-sm px-4 py-2 rounded-full font-medium">
+                Complexity: {tool.complexity}
+              </span>
+            )}
           </div>
 
           {/* Access Control or Action Button */}
@@ -324,33 +383,18 @@ const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
             </div>
           )}
 
-          {/* Demo Video Section */}
-          <div className="mb-8">
-            <h3 className="text-xl font-bold text-gray-800 mb-3 flex items-center">
-              <PlayCircle className="mr-2 text-red-600" size={20} /> Demo Video
-            </h3>
-            <div className="max-w-2xl">
-              <div className="relative w-full h-0 pb-[42%] bg-gray-200 rounded-lg overflow-hidden shadow-inner">
-                {/* Smaller aspect ratio for compact video */}
-                <div className="absolute inset-0 flex items-center justify-center text-gray-500 text-lg font-medium">
-                  Video Demo Placeholder (e.g., Loom embed)
-                </div>
-              </div>
-            </div>
-          </div>
-
           {/* Type-Specific Caveats & Best Practices */}
-          <div className="bg-blue-50 border border-blue-200 text-blue-900 p-6 rounded-lg mb-8 shadow-inner">
+          <div className="bg-green-50 border border-green-200 text-green-900 p-6 rounded-lg mb-8 shadow-inner">
             <div className="flex items-start">
-              <AlertCircle
-                className="mr-3 text-blue-600 mt-1 flex-shrink-0"
+              <CheckCircle
+                className="mr-3 text-green-600 mt-1 flex-shrink-0"
                 size={24}
               />
               <div className="flex-1">
-                <p className="font-semibold text-lg mb-3">
-                  Important Caveats & Best Practices:
+                <p className="zeno-heading font-semibold text-lg mb-3">
+                  Tips for Getting the Best Results:
                 </p>
-                <ul className="list-disc list-inside space-y-2">
+                <ul className="zeno-body list-disc list-inside space-y-2">
                   {getTypeCaveats(tool.type).map((caveat, index) => (
                     <li key={index} className="text-sm leading-relaxed">
                       {caveat}
@@ -393,68 +437,31 @@ const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
             </div>
           )}
 
-          {/* Feedback Widget */}
-          <div className="bg-gray-50 border border-gray-200 p-6 rounded-lg shadow-inner">
-            <div className="flex flex-col items-center">
-              <p className="font-semibold text-gray-800 mb-4 text-lg">
-                Was this helpful?
-              </p>
-              <div className="flex gap-4 mb-4">
-                <button
-                  onClick={() => handleFeedback(true)}
-                  className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors duration-300 shadow-md focus:outline-none focus:ring-2 focus:ring-green-600 flex items-center"
-                >
-                  <CheckCircle className="mr-2" size={20} /> Yes
-                </button>
-                <button
-                  onClick={() => handleFeedback(false)}
-                  className="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition-colors duration-300 shadow-md focus:outline-none focus:ring-2 focus:ring-red-600 flex items-center"
-                >
-                  <XCircle className="mr-2" size={20} /> No
-                </button>
-              </div>
+          {/* Message Display */}
+          {message.text && (
+            <div
+              className={`fixed bottom-8 right-8 p-4 rounded-lg shadow-xl text-white flex items-center z-50 ${
+                message.type === "success" ? "bg-green-600" : "bg-red-600"
+              }`}
+            >
+              {message.type === "success" ? (
+                <CheckCircle className="mr-2" />
+              ) : (
+                <XCircle className="mr-2" />
+              )}
+              {message.text}
             </div>
+          )}
 
-            <div className="border-t border-gray-300 pt-4">
-              <div className="flex flex-col items-center">
-                <p className="text-gray-600 mb-3 text-center">
-                  Have suggestions or feedback?
-                </p>
-                <button
-                  onClick={() => setIsCommentModalOpen(true)}
-                  className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-300 shadow-md focus:outline-none focus:ring-2 focus:ring-blue-600 flex items-center"
-                >
-                  <MessageSquare className="mr-2" size={20} /> Add Comment
-                </button>
-              </div>
-            </div>
-          </div>
+          {/* Comment Modal */}
+          <CommentModal
+            isOpen={isCommentModalOpen}
+            onClose={() => setIsCommentModalOpen(false)}
+            onSubmit={handleCommentSubmit}
+            toolId={tool.id}
+            toolTitle={tool.title}
+          />
         </div>
-
-        {/* Message Display */}
-        {message.text && (
-          <div
-            className={`fixed bottom-8 right-8 p-4 rounded-lg shadow-xl text-white flex items-center z-50 ${
-              message.type === "success" ? "bg-green-600" : "bg-red-600"
-            }`}
-          >
-            {message.type === "success" ? (
-              <CheckCircle className="mr-2" />
-            ) : (
-              <XCircle className="mr-2" />
-            )}
-            {message.text}
-          </div>
-        )}
-
-        {/* Comment Modal */}
-        <CommentModal
-          isOpen={isCommentModalOpen}
-          onClose={() => setIsCommentModalOpen(false)}
-          onSubmit={handleCommentSubmit}
-          toolId={tool.id}
-          toolTitle={tool.title}
-        />
       </div>
     </div>
   );
