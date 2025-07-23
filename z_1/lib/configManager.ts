@@ -1,51 +1,43 @@
-import type { 
-  AppConfig, 
-  ContentConfig, 
-  DataConfig, 
-  ConfigManager as IConfigManager,
-  SidebarSection,
-  Tool,
-  Category
-} from '../types/config';
+import type { ZenoAsset, ZenoConfig } from '../types/config';
 
-import appConfigData from '../config/app-config.json';
-import contentConfigData from '../config/content.json';
-import dataConfigData from '../config/data.json';
+import appConfigData from '../public/config/app-config.json';
+import contentConfigData from '../public/config/content.json';
+import dataConfigData from '../public/config/data.json';
 
 /**
  * ConfigManager - Centralized configuration management
  * Provides type-safe access to all application configuration
  */
-class ConfigManager implements IConfigManager {
-  private appConfig: AppConfig;
-  private contentConfig: ContentConfig;
-  private dataConfig: DataConfig;
+class ConfigManager {
+  private appConfig: any;
+  private contentConfig: any;
+  private dataConfig: ZenoConfig;
   private cache: Map<string, any> = new Map();
 
   constructor() {
-    this.appConfig = appConfigData as AppConfig;
-    this.contentConfig = contentConfigData as ContentConfig;
-    this.dataConfig = dataConfigData as DataConfig;
+    this.appConfig = appConfigData as any;
+    this.contentConfig = contentConfigData as any;
+    this.dataConfig = dataConfigData as ZenoConfig;
   }
 
   /**
    * Get application configuration
    */
-  getAppConfig(): AppConfig {
+  getAppConfig(): any {
     return this.appConfig;
   }
 
   /**
    * Get content/text configuration
    */
-  getContentConfig(): ContentConfig {
+  getContentConfig(): any {
     return this.contentConfig;
   }
 
   /**
    * Get data configuration
    */
-  getDataConfig(): DataConfig {
+  getDataConfig(): ZenoConfig {
     return this.dataConfig;
   }
 
@@ -83,15 +75,15 @@ class ConfigManager implements IConfigManager {
   /**
    * Get navigation configuration with icon mapping
    */
-  getNavigation(): SidebarSection[] {
+  getNavigation(): any[] {
     const cacheKey = 'navigation:sidebar';
     if (this.cache.has(cacheKey)) {
       return this.cache.get(cacheKey);
     }
 
-    const navigation = this.appConfig.navigation.sidebar.sections.map(section => ({
+    const navigation = this.appConfig.navigation.sidebar.sections.map((section: any) => ({
       ...section,
-      items: section.items.map(item => ({
+      items: section.items.map((item: any) => ({
         ...item,
         active: false // Will be set by consuming component
       }))
@@ -104,14 +96,14 @@ class ConfigManager implements IConfigManager {
   /**
    * Get tools data
    */
-  getTools(): Tool[] {
+  getTools(): ZenoAsset[] {
     return this.dataConfig.tools;
   }
 
   /**
    * Get categories data (dynamically generated from tools)
    */
-  getCategories(): Category[] {
+  getCategories(): any[] {
     const cacheKey = 'categories:dynamic';
     if (this.cache.has(cacheKey)) {
       return this.cache.get(cacheKey);
@@ -141,7 +133,8 @@ class ConfigManager implements IConfigManager {
    * Get function categories
    */
   getFunctionCategories(): string[] {
-    return this.dataConfig.functionCategories;
+    // @ts-expect-error: functionCategories may not exist on ZenoConfig
+    return this.dataConfig.functionCategories ?? [];
   }
 
   /**
@@ -210,7 +203,7 @@ class ConfigManager implements IConfigManager {
   /**
    * Get featured tools (filtered from data)
    */
-  getFeaturedTools(): Tool[] {
+  getFeaturedTools(): ZenoAsset[] {
     const cacheKey = 'tools:featured';
     if (this.cache.has(cacheKey)) {
       return this.cache.get(cacheKey);
@@ -228,7 +221,7 @@ class ConfigManager implements IConfigManager {
   /**
    * Get recent tools (sorted by date_added)
    */
-  getRecentTools(): Tool[] {
+  getRecentTools(): ZenoAsset[] {
     const cacheKey = 'tools:recent';
     if (this.cache.has(cacheKey)) {
       return this.cache.get(cacheKey);
@@ -236,7 +229,7 @@ class ConfigManager implements IConfigManager {
 
     const limit = this.appConfig.limits.recentTools;
     const recent = [...this.dataConfig.tools]
-      .sort((a, b) => new Date(b.date_added).getTime() - new Date(a.date_added).getTime())
+      .sort((a, b) => new Date(b.date_added ?? 0).getTime() - new Date(a.date_added ?? 0).getTime())
       .slice(0, limit);
 
     this.cache.set(cacheKey, recent);
@@ -246,7 +239,7 @@ class ConfigManager implements IConfigManager {
   /**
    * Get tools by category
    */
-  getToolsByCategory(categoryId: string): Tool[] {
+  getToolsByCategory(categoryId: string): ZenoAsset[] {
     // This would need category-to-tool mapping logic
     // For now, return all tools (implementation depends on categorization strategy)
     return this.dataConfig.tools;
@@ -255,7 +248,7 @@ class ConfigManager implements IConfigManager {
   /**
    * Get tools by function
    */
-  getToolsByFunction(functionName: string): Tool[] {
+  getToolsByFunction(functionName: string): ZenoAsset[] {
     return this.dataConfig.tools.filter(tool => tool.function === functionName);
   }
 
@@ -263,7 +256,8 @@ class ConfigManager implements IConfigManager {
    * Get user by ID
    */
   getUser(userId: string) {
-    return this.dataConfig.users.find(user => user.id === userId);
+    // @ts-expect-error: users may not exist on ZenoConfig
+    return (this.dataConfig.users ?? []).find((user: any) => user.id === userId);
   }
 
   /**
@@ -271,12 +265,11 @@ class ConfigManager implements IConfigManager {
    */
   getActiveAnnouncements() {
     const now = new Date();
-    return this.dataConfig.announcements.filter(announcement => {
+    // @ts-expect-error: announcements may not exist on ZenoConfig
+    return (this.dataConfig.announcements ?? []).filter((announcement: any) => {
       if (!announcement.active) return false;
-      
       const startDate = new Date(announcement.startDate);
       const endDate = new Date(announcement.endDate);
-      
       return now >= startDate && now <= endDate;
     });
   }

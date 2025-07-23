@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@supabase/supabase-js": "^2.51.0",
+    "@upstash/redis": "^1.35.1",
     "csv-parse": "^6.0.0",
     "csv-stringify": "^6.6.0",
     "dotenv": "^17.2.0"

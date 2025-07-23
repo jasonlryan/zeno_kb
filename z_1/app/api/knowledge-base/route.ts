@@ -4,8 +4,8 @@ import path from 'path';
 
 export async function GET() {
   try {
-    // Read the data.json file from the config directory
-    const configDir = path.join(process.cwd(), 'config');
+    // Read the data.json file from the public config directory
+    const configDir = path.join(process.cwd(), 'public', 'config');
     const dataPath = path.join(configDir, 'data.json');
     
     if (!fs.existsSync(dataPath)) {

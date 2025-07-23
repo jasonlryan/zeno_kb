@@ -12,7 +12,7 @@ export interface Asset {
 import fs from 'fs';
 import path from 'path';
 
-const dataFilePath = path.join(process.cwd(), 'z_1/config/data.json');
+const dataFilePath = path.join(process.cwd(), 'z_1/public/config/data.json');
 const schemaFilePath = path.join(process.cwd(), 'z_1/data/schema.json');
 
 function loadSchema(): { fields: SchemaField[] } {

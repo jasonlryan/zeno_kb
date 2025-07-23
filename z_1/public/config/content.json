@@ -25,18 +25,7 @@
     "search": {
       "title": "Search Results",
       "subtitle": "Find tools and resources across the platform",
-      "placeholder": {
-        "placeholder": "Search tools, docs, and resources...",
-        "noResultsMessage": "No tools found matching your search.",
-        "suggestions": {
-          "enabled": true,
-          "maxItems": 5
-        },
-        "filters": {
-          "enabled": true,
-          "defaultExpanded": false
-        }
-      },
+      "placeholder": "Search tools, docs, and resources...",
       "noResults": {
         "title": "No results found",
         "message": "Try adjusting your search terms or browse by category",
@@ -355,4 +344,4 @@
       "monthsAgo": "{count} months ago"
     }
   }
-}
+} 
