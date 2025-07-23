@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { configManager } from '../lib/configManager';
 import type { 
   AppConfig, 
@@ -34,7 +34,21 @@ export function useConfig() {
  * Hook for accessing navigation configuration
  */
 export function useNavigation() {
-  return useMemo(() => configManager.getNavigation(), []);
+  const [navigation, setNavigation] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let mounted = true;
+    configManager.getNavigation().then((nav) => {
+      if (mounted) {
+        setNavigation(nav || []);
+        setLoading(false);
+      }
+    });
+    return () => { mounted = false; };
+  }, []);
+
+  return { navigation, loading };
 }
 
 /**

@@ -64,7 +64,7 @@ export default function HomePage() {
 
   // Load configuration data
   const { app } = useConfig();
-  const navigation = useNavigation();
+  const { navigation, loading: navLoading } = useNavigation();
   const {
     all: allTools,
     featured: featuredTools,
@@ -162,29 +162,40 @@ export default function HomePage() {
   };
 
   // Create sidebar sections with proper active state from config
-  let filteredSidebarSections = navigation
-    .map((section) => ({
-      ...section,
-      items: section.items
-        .filter((item: any) => {
-          // If permissions are specified, only show if user role is included
-          if (item.permissions && item.permissions.length > 0) {
-            return role && item.permissions.includes(role);
-          }
-          // If no permissions specified, show to all
-          return true;
-        })
-        .map((item: any) => ({
-          ...item,
-          icon:
-            typeof item.icon === "string"
-              ? iconMap[item.icon] || Home
-              : item.icon,
-          active: activeView === item.id,
-        })),
-    }))
-    // Remove sections with no visible items
-    .filter((section) => section.items.length > 0);
+  let filteredSidebarSections: any[] = [];
+  if (!navLoading) {
+    filteredSidebarSections = navigation
+      .map((section) => ({
+        ...section,
+        items: section.items
+          .filter((item: any) => {
+            // If permissions are specified, only show if user role is included
+            if (item.permissions && item.permissions.length > 0) {
+              return role && item.permissions.includes(role);
+            }
+            // If no permissions specified, show to all
+            return true;
+          })
+          .map((item: any) => ({
+            ...item,
+            icon:
+              typeof item.icon === "string"
+                ? iconMap[item.icon] || Home
+                : item.icon,
+            active: activeView === item.id,
+          })),
+      }))
+      // Remove sections with no visible items
+      .filter((section) => section.items.length > 0);
+  }
+
+  if (navLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen text-lg text-gray-500">
+        Loading navigation...
+      </div>
+    );
+  }
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
