@@ -49,6 +49,30 @@
       "required": false,
       "source": "Skill Level",
       "description": "Skill level for the asset, if provided."
+    },
+    {
+      "name": "tabs",
+      "type": "array",
+      "required": false,
+      "description": "Array of tab names or categories associated with the asset."
+    },
+    {
+      "name": "date_created",
+      "type": "string",
+      "required": false,
+      "description": "ISO date string for when the asset was created."
+    },
+    {
+      "name": "date_modified",
+      "type": "string",
+      "required": false,
+      "description": "ISO date string for when the asset was last modified."
+    },
+    {
+      "name": "created_by",
+      "type": "string",
+      "required": false,
+      "description": "Identifier or name of the user who created the asset."
     }
   ]
 } 

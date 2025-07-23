@@ -37,12 +37,19 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
     if (!searchQuery.trim()) return true;
     const query = searchQuery.toLowerCase();
     return (
-      tool.title.toLowerCase().includes(query) ||
-      tool.description.toLowerCase().includes(query) ||
-      tool.type.toLowerCase().includes(query) ||
-      tool.tier.toLowerCase().includes(query) ||
-      tool.tags?.some((tag: string) => tag.toLowerCase().includes(query))
+      tool.title?.toLowerCase().includes(query) ||
+      tool.description?.toLowerCase().includes(query) ||
+      tool.type?.toLowerCase().includes(query) ||
+      tool.tier?.toLowerCase().includes(query) ||
+      tool.tags?.some((tag: string) => tag?.toLowerCase().includes(query))
     );
+  });
+
+  // Sort filtered tools by date_added (newest first)
+  const sortedTools = filteredTools.sort((a, b) => {
+    const dateA = a.date_added ? new Date(a.date_added).getTime() : 0;
+    const dateB = b.date_added ? new Date(b.date_added).getTime() : 0;
+    return dateB - dateA;
   });
 
   // Calculate real counts from filtered data
@@ -196,13 +203,13 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
                       Asset
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                      Description
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                       Type
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                       Categories
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                      Skill Level
                     </th>
                     <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                       Actions
@@ -210,29 +217,22 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
                   </tr>
                 </thead>
                 <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                  {filteredTools.map((tool) => (
+                  {sortedTools.map((tool) => (
                     <tr
                       key={tool.id}
                       className="hover:bg-gray-50 dark:hover:bg-gray-700"
                     >
                       <td className="px-6 py-4">
                         <div className="flex items-start">
-                          <div className="flex-shrink-0 h-10 w-10">
-                            <div className="h-10 w-10 rounded-lg bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
-                              <span className="text-blue-600 dark:text-blue-400 font-semibold text-sm">
-                                {tool.type?.charAt(0) || "-"}
-                              </span>
-                            </div>
-                          </div>
-                          <div className="ml-4 min-w-0 flex-1">
+                          <div className="ml-0 min-w-0 flex-1">
                             <div className="text-sm font-medium text-gray-900 dark:text-white break-words">
                               {tool.title}
                             </div>
-                            <div className="text-sm text-gray-500 dark:text-gray-400 break-words mt-1">
-                              {tool.description}
-                            </div>
                           </div>
                         </div>
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400 break-words">
+                        {tool.description}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
@@ -241,12 +241,25 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         {Array.isArray(tool.categories) &&
-                        tool.categories.length > 0
-                          ? tool.categories.join(", ")
-                          : "-"}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {tool.skillLevel || "-"}
+                        tool.categories.length > 0 ? (
+                          <div className="flex flex-wrap gap-2">
+                            {tool.categories.map((category: string) => (
+                              <button
+                                key={category}
+                                className="bg-green-50 text-green-700 text-xs px-2 py-1 rounded-full font-medium border border-green-200 hover:bg-green-100 transition-colors"
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  console.log("Category clicked:", category);
+                                }}
+                              >
+                                {category}
+                              </button>
+                            ))}
+                          </div>
+                        ) : (
+                          "-"
+                        )}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <div className="flex items-center justify-end space-x-2">
@@ -285,14 +298,14 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
                         {/* Delete confirmation dialog */}
                         {deleteConfirmId === tool.id && (
                           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-                            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 max-w-sm w-full">
-                              <h3 className="text-lg font-semibold mb-4">
+                            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 max-w-md w-full">
+                              <h3 className="text-lg font-semibold mb-4 break-words whitespace-normal text-center">
                                 Are you sure you want to delete this asset?
                               </h3>
-                              <p className="mb-6 text-gray-700 dark:text-gray-300">
+                              <p className="mb-6 text-gray-700 dark:text-gray-300 text-center">
                                 This action cannot be undone.
                               </p>
-                              <div className="flex justify-end gap-4">
+                              <div className="flex justify-center gap-4">
                                 <button
                                   className="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600"
                                   onClick={() => setDeleteConfirmId(null)}
@@ -325,7 +338,7 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
               isOpen={isModalOpen}
               onClose={() => setIsModalOpen(false)}
               tool={editingTool}
-              onSave={(toolData) => {
+              onSave={async (toolData) => {
                 if (editingTool) {
                   // Edit existing
                   setTools((prev) =>
@@ -334,11 +347,29 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
                     )
                   );
                 } else {
-                  // Add new
-                  setTools((prev) => [
-                    ...prev,
-                    { ...toolData, id: Date.now().toString() },
-                  ]);
+                  // Add new (persist to API)
+                  try {
+                    const res = await fetch("/api/tools", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify(toolData),
+                    });
+                    if (res.ok) {
+                      const { tool: newTool } = await res.json();
+                      setTools((prev) => [newTool, ...prev]);
+                    } else {
+                      // fallback: add locally if API fails
+                      setTools((prev) => [
+                        { ...toolData, id: Date.now().toString() },
+                        ...prev,
+                      ]);
+                    }
+                  } catch (err) {
+                    setTools((prev) => [
+                      { ...toolData, id: Date.now().toString() },
+                      ...prev,
+                    ]);
+                  }
                 }
               }}
             />

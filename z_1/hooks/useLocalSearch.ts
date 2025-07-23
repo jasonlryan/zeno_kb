@@ -11,8 +11,8 @@ export function useLocalSearch(tools: Tool[], query: string) {
     return tools.filter(
       (tool) =>
         tool.title.toLowerCase().includes(searchTerm) ||
-        tool.description.toLowerCase().includes(searchTerm) ||
-        tool.tags.some((tag) => tag.toLowerCase().includes(searchTerm)),
+        (tool.description && tool.description.toLowerCase().includes(searchTerm)) ||
+        (Array.isArray(tool.tags) && tool.tags.some((tag) => tag.toLowerCase().includes(searchTerm)))
     )
   }, [tools, query])
 }

@@ -60,11 +60,11 @@ export function ToolCard({
       )}
       onClick={() => onSelect?.(tool.id)}
     >
-      <div className="flex justify-between items-start mb-4">
+      <div className="flex justify-between items-start mb-3">
         <div className="flex flex-wrap gap-2">
           <span
             className={cn(
-              "px-3 py-1 rounded-full text-xs font-medium border",
+              "px-2 py-0.5 rounded-full text-xs font-medium border",
               getTypeColor(tool.type)
             )}
           >
@@ -72,7 +72,7 @@ export function ToolCard({
           </span>
           <span
             className={cn(
-              "px-3 py-1 rounded-full text-xs font-medium border",
+              "px-2 py-0.5 rounded-full text-xs font-medium border",
               getTierColor(tool.tier)
             )}
           >
@@ -80,7 +80,7 @@ export function ToolCard({
           </span>
           <span
             className={cn(
-              "px-3 py-1 rounded-full text-xs font-medium border",
+              "px-2 py-0.5 rounded-full text-xs font-medium border",
               getComplexityColor(tool.complexity)
             )}
           >
@@ -105,17 +105,17 @@ export function ToolCard({
         </button>
       </div>
 
-      <h3 className="zeno-heading text-lg text-card-foreground mb-3 line-clamp-2">
+      <h3 className="zeno-heading text-base font-semibold text-card-foreground mb-2 line-clamp-2">
         {tool.title}
       </h3>
 
-      <p className="zeno-body text-muted-foreground mb-4 line-clamp-3">
+      <p className="zeno-body text-xs text-muted-foreground mb-3 line-clamp-3">
         {tool.description}
       </p>
 
       {/* Tags section - only show if tags is an array and has items */}
       {Array.isArray(tool.tags) && tool.tags.length > 0 && (
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 mb-2">
           {tool.tags.slice(0, 3).map((tag, index) => (
             <span
               key={index}
@@ -129,6 +129,24 @@ export function ToolCard({
               +{tool.tags.length - 3} more
             </span>
           )}
+        </div>
+      )}
+
+      {/* Categories at bottom as clickable chips */}
+      {tool.categories && tool.categories.length > 0 && (
+        <div className="flex flex-wrap gap-2 mt-2">
+          {tool.categories.map((category) => (
+            <button
+              key={category}
+              className="bg-green-50 text-green-700 text-xs px-2 py-1 rounded-full font-medium border border-green-200 hover:bg-green-100 transition-colors"
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation(); /* TODO: handle category click */
+              }}
+            >
+              {category}
+            </button>
+          ))}
         </div>
       )}
     </div>
@@ -152,6 +170,8 @@ export function ToolCardDemo() {
     date_added: "2024-01-15T10:00:00Z",
     added_by: "curator-1",
     scheduled_feature_date: undefined,
+    url: "",
+    categories: ["AI Tools"],
   };
 
   return (

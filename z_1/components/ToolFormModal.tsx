@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type React from "react";
 
 import { X } from "lucide-react";
@@ -27,9 +27,20 @@ export function ToolFormModal({
     url: tool?.url || "",
     type: tool?.type || "GPT",
     categories: tool?.categories ? tool.categories.join(", ") : "",
-    skillLevel: tool?.skillLevel || "",
+    created_by: tool?.created_by || "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    setFormData({
+      title: tool?.title || "",
+      description: tool?.description || "",
+      url: tool?.url || "",
+      type: tool?.type || "GPT",
+      categories: tool?.categories ? tool.categories.join(", ") : "",
+      created_by: tool?.created_by || "",
+    });
+  }, [tool, isOpen]);
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -63,7 +74,6 @@ export function ToolFormModal({
         .split(",")
         .map((cat) => cat.trim())
         .filter(Boolean),
-      skillLevel: formData.skillLevel,
     };
     onSave(toolData);
     onClose();
@@ -107,6 +117,32 @@ export function ToolFormModal({
         </div>
         {/* Form */}
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
+          {tool && (
+            <div className="flex gap-8 mb-2">
+              <div>
+                <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-0.5">
+                  Created On
+                </label>
+                <div className="text-sm text-gray-700 dark:text-gray-200">
+                  {tool.date_created
+                    ? new Date(tool.date_created).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })
+                    : "-"}
+                </div>
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-0.5">
+                  Created By
+                </label>
+                <div className="text-sm text-gray-700 dark:text-gray-200">
+                  {tool.created_by || "-"}
+                </div>
+              </div>
+            </div>
+          )}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Title
@@ -151,23 +187,6 @@ export function ToolFormModal({
                 <p className="text-red-500 text-sm mt-1">{errors.type}</p>
               )}
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Skill Level
-              </label>
-              <select
-                value={formData.skillLevel}
-                onChange={(e) =>
-                  handleInputChange("skillLevel", e.target.value)
-                }
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="">Select skill level</option>
-                <option value="Beginner">Beginner</option>
-                <option value="Intermediate">Intermediate</option>
-                <option value="Advanced">Advanced</option>
-              </select>
-            </div>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -198,6 +217,21 @@ export function ToolFormModal({
               <p className="text-red-500 text-sm mt-1">{errors.categories}</p>
             )}
           </div>
+          {!tool && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Created By
+              </label>
+              <input
+                type="text"
+                value={formData.created_by}
+                onChange={(e) =>
+                  handleInputChange("created_by", e.target.value)
+                }
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+          )}
           <div className="flex justify-end space-x-3 pt-4">
             <button
               type="button"
