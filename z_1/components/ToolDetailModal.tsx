@@ -28,7 +28,7 @@ interface ToolDetailPageProps {
   onBack: () => void;
   onFavorite?: (toolId: string) => void;
   isFavorite?: boolean;
-  onCategoryClick?: (category: string) => void;
+  onCategoryClick?: (categoryId: string) => void;
   onTagClick?: (tag: string) => void;
 }
 
@@ -272,7 +272,7 @@ const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
               <>
                 <span className="zeno-body font-semibold">Type:</span>
                 <button
-                  className="bg-blue-50 text-blue-700 text-sm px-4 py-2 rounded-full font-medium hover:bg-blue-100 transition-colors"
+                  className="zeno-type hover:bg-green-200 transition-colors cursor-pointer"
                   onClick={() =>
                     typeof onTagClick === "function"
                       ? onTagClick(tool.type)
@@ -285,39 +285,119 @@ const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
               </>
             )}
           </div>
-          {/* Tags and Categories Metadata */}
-          <div className="flex flex-wrap gap-3 mb-8 items-center">
-            {tool.categories && tool.categories.length > 0 && (
+          {/* Tag Categories Metadata */}
+          {tool.tags && tool.tags.length > 0 && (
+            <div className="flex flex-wrap gap-3 mb-4 items-center">
               <span className="zeno-body font-semibold mr-2">Categories:</span>
-            )}
-            {tool.categories &&
-              tool.categories.length > 0 &&
-              tool.categories
-                .filter(
-                  (category): category is string => typeof category === "string"
-                )
-                .map((category) => (
+              {/* Show tag categories that this tool belongs to */}
+              {(() => {
+                // Get tag categories from context/config
+                const tagCategories = [
+                  {
+                    id: "audience",
+                    name: "Audience Research",
+                    tags: [
+                      "audience-insights",
+                      "consumer-behavior",
+                      "behavioral-analysis",
+                      "market-research",
+                      "demographics",
+                    ],
+                  },
+                  {
+                    id: "leadership",
+                    name: "Executive Leadership",
+                    tags: [
+                      "ceo",
+                      "cio",
+                      "ciso",
+                      "cmo",
+                      "itdm",
+                      "executives",
+                      "leadership",
+                    ],
+                  },
+                  {
+                    id: "industries",
+                    name: "Industries & Trends",
+                    tags: [
+                      "trends",
+                      "predictions",
+                      "clean-energy",
+                      "banking",
+                      "travel-tourism",
+                      "esg",
+                      "workplace",
+                      "retail-banking",
+                      "private-wealth",
+                    ],
+                  },
+                  {
+                    id: "platforms",
+                    name: "Digital Platforms",
+                    tags: [
+                      "digital-media",
+                      "tiktok",
+                      "social-media",
+                      "media-coverage",
+                      "news",
+                    ],
+                  },
+                  {
+                    id: "ai-tools",
+                    name: "AI & Training",
+                    tags: [
+                      "ai-training",
+                      "chatgpt",
+                      "ai-copilot",
+                      "compliance",
+                      "prompt-creation",
+                      "custom-gpt",
+                    ],
+                  },
+                  {
+                    id: "communications",
+                    name: "Brand & Communications",
+                    tags: [
+                      "brand-voice",
+                      "content-creation",
+                      "crisis-management",
+                    ],
+                  },
+                ];
+
+                const toolCategories = tagCategories.filter((category) =>
+                  tool.tags?.some((tag) => category.tags.includes(tag))
+                );
+
+                return toolCategories.map((category) => (
                   <button
-                    key={category}
-                    className="bg-green-50 text-green-700 text-sm px-4 py-2 rounded-full font-medium hover:bg-green-100 transition-colors"
+                    key={category.id}
+                    className="zeno-category"
                     onClick={() =>
                       typeof onCategoryClick === "function"
-                        ? onCategoryClick(category)
-                        : console.log("Category clicked:", category)
+                        ? onCategoryClick(category.id)
+                        : console.log("Category clicked:", category.name)
                     }
                     type="button"
                   >
-                    {category}
+                    {category.name}
                   </button>
-                ))}
-            {tool.tags &&
-              tool.tags.length > 0 &&
-              tool.tags
+                ));
+              })()}
+            </div>
+          )}
+
+          {/* Tags Metadata */}
+          {tool.tags && tool.tags.length > 0 && (
+            <div className="flex flex-wrap gap-3 mb-4 items-center">
+              <span className="zeno-body font-semibold mr-2">Tags:</span>
+              {tool.tags
                 .filter((tag): tag is string => typeof tag === "string")
                 .map((tag) => (
                   <button
                     key={tag}
-                    className="bg-blue-50 text-blue-700 text-sm px-4 py-2 rounded-full font-medium hover:bg-blue-100 transition-colors"
+                    className="zeno-tag-large"
                     onClick={() =>
                       typeof onTagClick === "function"
                         ? onTagClick(tag)
@@ -328,6 +408,11 @@ const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
                     {tag}
                   </button>
                 ))}
+            </div>
+          )}
+
+          {/* Other Metadata */}
+          <div className="flex flex-wrap gap-3 mb-8 items-center">
             {tool.tier && (
               <span
                 className={`text-sm px-4 py-2 rounded-full font-medium ${
@@ -375,7 +460,7 @@ const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
                 href={tool.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-700 transition-colors duration-300 shadow-xl transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-600"
+                className="zeno-button-large-blue"
               >
                 {getActionButtonText(tool.type)}
                 <ExternalLink className="ml-3" size={24} />

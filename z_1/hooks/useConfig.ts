@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { ZenoConfig } from '../types/config';
+import { useConfigContext } from '../lib/configContext';
 
 interface AppConfig {
   [key: string]: any;
@@ -18,90 +19,26 @@ interface ConfigHook {
 }
 
 export function useConfig(): ConfigHook {
-  const [appConfig, setAppConfig] = useState<AppConfig | null>(null);
-  const [contentConfig, setContentConfig] = useState<ContentConfig | null>(null);
-  const [dataConfig, setDataConfig] = useState<ZenoConfig | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    async function fetchConfigs() {
-      try {
-        setLoading(true);
-        setError(null);
-
-        const [appRes, contentRes, dataRes] = await Promise.all([
-          fetch('/api/config/app'),
-          fetch('/api/config/content'),
-          fetch('/api/config/data')
-        ]);
-
-        if (!appRes.ok || !contentRes.ok || !dataRes.ok) {
-          throw new Error('Failed to fetch configs');
-        }
-
-        const [app, content, data] = await Promise.all([
-          appRes.json(),
-          contentRes.json(),
-          dataRes.json()
-        ]);
-
-        setAppConfig(app);
-        setContentConfig(content);
-        setDataConfig(data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load config');
-        console.error('Config loading error:', err);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchConfigs();
-  }, []);
-
-  return { appConfig, contentConfig, dataConfig, loading, error };
+  const { appConfig, contentConfig, dataConfig, loading, error } = useConfigContext();
+  
+  return useMemo(() => ({ 
+    appConfig, 
+    contentConfig, 
+    dataConfig, 
+    loading, 
+    error 
+  }), [appConfig, contentConfig, dataConfig, loading, error]);
 }
 
 /**
  * Hook for accessing navigation configuration
  */
 export function useNavigation() {
-  const [navigation, setNavigation] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    let mounted = true;
-    
-    async function fetchNavigation() {
-      try {
-        const response = await fetch('/api/config/app');
-        if (!response.ok) {
-          throw new Error('Failed to fetch app config');
-        }
-        const appConfig = await response.json();
-        
-        if (mounted && appConfig.navigation?.sidebar?.sections) {
-          setNavigation(appConfig.navigation.sidebar.sections);
-        }
-      } catch (error) {
-        console.error('Failed to load navigation:', error);
-        if (mounted) {
-          setNavigation([]);
-        }
-      } finally {
-        if (mounted) {
-          setLoading(false);
-        }
-      }
-    }
-
-    fetchNavigation();
-    
-    return () => { 
-      mounted = false; 
-    };
-  }, []);
+  const { appConfig, loading } = useConfigContext();
+  
+  const navigation = useMemo(() => {
+    return appConfig?.navigation?.sidebar?.sections || [];
+  }, [appConfig]);
 
   return { navigation, loading };
 }
@@ -110,162 +47,72 @@ export function useNavigation() {
  * Hook for accessing tools data with various filtering methods
  */
 export function useTools() {
-  const [tools, setTools] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    let mounted = true;
-    
-    async function fetchTools() {
-      try {
-        const response = await fetch('/api/config/data');
-        if (!response.ok) {
-          throw new Error('Failed to fetch data config');
-        }
-        const dataConfig = await response.json();
-        
-        if (mounted) {
-          const toolsArray = dataConfig.tools || [];
-          setTools(toolsArray);
-        }
-      } catch (error) {
-        console.error('Failed to load tools:', error);
-        if (mounted) {
-          setTools([]);
-        }
-      } finally {
-        if (mounted) {
-          setLoading(false);
-        }
-      }
-    }
-
-    fetchTools();
-    
-    return () => { 
-      mounted = false; 
-    };
-  }, []);
+  const { dataConfig, loading } = useConfigContext();
+  
+  const tools = useMemo(() => {
+    return dataConfig?.tools || [];
+  }, [dataConfig]);
 
   // Helper functions for filtering tools
-  const getFeaturedTools = () => tools.filter(tool => tool.featured);
-  const getRecentTools = () => {
+  const getFeaturedTools = useCallback(() => tools.filter(tool => tool.featured), [tools]);
+  const getRecentTools = useCallback(() => {
     return tools
       .filter(tool => tool.date_added)
-      .sort((a, b) => new Date(b.date_added).getTime() - new Date(a.date_added).getTime())
+      .sort((a, b) => new Date(b.date_added!).getTime() - new Date(a.date_added!).getTime())
       .slice(0, 10);
-  };
-  const getToolsByFunction = (functionName: string) => {
+  }, [tools]);
+  const getToolsByFunction = useCallback((functionName: string) => {
     return tools.filter(tool => 
       tool.categories?.includes(functionName) || 
       tool.function === functionName
     );
-  };
-  const getToolsByCategory = (categoryId: string) => {
+  }, [tools]);
+  const getToolsByCategory = useCallback((categoryId: string) => {
     return tools.filter(tool => 
       tool.categories?.includes(categoryId)
     );
-  };
+  }, [tools]);
 
-  return {
+  return useMemo(() => ({
     all: tools,
     featured: getFeaturedTools(),
     recent: getRecentTools(),
     byFunction: getToolsByFunction,
     byCategory: getToolsByCategory,
     loading
-  };
+  }), [tools, getFeaturedTools, getRecentTools, getToolsByFunction, getToolsByCategory, loading]);
 }
 
 /**
  * Hook for accessing categories data
  */
 export function useCategories() {
-  const [categories, setCategories] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    let mounted = true;
+  const { dataConfig, loading } = useConfigContext();
+  
+  const categories = useMemo(() => {
+    const tools = dataConfig?.tools || [];
+    const tagCategories = dataConfig?.tagCategories || {};
     
-    async function fetchCategories() {
-      try {
-        const [dataResponse, taxonomyResponse] = await Promise.all([
-          fetch('/api/config/data'),
-          fetch('/api/config/taxonomy')
-        ]);
-        
-        if (!dataResponse.ok || !taxonomyResponse.ok) {
-          throw new Error('Failed to fetch config data');
-        }
-        
-        const [dataConfig, taxonomyConfig] = await Promise.all([
-          dataResponse.json(),
-          taxonomyResponse.json()
-        ]);
-        
-        if (mounted) {
-          // Generate categories from function categories in taxonomy
-          const functionGroups = taxonomyConfig.functionCategories?.groups || {};
-          const generatedCategories = Object.entries(functionGroups).map(([key, group]: [string, any]) => ({
-            id: key,
-            title: group.name,
-            icon: group.icon,
-            description: `${group.functions?.length || 0} functions`,
-            count: dataConfig.tools?.filter((tool: any) => 
-              group.functions?.some((func: string) => 
-                tool.categories?.includes(func)
-              )
-            ).length || 0,
-            color: group.color
-          }));
-          
-          setCategories(generatedCategories);
-        }
-      } catch (error) {
-        console.error('Failed to load categories:', error);
-        if (mounted) {
-          // Provide fallback categories
-          const fallbackCategories = [
-            {
-              id: "strategy",
-              title: "Strategy & Analysis",
-              icon: "🎯",
-              description: "Strategic planning and analysis tools",
-              count: 0,
-              color: "#F97316"
-            },
-            {
-              id: "content",
-              title: "Content & Creative",
-              icon: "✍️",
-              description: "Content creation and creative tools",
-              count: 0,
-              color: "#EC4899"
-            },
-            {
-              id: "data",
-              title: "Data & Intelligence",
-              icon: "📊",
-              description: "Data analysis and intelligence tools",
-              count: 0,
-              color: "#6366F1"
-            }
-          ];
-          setCategories(fallbackCategories);
-        }
-      } finally {
-        if (mounted) {
-          setLoading(false);
-        }
-      }
-    }
+    // Convert tagCategories object to array and count tools for each
+    return Object.values(tagCategories).map((categoryDef: any) => {
+      // Count tools that have any of this category's tags
+      const toolCount = tools.filter((tool: any) => {
+        if (!Array.isArray(tool.tags)) return false;
+        return tool.tags.some((tag: string) => 
+          categoryDef.tags.includes(tag)
+        );
+      }).length;
 
-    fetchCategories();
-    
-    return () => { 
-      mounted = false; 
-    };
-  }, []);
+      return {
+        id: categoryDef.id,
+        title: categoryDef.name,
+        icon: categoryDef.icon,
+        description: `${toolCount} tools`,
+        count: toolCount,
+        color: categoryDef.color
+      };
+    });
+  }, [dataConfig]);
 
   return categories;
 }
@@ -307,57 +154,34 @@ export function usePageContent(page: keyof ContentConfig['pages']) {
  * Hook for accessing component-specific content
  */
 export function useComponentContent(component: string) {
-  const [content, setContent] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    let mounted = true;
+  const { contentConfig, loading } = useConfigContext();
+  
+  const content = useMemo(() => {
+    if (!contentConfig) return null;
     
-    async function fetchComponentContent() {
-      try {
-        const response = await fetch('/api/config/content');
-        if (!response.ok) {
-          throw new Error('Failed to fetch content config');
+    const componentContent = contentConfig.components?.[component] || {};
+    
+    // Provide fallback content for common components if not found
+    if (Object.keys(componentContent).length === 0) {
+      const fallbackContent: { [key: string]: any } = {
+        toolCard: {
+          labels: {
+            tier: "Tier:",
+            complexity: "Complexity:",
+            type: "Type:"
+          },
+          actions: {
+            view: "View Details",
+            save: "Save",
+            unsave: "Unsave"
+          }
         }
-        const contentConfig = await response.json();
-        
-        if (mounted) {
-          const componentContent = contentConfig.components?.[component] || {};
-          setContent(componentContent);
-        }
-      } catch (error) {
-        console.error('Failed to load component content:', error);
-        if (mounted) {
-          // Provide fallback content for common components
-          const fallbackContent: { [key: string]: any } = {
-            toolCard: {
-              labels: {
-                tier: "Tier:",
-                complexity: "Complexity:",
-                type: "Type:"
-              },
-              actions: {
-                view: "View Details",
-                save: "Save",
-                unsave: "Unsave"
-              }
-            }
-          };
-          setContent(fallbackContent[component] || {});
-        }
-      } finally {
-        if (mounted) {
-          setLoading(false);
-        }
-      }
+      };
+      return fallbackContent[component] || {};
     }
-
-    fetchComponentContent();
     
-    return () => { 
-      mounted = false; 
-    };
-  }, [component]);
+    return componentContent;
+  }, [contentConfig, component]);
 
   return content;
 }
@@ -400,9 +224,43 @@ export function useLimits() {
  * Usage: const text = useText('pages.home.title', { name: 'John' })
  */
 export function useText(path: string, variables?: Record<string, string | number>) {
-  // This hook will need to be refactored to fetch text content from an API endpoint
-  // For now, it will remain a placeholder.
-  return 'Loading...'; // Placeholder
+  const { contentConfig } = useConfigContext();
+  
+  return useMemo(() => {
+    // Try to get text from content config first
+    if (contentConfig) {
+      const pathParts = path.split('.');
+      let current: any = contentConfig;
+      
+      for (const part of pathParts) {
+        if (current && typeof current === 'object' && part in current) {
+          current = current[part];
+        } else {
+          current = null;
+          break;
+        }
+      }
+      
+      if (typeof current === 'string') {
+        // Simple variable interpolation if needed
+        if (variables) {
+          return Object.entries(variables).reduce((text, [key, value]) => {
+            return text.replace(new RegExp(`\\{\\{${key}\\}\\}`, 'g'), String(value));
+          }, current);
+        }
+        return current;
+      }
+    }
+    
+    // Fallback to defaults
+    const defaults: Record<string, string> = {
+      'pages.home.sections.categories.title': 'Browse by Category',
+      'pages.home.title': 'Welcome to Zeno Knowledge Hub',
+      'pages.search.title': 'Search Results',
+    };
+    
+    return defaults[path] || path.split('.').pop() || 'Content';
+  }, [contentConfig, path, variables]);
 }
 
 /**

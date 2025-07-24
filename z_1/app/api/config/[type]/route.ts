@@ -17,8 +17,9 @@ export async function GET(
 
 export async function POST(
   req: NextRequest,
-  { params }: { params: { type: string } }
+  context: { params: { type: string } }
 ) {
+  const params = await context.params;
   const { type } = params;
   const body = await req.json();
   await setConfig(type as any, body);
@@ -27,8 +28,9 @@ export async function POST(
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { type: string } }
+  context: { params: { type: string } }
 ) {
+  const params = await context.params;
   const { type } = params;
   await deleteConfig(type as any);
   return NextResponse.json({ success: true });

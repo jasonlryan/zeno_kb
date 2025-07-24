@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useAPITools } from "../hooks/useAPITools";
+import { useConfig } from "../hooks/useConfig";
 import {
   Edit,
   Trash2,
@@ -11,31 +12,128 @@ import {
   Tag,
   Hash,
   Search,
+  ChevronUp,
+  ChevronDown,
 } from "lucide-react";
 import { ToolFormModal } from "./ToolFormModal";
+import { formatRelativeTime } from "@/lib/dateUtils";
 import type { Tool } from "../types";
 
 interface CuratorDashboardProps {
   className?: string;
 }
 
+type SortField =
+  | "title"
+  | "description"
+  | "type"
+  | "categories"
+  | "lastUpdated";
+type SortDirection = "asc" | "desc";
+
 export function CuratorDashboard({ className }: CuratorDashboardProps) {
-  const [activeTab, setActiveTab] = useState<"assets" | "schedule" | "tags">(
-    "assets"
-  );
+  const [activeTab, setActiveTab] = useState<"assets" | "tags">("assets");
   const [searchQuery, setSearchQuery] = useState("");
   const { all: allTools, loading } = useAPITools();
+  const { dataConfig } = useConfig();
 
   // Editing state
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTool, setEditingTool] = useState<Tool | undefined>(undefined);
   const [tools, setTools] = useState<Tool[]>([]);
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  // Sorting state
+  const [sortField, setSortField] = useState<SortField>("lastUpdated");
+  const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
 
   // Update tools when allTools changes
   useEffect(() => {
     setTools(allTools);
   }, [allTools]);
+
+  // Helper function to get the most recent date for a tool
+  const getLastUpdated = (tool: Tool): Date => {
+    // Check for date_modified first (if it's not empty string)
+    if (tool.date_modified && tool.date_modified.trim() !== "") {
+      return new Date(tool.date_modified);
+    }
+
+    // Fall back to date_created
+    if (tool.date_created && tool.date_created.trim() !== "") {
+      return new Date(tool.date_created);
+    }
+
+    // Final fallback to current date
+    return new Date();
+  };
+
+  // Helper function to get tag categories for a tool
+  const getToolTagCategories = (tool: Tool) => {
+    if (!tool.tags || !Array.isArray(tool.tags) || !dataConfig?.tagCategories) {
+      return [];
+    }
+
+    const tagCategories = dataConfig.tagCategories;
+    return Object.values(tagCategories).filter((category: any) =>
+      tool.tags?.some((tag: string) => category.tags.includes(tag))
+    );
+  };
+
+  // Handle column sorting
+  const handleSort = (field: SortField) => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+    } else {
+      setSortField(field);
+      setSortDirection("desc");
+    }
+  };
+
+  // Sort function
+  const sortTools = (tools: Tool[]): Tool[] => {
+    return [...tools].sort((a, b) => {
+      let aValue: any;
+      let bValue: any;
+
+      switch (sortField) {
+        case "title":
+          aValue = a.title?.toLowerCase() || "";
+          bValue = b.title?.toLowerCase() || "";
+          break;
+        case "description":
+          aValue = a.description?.toLowerCase() || "";
+          bValue = b.description?.toLowerCase() || "";
+          break;
+        case "type":
+          aValue = a.type?.toLowerCase() || "";
+          bValue = b.type?.toLowerCase() || "";
+          break;
+        case "categories":
+          aValue = getToolTagCategories(a)
+            .map((cat: any) => cat.name)
+            .join(", ")
+            .toLowerCase();
+          bValue = getToolTagCategories(b)
+            .map((cat: any) => cat.name)
+            .join(", ")
+            .toLowerCase();
+          break;
+        case "lastUpdated":
+          aValue = getLastUpdated(a).getTime();
+          bValue = getLastUpdated(b).getTime();
+          break;
+        default:
+          return 0;
+      }
+
+      if (aValue < bValue) return sortDirection === "asc" ? -1 : 1;
+      if (aValue > bValue) return sortDirection === "asc" ? 1 : -1;
+      return 0;
+    });
+  };
 
   // Filter tools based on search query
   const filteredTools = tools.filter((tool) => {
@@ -50,18 +148,11 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
     );
   });
 
-  // Sort filtered tools by date_added (newest first)
-  const sortedTools = filteredTools.sort((a, b) => {
-    const dateA = a.date_added ? new Date(a.date_added).getTime() : 0;
-    const dateB = b.date_added ? new Date(b.date_added).getTime() : 0;
-    return dateB - dateA;
-  });
+  // Apply sorting to filtered tools
+  const sortedTools = sortTools(filteredTools);
 
   // Calculate real counts from filtered data
   const assetsCount = filteredTools.length;
-  const scheduledCount = filteredTools.filter(
-    (tool) => tool.scheduled_feature_date
-  ).length;
 
   // Get unique tags count and frequency from filtered tools
   const allTags = filteredTools.flatMap((tool) => tool.tags || []);
@@ -80,7 +171,6 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
 
   const tabs = [
     { id: "assets" as const, label: "Assets", count: assetsCount },
-    { id: "schedule" as const, label: "Schedule", count: scheduledCount },
     { id: "tags" as const, label: "Tags", count: tagsCount },
   ];
 
@@ -92,6 +182,49 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
     setSearchQuery("");
   };
 
+  // Sortable column header component
+  const SortableHeader = ({
+    field,
+    children,
+    className = "",
+  }: {
+    field: SortField;
+    children: React.ReactNode;
+    className?: string;
+  }) => (
+    <th
+      className={cn(
+        "px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider cursor-pointer hover:bg-black hover:bg-opacity-10 transition-colors",
+        className
+      )}
+      onClick={() => handleSort(field)}
+    >
+      <div className="flex items-center space-x-1">
+        <span>{children}</span>
+        <div className="flex flex-col">
+          <ChevronUp
+            size={12}
+            className={cn(
+              "transition-colors",
+              sortField === field && sortDirection === "asc"
+                ? "text-white"
+                : "text-white text-opacity-60"
+            )}
+          />
+          <ChevronDown
+            size={12}
+            className={cn(
+              "transition-colors -mt-1",
+              sortField === field && sortDirection === "desc"
+                ? "text-white"
+                : "text-white text-opacity-60"
+            )}
+          />
+        </div>
+      </div>
+    </th>
+  );
+
   return (
     <div
       className={cn(
@@ -101,7 +234,7 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
     >
       {/* Header */}
       <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+        <h2 className="zeno-heading text-xl font-semibold text-gray-900 dark:text-white">
           Curator Dashboard
         </h2>
         <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
@@ -141,7 +274,7 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
                 Asset Management
               </h3>
               <button
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                className="zeno-button-blue"
                 onClick={() => {
                   setEditingTool(undefined);
                   setIsModalOpen(true);
@@ -161,7 +294,7 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
                 placeholder="Search assets..."
                 value={searchQuery}
                 onChange={handleSearchChange}
-                className="block w-full pl-10 pr-10 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="zeno-search pl-10 pr-10 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
               />
               {searchQuery && (
                 <button
@@ -185,6 +318,23 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
               )}
             </div>
 
+            {/* Error Display */}
+            {error && (
+              <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+                <div className="flex">
+                  <div className="text-red-800 dark:text-red-200 text-sm">
+                    {error}
+                  </div>
+                  <button
+                    onClick={() => setError(null)}
+                    className="ml-auto text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-200"
+                  >
+                    ×
+                  </button>
+                </div>
+              </div>
+            )}
+
             {/* Search Results Info */}
             {searchQuery && (
               <div className="text-sm text-gray-600 dark:text-gray-400">
@@ -202,23 +352,22 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
             {/* Assets Table */}
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                <thead className="bg-gray-50 dark:bg-gray-700">
+                <thead style={{ backgroundColor: "var(--zeno-green)" }}>
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider w-1/4">
-                      Asset
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                      Description
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                      Type
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                      Categories
-                    </th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider w-32">
                       Actions
                     </th>
+                    <SortableHeader field="title" className="w-1/5">
+                      Asset
+                    </SortableHeader>
+
+                    <SortableHeader field="type">Type</SortableHeader>
+                    <SortableHeader field="categories">
+                      Categories
+                    </SortableHeader>
+                    <SortableHeader field="lastUpdated">
+                      Last Updated
+                    </SortableHeader>
                   </tr>
                 </thead>
                 <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
@@ -227,47 +376,8 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
                       key={tool.id}
                       className="hover:bg-gray-50 dark:hover:bg-gray-700"
                     >
-                      <td className="px-6 py-4">
-                        <div className="flex items-start">
-                          <div className="ml-0 min-w-0 flex-1">
-                            <div className="text-sm font-medium text-gray-900 dark:text-white break-words">
-                              {tool.title}
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400 break-words">
-                        {tool.description}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-                          {tool.type || "-"}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {Array.isArray(tool.categories) &&
-                        tool.categories.length > 0 ? (
-                          <div className="flex flex-wrap gap-2">
-                            {tool.categories.map((category: string) => (
-                              <button
-                                key={category}
-                                className="bg-green-50 text-green-700 text-xs px-2 py-1 rounded-full font-medium border border-green-200 hover:bg-green-100 transition-colors"
-                                type="button"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  console.log("Category clicked:", category);
-                                }}
-                              >
-                                {category}
-                              </button>
-                            ))}
-                          </div>
-                        ) : (
-                          "-"
-                        )}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <div className="flex items-center justify-end space-x-2">
+                      <td className="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
+                        <div className="flex items-center justify-start space-x-2">
                           <button
                             className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
                             disabled={!tool.url}
@@ -307,40 +417,122 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
                               <h3 className="text-lg font-semibold mb-4 break-words whitespace-normal text-center">
                                 Are you sure you want to delete this asset?
                               </h3>
-                              <p className="mb-6 text-gray-700 dark:text-gray-300 text-center">
-                                This action cannot be undone.
-                              </p>
-                              <div className="flex justify-center gap-4">
+                              <div className="flex justify-center space-x-4">
                                 <button
-                                  className="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600"
+                                  className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 transition-colors"
                                   onClick={() => setDeleteConfirmId(null)}
                                 >
                                   Cancel
                                 </button>
                                 <button
-                                  className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                                  className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors disabled:opacity-50"
+                                  disabled={isDeleting === tool.id}
                                   onClick={async () => {
+                                    setIsDeleting(tool.id);
+                                    setError(null);
+
                                     try {
                                       const res = await fetch(
                                         `/api/tools/${tool.id}`,
                                         {
                                           method: "DELETE",
+                                          headers: {
+                                            "Content-Type": "application/json",
+                                          },
                                         }
                                       );
+
                                       if (res.ok) {
                                         setTools((prev) =>
                                           prev.filter((t) => t.id !== tool.id)
                                         );
+                                      } else {
+                                        const errorData = await res
+                                          .json()
+                                          .catch(() => ({}));
+                                        setError(
+                                          errorData.error ||
+                                            "Failed to delete asset"
+                                        );
                                       }
+                                    } catch (err) {
+                                      setError("Network error occurred");
                                     } finally {
                                       setDeleteConfirmId(null);
+                                      setIsDeleting(null);
                                     }
                                   }}
                                 >
-                                  Delete
+                                  {isDeleting === tool.id
+                                    ? "Deleting..."
+                                    : "Delete"}
                                 </button>
                               </div>
                             </div>
+                          </div>
+                        )}
+                      </td>
+                      <td className="px-6 py-4 w-1/3">
+                        <div className="flex items-start">
+                          <div className="ml-0 min-w-0 flex-1">
+                            <div className="text-sm font-medium text-gray-900 dark:text-white">
+                              {tool.title}
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className="zeno-type">{tool.type || "-"}</span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        {(() => {
+                          const toolTagCategories = getToolTagCategories(tool);
+                          return toolTagCategories.length > 0 ? (
+                            <div className="flex flex-wrap gap-2">
+                              {toolTagCategories.map((category: any) => (
+                                <button
+                                  key={category.id}
+                                  className="zeno-category text-xs"
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    console.log(
+                                      "Tag category clicked:",
+                                      category.name
+                                    );
+                                  }}
+                                >
+                                  {category.name}
+                                </button>
+                              ))}
+                            </div>
+                          ) : (
+                            "-"
+                          );
+                        })()}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                        {(tool.date_modified &&
+                          tool.date_modified.trim() !== "") ||
+                        (tool.date_created &&
+                          tool.date_created.trim() !== "") ? (
+                          <div className="flex flex-col">
+                            <span>
+                              {formatRelativeTime(
+                                getLastUpdated(tool).toISOString()
+                              )}
+                            </span>
+                            <span className="text-xs text-gray-400 dark:text-gray-500">
+                              {getLastUpdated(tool).toLocaleDateString()}
+                            </span>
+                          </div>
+                        ) : (
+                          <div className="flex flex-col">
+                            <span>Recently added</span>
+                            <span className="text-xs text-gray-400 dark:text-gray-500">
+                              {new Date().toLocaleDateString()}
+                            </span>
                           </div>
                         )}
                       </td>
@@ -355,6 +547,8 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
               onClose={() => setIsModalOpen(false)}
               tool={editingTool}
               onSave={async (toolData) => {
+                setError(null);
+
                 if (editingTool) {
                   // Edit existing - persist to API
                   try {
@@ -371,6 +565,8 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
                         )
                       );
                     } else {
+                      const errorData = await res.json().catch(() => ({}));
+                      setError(errorData.error || "Failed to update asset");
                       // fallback: update locally if API fails
                       setTools((prev) =>
                         prev.map((t) =>
@@ -379,6 +575,8 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
                       );
                     }
                   } catch (err) {
+                    setError("Network error occurred while updating");
+                    console.error("Update error:", err);
                     // fallback: update locally if API fails
                     setTools((prev) =>
                       prev.map((t) =>
@@ -398,6 +596,8 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
                       const { tool: newTool } = await res.json();
                       setTools((prev) => [newTool, ...prev]);
                     } else {
+                      const errorData = await res.json().catch(() => ({}));
+                      setError(errorData.error || "Failed to create asset");
                       // fallback: add locally if API fails
                       const newTool: Tool = {
                         ...toolData,
@@ -410,6 +610,8 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
                       setTools((prev) => [newTool, ...prev]);
                     }
                   } catch (err) {
+                    setError("Network error occurred while creating");
+                    console.error("Create error:", err);
                     const newTool: Tool = {
                       ...toolData,
                       id: Date.now().toString(),
@@ -423,27 +625,6 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
                 }
               }}
             />
-          </div>
-        )}
-
-        {activeTab === "schedule" && (
-          <div className="space-y-4">
-            <div className="flex justify-between items-center">
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white">
-                Content Schedule
-              </h3>
-              <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                Schedule Content
-              </button>
-            </div>
-            <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-8 text-center">
-              <p className="text-gray-500 dark:text-gray-400">
-                Content scheduling interface will be integrated here
-              </p>
-              <p className="text-sm text-gray-400 dark:text-gray-500 mt-2">
-                Features: Calendar view, automated publishing, content pipeline
-              </p>
-            </div>
           </div>
         )}
 

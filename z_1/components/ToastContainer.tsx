@@ -45,7 +45,7 @@ function Toast({ toast, onRemove }: ToastProps) {
         return "bg-red-600 text-white";
       case "info":
       default:
-        return "bg-blue-600 text-white";
+        return "bg-primary text-white";
     }
   };
 

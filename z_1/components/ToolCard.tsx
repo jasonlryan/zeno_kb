@@ -9,6 +9,7 @@ interface ToolCardProps {
   tool: Tool;
   onBookmark?: (id: string) => void;
   onSelect?: (id: string) => void;
+  onTagClick?: (tag: string) => void;
   bookmarked?: boolean;
   className?: string;
 }
@@ -17,6 +18,7 @@ export function ToolCard({
   tool,
   onBookmark,
   onSelect,
+  onTagClick,
   bookmarked = false,
   className,
 }: ToolCardProps) {
@@ -34,19 +36,6 @@ export function ToolCard({
       save: "Save",
       unsave: "Unsave",
     },
-  };
-
-  const getTypeColor = (type: Tool["type"]) => {
-    switch (type) {
-      case "GPT":
-        return "bg-primary/10 text-primary border-primary/20";
-      case "Doc":
-        return "bg-blue-50 text-blue-700 border-blue-200";
-      case "Script":
-        return "bg-purple-50 text-purple-700 border-purple-200";
-      case "Video":
-        return "bg-orange-50 text-orange-700 border-orange-200";
-    }
   };
 
   const getTierColor = (tier: Tool["tier"]) => {
@@ -75,95 +64,78 @@ export function ToolCard({
       )}
       onClick={() => onSelect?.(tool.id)}
     >
-      <div className="flex justify-between items-start mb-3">
-        <div className="flex flex-wrap gap-2">
-          <span
-            className={cn(
-              "px-2 py-0.5 rounded-full text-xs font-medium border",
-              getTypeColor(tool.type)
-            )}
-          >
-            {tool.type}
-          </span>
-          <span
-            className={cn(
-              "px-2 py-0.5 rounded-full text-xs font-medium border",
-              getTierColor(tool.tier)
-            )}
-          >
-            {tool.tier}
-          </span>
-          <span
-            className={cn(
-              "px-2 py-0.5 rounded-full text-xs font-medium border",
-              getComplexityColor(tool.complexity)
-            )}
-          >
-            {tool.complexity}
-          </span>
-        </div>
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            onBookmark?.(tool.id);
-          }}
-          className="p-2 rounded-lg hover:bg-secondary transition-colors"
-          aria-label={
-            bookmarked ? safeContent.actions.unsave : safeContent.actions.save
-          }
-        >
-          {bookmarked ? (
-            <BookmarkCheck className="w-5 h-5 text-primary" />
-          ) : (
-            <Bookmark className="w-5 h-5 text-muted-foreground" />
-          )}
-        </button>
-      </div>
-
-      <h3 className="zeno-heading text-base font-semibold text-card-foreground mb-2 line-clamp-2">
-        {tool.title}
-      </h3>
-
-      <p className="zeno-body text-xs text-muted-foreground mb-3 line-clamp-3">
-        {tool.description}
-      </p>
-
-      {/* Tags section - only show if tags is an array and has items */}
-      {Array.isArray(tool.tags) && tool.tags.length > 0 && (
-        <div className="flex flex-wrap gap-2 mb-2">
-          {tool.tags.slice(0, 3).map((tag, index) => (
+      <div className="flex flex-col h-full">
+        <div className="flex justify-between items-start mb-3">
+          <div className="flex flex-wrap gap-2">
+            <span className="zeno-type">{tool.type}</span>
             <span
-              key={index}
-              className="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200"
+              className={cn(
+                "px-2 py-0.5 rounded-full text-xs font-medium border",
+                getTierColor(tool.tier)
+              )}
             >
-              {tag}
+              {tool.tier}
             </span>
-          ))}
-          {tool.tags.length > 3 && (
-            <span className="text-xs text-gray-500 dark:text-gray-400">
-              +{tool.tags.length - 3} more
+            <span
+              className={cn(
+                "px-2 py-0.5 rounded-full text-xs font-medium border",
+                getComplexityColor(tool.complexity)
+              )}
+            >
+              {tool.complexity}
             </span>
-          )}
+          </div>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onBookmark?.(tool.id);
+            }}
+            className="p-2 rounded-lg hover:bg-secondary transition-colors"
+            aria-label={
+              bookmarked ? safeContent.actions.unsave : safeContent.actions.save
+            }
+          >
+            {bookmarked ? (
+              <BookmarkCheck className="w-5 h-5 text-primary" />
+            ) : (
+              <Bookmark className="w-5 h-5 text-muted-foreground" />
+            )}
+          </button>
         </div>
-      )}
 
-      {/* Categories at bottom as clickable chips */}
-      {tool.categories && tool.categories.length > 0 && (
-        <div className="flex flex-wrap gap-2 mt-2">
-          {tool.categories.map((category) => (
-            <button
-              key={category}
-              className="bg-green-50 text-green-700 text-xs px-2 py-1 rounded-full font-medium border border-green-200 hover:bg-green-100 transition-colors"
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation(); /* TODO: handle category click */
-              }}
-            >
-              {category}
-            </button>
-          ))}
-        </div>
-      )}
+        <h3 className="zeno-heading text-base font-semibold text-card-foreground mb-2 line-clamp-2">
+          {tool.title}
+        </h3>
+
+        <p className="zeno-body text-xs text-muted-foreground mb-3 line-clamp-3 flex-grow">
+          {tool.description}
+        </p>
+
+        {/* Tags section - only show if tags is an array and has items */}
+        {Array.isArray(tool.tags) && tool.tags.length > 0 && (
+          <div className="flex flex-wrap gap-2 mb-2">
+            {tool.tags.slice(0, 3).map((tag, index) => (
+              <button
+                key={index}
+                className="zeno-tag"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onTagClick?.(tag);
+                }}
+              >
+                {tag}
+              </button>
+            ))}
+            {tool.tags.length > 3 && (
+              <span className="text-xs text-gray-500 dark:text-gray-400">
+                +{tool.tags.length - 3} more
+              </span>
+            )}
+          </div>
+        )}
+
+        {/* Categories removed from cards - still available in modal and curator dashboard */}
+      </div>
     </div>
   );
 }

@@ -280,10 +280,7 @@ export function LearningGuideDetail({
           <div className="flex flex-wrap gap-3 mb-8">
             {tool.tags &&
               tool.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="bg-blue-50 text-blue-700 text-sm px-4 py-2 rounded-full font-medium"
-                >
+                <span key={tag} className="zeno-tag-large">
                   {tag}
                 </span>
               ))}
@@ -307,7 +304,7 @@ export function LearningGuideDetail({
               href={tool.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-700 transition-colors duration-300 shadow-xl transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="zeno-button-large-blue"
             >
               Start Learning
               <ArrowRight className="ml-3" size={24} />
@@ -403,7 +400,7 @@ export function LearningGuideDetail({
                 </p>
                 <button
                   onClick={() => setIsCommentModalOpen(true)}
-                  className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-300 shadow-md focus:outline-none focus:ring-2 focus:ring-blue-600 flex items-center"
+                  className="zeno-button-gray px-6 py-3 shadow-md flex items-center"
                 >
                   <MessageSquare className="mr-2" size={20} /> Add Comment
                 </button>

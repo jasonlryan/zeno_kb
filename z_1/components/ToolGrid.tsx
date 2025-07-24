@@ -7,6 +7,7 @@ interface ToolGridProps {
   tools: Tool[];
   onSelect: (id: string) => void;
   onBookmark?: (id: string) => void;
+  onTagClick?: (tag: string) => void;
   bookmarkedIds?: Set<string>;
   className?: string;
 }
@@ -15,6 +16,7 @@ export function ToolGrid({
   tools,
   onSelect,
   onBookmark,
+  onTagClick,
   bookmarkedIds = new Set(),
   className,
 }: ToolGridProps) {
@@ -26,7 +28,13 @@ export function ToolGrid({
       )}
     >
       {tools.map((tool) => (
-        <TemplateAwareToolCard key={tool.id} tool={tool} onSelect={onSelect} />
+        <TemplateAwareToolCard
+          key={tool.id}
+          tool={tool}
+          onSelect={onSelect}
+          onTagClick={onTagClick}
+          className="h-64 flex flex-col"
+        />
       ))}
     </div>
   );

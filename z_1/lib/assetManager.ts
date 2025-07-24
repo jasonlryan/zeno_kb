@@ -10,7 +10,7 @@ import { ZenoConfig, ZenoAsset } from '../types/config';
 import fs from 'fs';
 import path from 'path';
 
-const schemaFilePath = path.join(process.cwd(), 'z_1/data/schema.json');
+const schemaFilePath = path.join(process.cwd(), 'data/schema.json');
 
 function loadSchema(): { fields: SchemaField[] } {
   const raw = fs.readFileSync(schemaFilePath, 'utf-8');

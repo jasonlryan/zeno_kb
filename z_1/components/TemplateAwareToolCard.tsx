@@ -8,16 +8,25 @@ interface TemplateAwareToolCardProps {
   tool: ZenoAsset;
   onSelect?: (id: string) => void;
   onBookmark?: (id: string) => void;
+  onTagClick?: (tag: string) => void;
 }
 
 const TemplateAwareToolCard: React.FC<TemplateAwareToolCardProps> = ({
   tool,
   onSelect,
   onBookmark,
+  onTagClick,
 }) => {
   // Example: route to different card templates based on tool.type or categories
   // For now, just use ToolCard for all types
-  return <ToolCard tool={tool} onSelect={onSelect} onBookmark={onBookmark} />;
+  return (
+    <ToolCard
+      tool={tool}
+      onSelect={onSelect}
+      onBookmark={onBookmark}
+      onTagClick={onTagClick}
+    />
+  );
 };
 
 export default TemplateAwareToolCard;

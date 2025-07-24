@@ -10,6 +10,7 @@ interface FeaturedCarouselProps {
   tools: Tool[];
   onSelect: (id: string) => void;
   onBookmark?: (id: string) => void;
+  onTagClick?: (tag: string) => void;
   bookmarkedIds?: Set<string>;
   className?: string;
 }
@@ -18,6 +19,7 @@ export function FeaturedCarousel({
   tools,
   onSelect,
   onBookmark,
+  onTagClick,
   bookmarkedIds = new Set(),
   className,
 }: FeaturedCarouselProps) {
@@ -45,7 +47,7 @@ export function FeaturedCarousel({
       )}
     >
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+        <h2 className="zeno-heading text-xl font-semibold text-gray-900 dark:text-white">
           Featured Tools
         </h2>
         <div className="flex space-x-2">
@@ -77,7 +79,9 @@ export function FeaturedCarousel({
               tool={tool}
               onSelect={onSelect}
               onBookmark={onBookmark}
+              onTagClick={onTagClick}
               bookmarked={bookmarkedIds.has(tool.id)}
+              className="h-80 flex flex-col"
             />
           </div>
         ))}

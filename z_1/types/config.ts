@@ -37,8 +37,18 @@ export interface ZenoAsset {
   [key: string]: any;
 }
 
+// Tag category definition
+export interface TagCategory {
+  id: string;
+  name: string;
+  icon: string;
+  color: string;
+  tags: string[];
+}
+
 // If you have a config root object:
 export interface ZenoConfig {
   tools: ZenoAsset[];
+  tagCategories?: Record<string, TagCategory>;
   // ...other config fields
 } 

@@ -79,7 +79,7 @@ export function SidebarNav({
               "hover:bg-primary/10 hover:text-primary",
               "focus:outline-none focus:ring-2 focus:ring-primary",
               isFilterOpen
-                ? "bg-blue-600 text-white shadow-lg"
+                ? "bg-primary text-white shadow-lg"
                 : "text-card-foreground",
               collapsed ? "px-2 py-3 justify-center" : "px-3 py-2"
             )}

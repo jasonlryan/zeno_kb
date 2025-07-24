@@ -1,6 +1,7 @@
 import "../styles/globals.css";
 // import PasswordProtection from "../components/PasswordProtection";
 import AuthGuard from "../components/AuthGuard";
+import { ConfigProvider } from "../lib/configContext";
 
 export const metadata = {
   title: "Zeno Knowledge Hub",
@@ -20,7 +21,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <AuthGuard>{children}</AuthGuard>
+        <ConfigProvider>
+          <AuthGuard>{children}</AuthGuard>
+        </ConfigProvider>
       </body>
     </html>
   );

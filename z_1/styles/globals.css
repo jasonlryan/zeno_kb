@@ -200,4 +200,132 @@ body {
   .zeno-logo-safe-area {
     padding: 1rem; /* Adjust based on logo size */
   }
+  
+    /* Tag Styling - Gray for all tags */
+  .zeno-tag {
+    @apply inline-flex items-center px-2 py-1 rounded text-xs font-medium;
+    @apply bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200;
+    @apply hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors cursor-pointer;
+  }
+
+  .zeno-tag-large {
+    @apply inline-flex items-center px-4 py-2 rounded-full text-sm font-medium;
+    @apply bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200;
+    @apply hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors cursor-pointer;
+  }
+
+  /* Category Styling - Green variant */
+  .zeno-category {
+    @apply inline-flex items-center px-4 py-2 rounded-full text-sm font-medium;
+    @apply bg-green-50 text-green-700 hover:bg-green-100 transition-colors cursor-pointer;
+  }
+  
+  /* Category Styling - Blue variant */
+  .zeno-category-blue {
+    @apply inline-flex items-center px-4 py-2 rounded-full text-sm font-medium;
+    @apply bg-blue-50 text-blue-700 hover:bg-blue-100 transition-colors cursor-pointer;
+  }
+  
+  /* Category Styling - Gray variant */
+  .zeno-category-gray {
+    @apply inline-flex items-center px-4 py-2 rounded-full text-sm font-medium;
+    @apply bg-gray-50 text-gray-700 hover:bg-gray-100 transition-colors cursor-pointer;
+  }
+  
+  /* Type Styling - Consistent across all components */
+  .zeno-type {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+    @apply bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200;
+  }
+  
+  /* Form Input Styling - Consistent across all forms */
+  .zeno-input {
+    @apply w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg;
+    @apply bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm;
+    @apply focus:outline-none focus:ring-2 focus:ring-primary;
+  }
+  
+  /* Form Label Styling */
+  .zeno-label {
+    @apply zeno-body block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1;
+  }
+  
+    /* Form Button Styling - Multiple variants */
+  .zeno-button-primary {
+    @apply px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors;
+  }
+  
+  .zeno-button-blue {
+    @apply px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors;
+  }
+  
+  .zeno-button-gray {
+    @apply px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors;
+  }
+
+  .zeno-button-secondary {
+    @apply px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors;
+  }
+
+  /* Large Action Button Styling - Multiple variants */
+  .zeno-button-large {
+    @apply inline-flex items-center bg-primary text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-primary/90 transition-colors duration-300 shadow-xl transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-primary;
+  }
+  
+  .zeno-button-large-blue {
+    @apply inline-flex items-center bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-700 transition-colors duration-300 shadow-xl transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-600;
+  }
+  
+  .zeno-button-large-gray {
+    @apply inline-flex items-center bg-gray-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-700 transition-colors duration-300 shadow-xl transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-gray-600;
+  }
+  
+  /* Search Input Styling */
+  .zeno-search {
+    @apply w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors text-sm;
+  }
+  
+  /* Checkbox Styling */
+  .zeno-checkbox {
+    @apply w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary;
+  }
+  
+    /* Card Badge Styling - Multiple variants */
+  .zeno-badge {
+    @apply bg-primary/10 text-primary text-xs font-semibold px-2.5 py-1 rounded-full;
+  }
+  
+  .zeno-badge-blue {
+    @apply bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-1 rounded-full;
+  }
+  
+  .zeno-badge-gray {
+    @apply bg-gray-100 text-gray-800 text-xs font-semibold px-2.5 py-1 rounded-full;
+  }
+
+  /* Info Box Styling - Multiple variants */
+  .zeno-info-box {
+    @apply bg-primary/5 border-l-4 border-primary p-4 mb-6;
+  }
+  
+  .zeno-info-box-blue {
+    @apply bg-blue-50 border-l-4 border-blue-400 p-4 mb-6;
+  }
+  
+  .zeno-info-box-gray {
+    @apply bg-gray-50 border-l-4 border-gray-400 p-4 mb-6;
+  }
+
+  /* Alert Box Styling - Multiple variants */
+  .zeno-alert-box {
+    @apply bg-primary/5 border border-primary/20 text-primary p-6 rounded-lg mb-8 shadow-inner;
+  }
+  
+  .zeno-alert-box-blue {
+    @apply bg-blue-50 border border-blue-200 text-blue-900 p-6 rounded-lg mb-8 shadow-inner;
+  }
+  
+  .zeno-alert-box-gray {
+    @apply bg-gray-50 border border-gray-200 text-gray-900 p-6 rounded-lg mb-8 shadow-inner;
+  }
 }

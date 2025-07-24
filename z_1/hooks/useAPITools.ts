@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import type { Tool } from '../types';
 
 export function useAPITools() {
@@ -31,21 +31,31 @@ export function useAPITools() {
     fetchTools();
   }, []);
 
-  const featuredTools = tools.filter(tool => tool.featured).slice(0, 5);
-  const recentTools = [...tools]
-    .sort((a, b) => new Date(b.date_added).getTime() - new Date(a.date_added).getTime())
-    .slice(0, 10);
+  // Memoize computed values to prevent unnecessary re-renders
+  const featuredTools = useMemo(() => 
+    tools.filter(tool => tool.featured).slice(0, 5), 
+    [tools]
+  );
+  
+  const recentTools = useMemo(() => 
+    [...tools]
+      .filter(tool => tool.date_added) // Only include tools with dates
+      .sort((a, b) => new Date(b.date_added!).getTime() - new Date(a.date_added!).getTime())
+      .slice(0, 10),
+    [tools]
+  );
 
-  const getToolsByFunction = (functionName: string) => {
+  // Memoize callback functions to prevent Fast Refresh issues
+  const getToolsByFunction = useCallback((functionName: string) => {
     return tools.filter(tool => tool.function === functionName);
-  };
+  }, [tools]);
 
-  const getToolsByCategory = (categoryId: string) => {
+  const getToolsByCategory = useCallback((categoryId: string) => {
     // This would need category mapping logic
     return tools;
-  };
+  }, [tools]);
 
-  return {
+  return useMemo(() => ({
     all: tools,
     featured: featuredTools,
     recent: recentTools,
@@ -54,5 +64,5 @@ export function useAPITools() {
     loading,
     error,
     count: tools.length
-  };
+  }), [tools, featuredTools, recentTools, getToolsByFunction, getToolsByCategory, loading, error]);
 } 

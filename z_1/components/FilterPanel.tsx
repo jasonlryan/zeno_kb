@@ -79,7 +79,7 @@ export function FilterPanel({
                 placeholder="Type to search..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                className="zeno-search pl-10 pr-4"
               />
             </div>
           </div>
@@ -95,7 +95,7 @@ export function FilterPanel({
                   type="checkbox"
                   checked={selectedFilters.featured}
                   onChange={() => handleFilterChange("featured")}
-                  className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                  className="zeno-checkbox"
                 />
                 <Star size={14} className="ml-2 mr-1.5 text-yellow-500" />
                 <span className="text-sm text-gray-700 group-hover:text-gray-900">
@@ -108,7 +108,7 @@ export function FilterPanel({
                   type="checkbox"
                   checked={selectedFilters.gpt}
                   onChange={() => handleFilterChange("gpt")}
-                  className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                  className="zeno-checkbox"
                 />
                 <span className="ml-2 mr-1.5 text-sm font-mono bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded">
                   GPT
@@ -123,7 +123,7 @@ export function FilterPanel({
                   type="checkbox"
                   checked={selectedFilters.platform}
                   onChange={() => handleFilterChange("platform")}
-                  className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                  className="zeno-checkbox"
                 />
                 <span className="ml-2 mr-1.5 text-sm font-mono bg-green-100 text-green-800 px-1.5 py-0.5 rounded">
                   PLT

@@ -58,7 +58,9 @@ export function CommentModal({
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <div className="flex items-center gap-2">
             <MessageSquare className="w-5 h-5 text-green-600" />
-            <h2 className="text-lg font-semibold text-gray-900">Add Comment</h2>
+            <h2 className="zeno-heading text-lg font-semibold text-gray-900">
+              Add Comment
+            </h2>
           </div>
           <button
             onClick={onClose}

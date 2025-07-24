@@ -4,6 +4,7 @@ import type React from "react";
 
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useConfig } from "../hooks/useConfig";
 import type { Tool } from "../types";
 
 interface ToolFormModalProps {
@@ -21,15 +22,27 @@ export function ToolFormModal({
   tool,
   className,
 }: ToolFormModalProps) {
+  const { dataConfig } = useConfig();
+
   const [formData, setFormData] = useState({
     title: tool?.title || "",
     description: tool?.description || "",
     url: tool?.url || "",
     type: tool?.type || "GPT",
-    categories: tool?.categories ? tool.categories.join(", ") : "",
+    categories: tool?.categories || [],
+    tags: tool?.tags || [],
+    function: tool?.function || "",
     created_by: tool?.created_by || "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // Admin functionality for adding new items
+  const [showAddPrimaryCategory, setShowAddPrimaryCategory] = useState(false);
+  const [showAddCategory, setShowAddCategory] = useState(false);
+  const [showAddTag, setShowAddTag] = useState(false);
+  const [newPrimaryCategoryName, setNewPrimaryCategoryName] = useState("");
+  const [newCategoryName, setNewCategoryName] = useState("");
+  const [newTagName, setNewTagName] = useState("");
 
   useEffect(() => {
     setFormData({
@@ -37,7 +50,9 @@ export function ToolFormModal({
       description: tool?.description || "",
       url: tool?.url || "",
       type: tool?.type || "GPT",
-      categories: tool?.categories ? tool.categories.join(", ") : "",
+      categories: tool?.categories || [],
+      tags: tool?.tags || [],
+      function: tool?.function || "",
       created_by: tool?.created_by || "",
     });
   }, [tool, isOpen]);
@@ -53,8 +68,8 @@ export function ToolFormModal({
     if (!formData.type.trim()) {
       newErrors.type = "Type is required";
     }
-    if (!formData.categories.trim()) {
-      newErrors.categories = "At least one category is required";
+    if (!formData.function.trim()) {
+      newErrors.function = "Function is required";
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -70,19 +85,88 @@ export function ToolFormModal({
       description: formData.description,
       url: formData.url,
       type: formData.type,
-      categories: formData.categories
-        .split(",")
-        .map((cat) => cat.trim())
-        .filter(Boolean),
+      function: formData.function,
+      categories: formData.categories,
+      tags: formData.tags,
     };
     onSave(toolData);
     onClose();
   };
 
-  const handleInputChange = (field: string, value: string) => {
+  const handleInputChange = (field: string, value: string | string[]) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
     if (errors[field]) {
       setErrors((prev) => ({ ...prev, [field]: "" }));
+    }
+  };
+
+  const handleCategoryToggle = (categoryName: string) => {
+    const currentCategories = Array.isArray(formData.categories)
+      ? formData.categories
+      : [];
+    const newCategories = currentCategories.includes(categoryName)
+      ? currentCategories.filter((cat) => cat !== categoryName)
+      : [...currentCategories, categoryName];
+    handleInputChange("categories", newCategories);
+  };
+
+  const handleTagToggle = (tagName: string) => {
+    const currentTags = Array.isArray(formData.tags) ? formData.tags : [];
+    const newTags = currentTags.includes(tagName)
+      ? currentTags.filter((tag) => tag !== tagName)
+      : [...currentTags, tagName];
+    handleInputChange("tags", newTags);
+  };
+
+  const handleAddNewCategory = () => {
+    if (newCategoryName.trim()) {
+      // Add to form data
+      handleCategoryToggle(newCategoryName.trim());
+
+      // TODO: Save to taxonomy in backend
+      console.log(
+        "TODO: Save new category to taxonomy:",
+        newCategoryName.trim()
+      );
+
+      // Reset form
+      setNewCategoryName("");
+      setShowAddCategory(false);
+    }
+  };
+
+  const handleAddNewTag = () => {
+    if (newTagName.trim()) {
+      // Add to form data
+      handleTagToggle(newTagName.trim());
+
+      // TODO: Save to taxonomy in backend
+      console.log("TODO: Save new tag to taxonomy:", newTagName.trim());
+
+      // Reset form
+      setNewTagName("");
+      setShowAddTag(false);
+    }
+  };
+
+  const handleAddNewPrimaryCategory = () => {
+    if (newPrimaryCategoryName.trim()) {
+      // Add to form data - update the first category
+      const newCategories = [
+        ...(Array.isArray(formData.categories) ? formData.categories : []),
+      ];
+      newCategories[0] = newPrimaryCategoryName.trim();
+      handleInputChange("categories", newCategories.filter(Boolean));
+
+      // TODO: Save to business categories in backend
+      console.log(
+        "TODO: Save new primary category:",
+        newPrimaryCategoryName.trim()
+      );
+
+      // Reset form
+      setNewPrimaryCategoryName("");
+      setShowAddPrimaryCategory(false);
     }
   };
 
@@ -104,7 +188,7 @@ export function ToolFormModal({
       >
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+          <h2 className="zeno-heading text-xl font-semibold text-gray-900 dark:text-white">
             {tool ? "Edit Tool" : "Add New Tool"}
           </h2>
           <button
@@ -120,10 +204,10 @@ export function ToolFormModal({
           {tool && (
             <div className="flex gap-8 mb-2">
               <div>
-                <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-0.5">
+                <label className="zeno-body block text-xs font-medium text-gray-500 dark:text-gray-400 mb-0.5">
                   Created On
                 </label>
-                <div className="text-sm text-gray-700 dark:text-gray-200">
+                <div className="zeno-body text-sm text-gray-700 dark:text-gray-200">
                   {tool.date_created
                     ? new Date(tool.date_created).toLocaleDateString("en-US", {
                         year: "numeric",
@@ -134,49 +218,43 @@ export function ToolFormModal({
                 </div>
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-0.5">
+                <label className="zeno-body block text-xs font-medium text-gray-500 dark:text-gray-400 mb-0.5">
                   Created By
                 </label>
-                <div className="text-sm text-gray-700 dark:text-gray-200">
+                <div className="zeno-body text-sm text-gray-700 dark:text-gray-200">
                   {tool.created_by || "-"}
                 </div>
               </div>
             </div>
           )}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Title
-            </label>
+            <label className="zeno-label">Title</label>
             <input
               type="text"
               value={formData.title}
               onChange={(e) => handleInputChange("title", e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="zeno-input"
             />
             {errors.title && (
               <p className="text-red-500 text-sm mt-1">{errors.title}</p>
             )}
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Description
-            </label>
+            <label className="zeno-label">Description</label>
             <textarea
               value={formData.description}
               onChange={(e) => handleInputChange("description", e.target.value)}
               rows={3}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="zeno-input"
             />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Type
-              </label>
+              <label className="zeno-label">Type</label>
               <select
                 value={formData.type}
                 onChange={(e) => handleInputChange("type", e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="zeno-input"
               >
                 <option value="GPT">GPT</option>
                 <option value="Doc">Doc</option>
@@ -187,48 +265,282 @@ export function ToolFormModal({
                 <p className="text-red-500 text-sm mt-1">{errors.type}</p>
               )}
             </div>
+            <div>
+              <label className="zeno-label">Function</label>
+              <input
+                type="text"
+                value={formData.function}
+                onChange={(e) => handleInputChange("function", e.target.value)}
+                placeholder="e.g. Audience Research"
+                className="zeno-input"
+              />
+              {errors.function && (
+                <p className="text-red-500 text-sm mt-1">{errors.function}</p>
+              )}
+            </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              URL
-            </label>
+            <label className="zeno-label">URL</label>
             <input
               type="text"
               value={formData.url}
               onChange={(e) => handleInputChange("url", e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="zeno-input"
             />
             {errors.url && (
               <p className="text-red-500 text-sm mt-1">{errors.url}</p>
             )}
           </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <label className="zeno-label mb-0">Category</label>
+                <button
+                  type="button"
+                  onClick={() =>
+                    setShowAddPrimaryCategory(!showAddPrimaryCategory)
+                  }
+                  className="text-xs text-primary hover:text-primary/80 font-medium"
+                >
+                  + Add New
+                </button>
+              </div>
+
+              {showAddPrimaryCategory && (
+                <div className="mb-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={newPrimaryCategoryName}
+                      onChange={(e) =>
+                        setNewPrimaryCategoryName(e.target.value)
+                      }
+                      placeholder="Enter new business category"
+                      className="zeno-input flex-1 text-xs"
+                      onKeyPress={(e) =>
+                        e.key === "Enter" && handleAddNewPrimaryCategory()
+                      }
+                    />
+                    <button
+                      type="button"
+                      onClick={handleAddNewPrimaryCategory}
+                      className="zeno-button-primary text-xs px-3 py-1"
+                    >
+                      Add
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowAddPrimaryCategory(false);
+                        setNewPrimaryCategoryName("");
+                      }}
+                      className="zeno-button-secondary text-xs px-3 py-1"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              <select
+                value={
+                  Array.isArray(formData.categories)
+                    ? formData.categories[0] || ""
+                    : ""
+                }
+                onChange={(e) => {
+                  const newCategories = [
+                    ...(Array.isArray(formData.categories)
+                      ? formData.categories
+                      : []),
+                  ];
+                  newCategories[0] = e.target.value;
+                  handleInputChange(
+                    "categories",
+                    newCategories.filter(Boolean)
+                  );
+                }}
+                className="zeno-input"
+              >
+                <option value="">Select Category</option>
+                <option value="Account">Account</option>
+                <option value="Strategy & Planning">Strategy & Planning</option>
+                <option value="Data + Intelligence">Data + Intelligence</option>
+              </select>
+            </div>
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <label className="zeno-label mb-0">Tag Categories</label>
+                <button
+                  type="button"
+                  onClick={() => setShowAddCategory(!showAddCategory)}
+                  className="text-xs text-primary hover:text-primary/80 font-medium"
+                >
+                  + Add New
+                </button>
+              </div>
+
+              {showAddCategory && (
+                <div className="mb-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={newCategoryName}
+                      onChange={(e) => setNewCategoryName(e.target.value)}
+                      placeholder="Enter new category name"
+                      className="zeno-input flex-1 text-xs"
+                      onKeyPress={(e) =>
+                        e.key === "Enter" && handleAddNewCategory()
+                      }
+                    />
+                    <button
+                      type="button"
+                      onClick={handleAddNewCategory}
+                      className="zeno-button-primary text-xs px-3 py-1"
+                    >
+                      Add
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowAddCategory(false);
+                        setNewCategoryName("");
+                      }}
+                      className="zeno-button-secondary text-xs px-3 py-1"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              <div className="border border-gray-300 dark:border-gray-600 rounded-lg p-3 max-h-32 overflow-y-auto">
+                {dataConfig?.tagCategories ? (
+                  Object.values(dataConfig.tagCategories).map(
+                    (category: any) => (
+                      <label
+                        key={category.id}
+                        className="flex items-center gap-2 mb-2 cursor-pointer"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={
+                            Array.isArray(formData.categories) &&
+                            formData.categories.includes(category.name)
+                          }
+                          onChange={() => handleCategoryToggle(category.name)}
+                          className="zeno-checkbox"
+                        />
+                        <span className="zeno-body text-sm">
+                          {category.name}
+                        </span>
+                      </label>
+                    )
+                  )
+                ) : (
+                  <span className="text-gray-500 text-sm">
+                    No categories available
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Categories (comma-separated)
-            </label>
-            <input
-              type="text"
-              value={formData.categories}
-              onChange={(e) => handleInputChange("categories", e.target.value)}
-              placeholder="e.g. AI, Productivity"
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            {errors.categories && (
-              <p className="text-red-500 text-sm mt-1">{errors.categories}</p>
+            <div className="flex items-center justify-between mb-2">
+              <label className="zeno-label mb-0">Tags</label>
+              <button
+                type="button"
+                onClick={() => setShowAddTag(!showAddTag)}
+                className="text-xs text-primary hover:text-primary/80 font-medium"
+              >
+                + Add New
+              </button>
+            </div>
+
+            {showAddTag && (
+              <div className="mb-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={newTagName}
+                    onChange={(e) => setNewTagName(e.target.value)}
+                    placeholder="Enter new tag name (use hyphens for multi-word tags)"
+                    className="zeno-input flex-1 text-xs"
+                    onKeyPress={(e) => e.key === "Enter" && handleAddNewTag()}
+                  />
+                  <button
+                    type="button"
+                    onClick={handleAddNewTag}
+                    className="zeno-button-primary text-xs px-3 py-1"
+                  >
+                    Add
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowAddTag(false);
+                      setNewTagName("");
+                    }}
+                    className="zeno-button-secondary text-xs px-3 py-1"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
             )}
+
+            <div className="border border-gray-300 dark:border-gray-600 rounded-lg p-3 max-h-40 overflow-y-auto">
+              {(() => {
+                // Get all available tags from selected categories
+                const availableTags = new Set<string>();
+                if (dataConfig?.tagCategories) {
+                  Object.values(dataConfig.tagCategories).forEach(
+                    (category: any) => {
+                      category.tags.forEach((tag: string) =>
+                        availableTags.add(tag)
+                      );
+                    }
+                  );
+                }
+
+                const sortedTags = Array.from(availableTags).sort();
+
+                return sortedTags.length > 0 ? (
+                  sortedTags.map((tag) => (
+                    <label
+                      key={tag}
+                      className="flex items-center gap-2 mb-2 cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={
+                          Array.isArray(formData.tags) &&
+                          formData.tags.includes(tag)
+                        }
+                        onChange={() => handleTagToggle(tag)}
+                        className="zeno-checkbox"
+                      />
+                      <span className="zeno-body text-sm">{tag}</span>
+                    </label>
+                  ))
+                ) : (
+                  <span className="text-gray-500 text-sm">
+                    No tags available
+                  </span>
+                );
+              })()}
+            </div>
           </div>
           {!tool && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Created By
-              </label>
+              <label className="zeno-label">Created By</label>
               <input
                 type="text"
                 value={formData.created_by}
                 onChange={(e) =>
                   handleInputChange("created_by", e.target.value)
                 }
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="zeno-input"
               />
             </div>
           )}
@@ -236,14 +548,11 @@ export function ToolFormModal({
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+              className="zeno-button-secondary"
             >
               Cancel
             </button>
-            <button
-              type="submit"
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-            >
+            <button type="submit" className="zeno-button-primary">
               {tool ? "Update" : "Create"} Tool
             </button>
           </div>

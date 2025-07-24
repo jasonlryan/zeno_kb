@@ -59,7 +59,7 @@ export function AccessRequestForm({
       >
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+          <h2 className="zeno-heading text-xl font-bold text-gray-900 dark:text-white">
             Request Access
           </h2>
           <button
@@ -96,7 +96,7 @@ export function AccessRequestForm({
               onChange={(e) => setJustification(e.target.value)}
               placeholder="Please explain why you need access to this tool and how you plan to use it..."
               required
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="zeno-input"
               rows={4}
             />
           </div>
@@ -123,7 +123,7 @@ export function AccessRequestForm({
             <button
               type="submit"
               disabled={!justification.trim() || isSubmitting}
-              className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+              className="zeno-button-blue flex-1 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {isSubmitting ? (
                 <>

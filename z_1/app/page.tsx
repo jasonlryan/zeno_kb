@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Home,
   Search,
@@ -29,7 +29,6 @@ import {
   useNavigation,
   useTools,
   useCategories,
-  useText,
 } from "../hooks/useConfig";
 import { useAPITools } from "../hooks/useAPITools";
 import { generateCategoriesFromData } from "../lib/mockData";
@@ -62,8 +61,136 @@ export default function HomePage() {
     false && featureFlags.enableFilters
   );
 
-  // Load configuration data
-  const { app } = useConfig();
+  // Add URL hash-based routing persistence
+  useEffect(() => {
+    // Read initial view from URL hash
+    const hash = window.location.hash.replace("#", "");
+    if (hash && hash !== activeView) {
+      const validViews = [
+        "home",
+        "search",
+        "library",
+        "curator",
+        "users",
+        "analytics",
+        "demos",
+        "tool-detail",
+        "category",
+        "user-guide",
+      ];
+      if (validViews.includes(hash)) {
+        setActiveView(hash as any);
+      }
+    }
+
+    // Listen for hash changes (back/forward navigation)
+    const handleHashChange = () => {
+      const newHash = window.location.hash.replace("#", "") || "home";
+      const validViews = [
+        "home",
+        "search",
+        "library",
+        "curator",
+        "users",
+        "analytics",
+        "demos",
+        "tool-detail",
+        "category",
+        "user-guide",
+      ];
+      if (validViews.includes(newHash)) {
+        setActiveView(newHash as any);
+
+        // Handle special cases for back navigation
+        if (newHash === "home") {
+          setSelectedTool(null);
+          setSelectedCategory(null);
+          setSearchQuery("");
+        }
+      }
+    };
+
+    // Listen for browser back/forward buttons
+    const handlePopState = (event: PopStateEvent) => {
+      const newHash = window.location.hash.replace("#", "") || "home";
+      const validViews = [
+        "home",
+        "search",
+        "library",
+        "curator",
+        "users",
+        "analytics",
+        "demos",
+        "tool-detail",
+        "category",
+        "user-guide",
+      ];
+      if (validViews.includes(newHash)) {
+        setActiveView(newHash as any);
+
+        // Restore state from history if available
+        if (event.state) {
+          if (event.state.selectedTool) {
+            setSelectedTool(event.state.selectedTool);
+          }
+          if (event.state.selectedCategory) {
+            setSelectedCategory(event.state.selectedCategory);
+          }
+          if (event.state.searchQuery !== undefined) {
+            setSearchQuery(event.state.searchQuery);
+          }
+        }
+      }
+    };
+
+    window.addEventListener("hashchange", handleHashChange);
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("hashchange", handleHashChange);
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []); // Remove activeView dependency to prevent infinite loop
+
+  // Update URL hash when activeView changes (but not on initial load)
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const [lastActiveView, setLastActiveView] = useState<string>("");
+
+  useEffect(() => {
+    if (isInitialLoad) {
+      setIsInitialLoad(false);
+      setLastActiveView(activeView);
+      return;
+    }
+
+    // Only update URL if activeView actually changed
+    if (activeView !== lastActiveView) {
+      const currentHash = window.location.hash.replace("#", "");
+      if (currentHash !== activeView) {
+        // Use pushState for navigation to create browser history entries
+        const state = {
+          selectedTool,
+          selectedCategory,
+          searchQuery,
+          timestamp: Date.now(),
+        };
+
+        // Push new state to browser history
+        window.history.pushState(state, "", `#${activeView}`);
+      }
+      setLastActiveView(activeView);
+    }
+  }, [
+    activeView,
+    selectedTool,
+    selectedCategory,
+    searchQuery,
+    isInitialLoad,
+    lastActiveView,
+  ]);
+
+  // Load configuration data - ALL HOOKS MUST BE CALLED BEFORE ANY CONDITIONAL LOGIC
+  const { appConfig } = useConfig();
   const { navigation, loading: navLoading } = useNavigation();
   const {
     all: allTools,
@@ -81,25 +208,12 @@ export default function HomePage() {
     }
   }, []);
 
-  // Temporarily disable taxonomy system for debugging
-  // const {
-  //   filteredTools: taxonomyFilteredTools,
-  //   searchTools,
-  //   hasActiveFilters,
-  //   clearFilters,
-  // } = useTaxonomy(allTools);
-
   // Always call useLocalSearch (Rules of Hooks)
   const localSearchResults = useLocalSearch(allTools, searchQuery);
 
-  // Use local search for now - if no search query, show all tools
-  const displayTools = searchQuery.trim() ? localSearchResults : allTools;
-  const hasActiveFilters = false;
-
-  // Filter tools by category (function-based categories)
-  const getToolsByCategory = (categoryTitle: string): Tool[] => {
-    // Map category titles to the functions they contain
-    const categoryFunctionMap: Record<string, string[]> = {
+  // Memoize category function mapping to prevent re-creation on every render
+  const categoryFunctionMap = React.useMemo(
+    (): Record<string, string[]> => ({
       Other: [
         "Audience Research",
         "Executive Research",
@@ -134,22 +248,127 @@ export default function HomePage() {
         "Media List Creation",
         "Executive Voice Emulation",
       ],
-    };
+    }),
+    []
+  );
 
-    const functions = categoryFunctionMap[categoryTitle];
-    if (!functions) {
-      return [];
+  // Get dataConfig at component level to use in callback
+  const { dataConfig } = useConfig();
+
+  // Memoize the getToolsByCategory function for tag-based filtering
+  const getToolsByCategory = React.useCallback(
+    (categoryId: string): Tool[] => {
+      // Find the category definition from the categories hook
+      const category = categories.find((c) => c.id === categoryId);
+      if (!category) {
+        return [];
+      }
+
+      // Get the tag list for this category from dataConfig
+      const tagCategories = dataConfig?.tagCategories || {};
+      const categoryDef = tagCategories[categoryId];
+
+      if (!categoryDef || !categoryDef.tags) {
+        return [];
+      }
+
+      // Return tools that have any of this category's tags
+      return allTools.filter((tool) => {
+        if (!Array.isArray(tool.tags)) return false;
+        return tool.tags.some((tag: string) => categoryDef.tags.includes(tag));
+      });
+    },
+    [allTools, categories, dataConfig]
+  );
+
+  // Use static text instead of problematic useText hook
+  const categoriesTitle = "Browse by Category";
+
+  // All event handlers - memoized to prevent Fast Refresh issues
+  const handleSearch = React.useCallback((query: string) => {
+    setSearchQuery(query);
+    // Always switch to search view when user starts searching
+    setActiveView("search");
+  }, []);
+
+  const handleNavigate = React.useCallback((itemId: string) => {
+    console.log("Navigating to:", itemId);
+    setActiveView(itemId as any);
+  }, []);
+
+  const handleToolSelect = React.useCallback(
+    (id: string) => {
+      const tool = allTools.find((t) => t.id === id);
+      if (tool) {
+        setSelectedTool(tool);
+        setActiveView("tool-detail");
+      }
+    },
+    [allTools]
+  );
+
+  const handleBackToHome = React.useCallback(() => {
+    setSelectedTool(null);
+    setSelectedCategory(null);
+    setSearchQuery("");
+    setActiveView("home");
+  }, []);
+
+  const handleCategorySelect = React.useCallback(
+    (id: string) => {
+      const category = categories.find((c) => c.id === id);
+      if (category) {
+        setSelectedCategory(id); // Store category ID instead of title
+        setActiveView("category");
+      }
+    },
+    [categories]
+  );
+
+  const handleTagClick = React.useCallback((tag: string) => {
+    setSearchQuery(tag);
+    setActiveView("search");
+    // Scroll to top of page when navigating to search
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
+  // Enhanced back navigation that works with browser back button
+  const handleBack = React.useCallback(() => {
+    // Use browser's back functionality
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      // Fallback to home if no history
+      handleBackToHome();
+    }
+  }, [handleBackToHome]);
+
+  // Use local search for now - if no search query, show all tools
+  const displayTools = searchQuery.trim() ? localSearchResults : allTools;
+  const hasActiveFilters = false;
+
+  // Helper to get search title based on context
+  const getSearchTitle = React.useCallback(() => {
+    if (!searchQuery.trim()) {
+      return "Search Results";
     }
 
-    // Return tools that have functions belonging to this category
-    return allTools.filter(
-      (tool) =>
-        typeof tool.function === "string" && functions.includes(tool.function)
-    );
-  };
+    // Check if the search query matches a tag category
+    const matchingCategory = categories.find((category) => {
+      const tagCategories = dataConfig?.tagCategories || {};
+      const categoryDef = tagCategories[category.id];
+      return categoryDef && categoryDef.tags.includes(searchQuery.trim());
+    });
 
-  // Get text values at top level to avoid hook violations
-  const categoriesTitle = useText("pages.home.sections.categories.title");
+    if (matchingCategory) {
+      const filteredCount = displayTools.length;
+      return `${matchingCategory.title}: ${filteredCount} tools tagged with "${searchQuery}"`;
+    }
+
+    // For individual tag searches
+    const filteredCount = displayTools.length;
+    return `Search Results: ${filteredCount} tools for "${searchQuery}"`;
+  }, [searchQuery, categories, dataConfig, displayTools]);
 
   // Icon mapping for navigation
   const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -189,6 +408,7 @@ export default function HomePage() {
       .filter((section) => section.items.length > 0);
   }
 
+  // NOW we can have conditional returns after all hooks are called
   if (navLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen text-lg text-gray-500">
@@ -197,47 +417,9 @@ export default function HomePage() {
     );
   }
 
-  const handleSearch = (query: string) => {
-    setSearchQuery(query);
-    // Always switch to search view when user starts searching
-    setActiveView("search");
-  };
-
-  const handleNavigate = (itemId: string) => {
-    console.log("Navigating to:", itemId);
-    setActiveView(itemId as any);
-  };
-
-  const handleToolSelect = (id: string) => {
-    const tool = allTools.find((t) => t.id === id);
-    if (tool) {
-      setSelectedTool(tool);
-      setActiveView("tool-detail");
-    }
-  };
-
-  const handleBackToHome = () => {
-    setSelectedTool(null);
-    setSelectedCategory(null);
-    setActiveView("home");
-  };
-
-  const handleCategorySelect = (id: string) => {
-    const category = categories.find((c) => c.id === id);
-    if (category) {
-      setSelectedCategory(category.title);
-      setActiveView("category");
-    }
-  };
-
   const renderMainContent = () => {
-    if (toolsLoading) {
-      return (
-        <div className="flex items-center justify-center min-h-screen">
-          <div className="text-lg text-gray-500">Loading...</div>
-        </div>
-      );
-    }
+    // Remove the toolsLoading check here since it's causing unnecessary Loading states
+    // The individual sections will handle their own loading states appropriately
     switch (activeView) {
       case "home":
         return (
@@ -263,6 +445,7 @@ export default function HomePage() {
             <FeaturedCarousel
               tools={featuredTools}
               onSelect={handleToolSelect}
+              onTagClick={handleTagClick}
             />
 
             {/* Categories */}
@@ -282,7 +465,11 @@ export default function HomePage() {
                 All tools ({toolsLoading ? "Loading..." : `${toolsCount} tools`}
                 )
               </h2>
-              <ToolGrid tools={allTools} onSelect={handleToolSelect} />
+              <ToolGrid
+                tools={allTools}
+                onSelect={handleToolSelect}
+                onTagClick={handleTagClick}
+              />
             </section>
           </div>
         );
@@ -293,12 +480,16 @@ export default function HomePage() {
             <section>
               <h2 className="zeno-heading text-card-foreground mb-6">
                 {searchQuery
-                  ? `Search results for "${searchQuery}" (${displayTools.length} tools)`
+                  ? getSearchTitle()
                   : `All tools (${
                       toolsLoading ? "Loading..." : `${toolsCount} tools`
                     })`}
               </h2>
-              <ToolGrid tools={displayTools} onSelect={handleToolSelect} />
+              <ToolGrid
+                tools={displayTools}
+                onSelect={handleToolSelect}
+                onTagClick={handleTagClick}
+              />
             </section>
           </div>
         );
@@ -412,22 +603,29 @@ export default function HomePage() {
           typeof selectedCategory === "string"
             ? getToolsByCategory(selectedCategory)
             : [];
+        const categoryTitle =
+          categories.find((c) => c.id === selectedCategory)?.title ||
+          selectedCategory;
         return (
           <div className="space-y-8">
             <section>
               <div className="flex items-center gap-4 mb-6">
                 <button
-                  onClick={handleBackToHome}
+                  onClick={handleBack}
                   className="flex items-center text-blue-600 hover:text-blue-800 transition-colors duration-200"
                 >
-                  <ChevronLeft size={20} className="mr-2" /> Back to Home
+                  <ChevronLeft size={20} className="mr-2" /> Back
                 </button>
                 <h2 className="zeno-heading text-card-foreground">
-                  {selectedCategory} ({categoryTools.length} tools)
+                  {categoryTitle} ({categoryTools.length} tools)
                 </h2>
               </div>
               {categoryTools.length > 0 ? (
-                <ToolGrid tools={categoryTools} onSelect={handleToolSelect} />
+                <ToolGrid
+                  tools={categoryTools}
+                  onSelect={handleToolSelect}
+                  onTagClick={handleTagClick}
+                />
               ) : (
                 <div className="text-center py-16">
                   <p className="zeno-body text-muted-foreground">
@@ -453,10 +651,10 @@ export default function HomePage() {
           <div className="space-y-8">
             <div className="flex items-center gap-4 mb-6">
               <button
-                onClick={handleBackToHome}
+                onClick={handleBack}
                 className="flex items-center text-blue-600 hover:text-blue-800 transition-colors duration-200"
               >
-                <ChevronLeft size={20} className="mr-2" /> Back to All Tools
+                <ChevronLeft size={20} className="mr-2" /> Back
               </button>
             </div>
             <ToolDetailPage
@@ -466,6 +664,8 @@ export default function HomePage() {
                 console.log("Toggle favorite for tool:", toolId);
                 // TODO: Implement favorites functionality
               }}
+              onCategoryClick={handleCategorySelect}
+              onTagClick={handleTagClick}
               isFavorite={false} // TODO: Implement favorites state
             />
           </div>

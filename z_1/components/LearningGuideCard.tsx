@@ -35,9 +35,7 @@ export function LearningGuideCard({
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center gap-2">
             <span className="text-2xl">{template.icon}</span>
-            <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-1 rounded-full">
-              {template.displayName}
-            </span>
+            <span className="zeno-badge-blue">{template.displayName}</span>
           </div>
           {tool.estimated_read_time && (
             <div className="flex items-center gap-1 text-sm text-gray-600">
@@ -48,7 +46,7 @@ export function LearningGuideCard({
         </div>
 
         {/* Title and Description */}
-        <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2">
+        <h3 className="zeno-heading text-xl font-bold text-gray-900 mb-3 line-clamp-2">
           {tool.title}
         </h3>
         <p className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-3">
@@ -114,21 +112,20 @@ export function LearningGuideCard({
         )}
 
         {/* Tags */}
-        <div className="flex flex-wrap gap-2 mb-4">
-          {tool.tags.slice(0, 3).map((tag) => (
-            <span
-              key={tag}
-              className="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-md"
-            >
-              {tag}
-            </span>
-          ))}
-          {tool.tags.length > 3 && (
-            <span className="text-xs text-gray-500">
-              +{tool.tags.length - 3} more
-            </span>
-          )}
-        </div>
+        {tool.tags && tool.tags.length > 0 && (
+          <div className="flex flex-wrap gap-2 mb-4">
+            {tool.tags.slice(0, 3).map((tag) => (
+              <span key={tag} className="zeno-tag">
+                {tag}
+              </span>
+            ))}
+            {tool.tags.length > 3 && (
+              <span className="text-xs text-gray-500">
+                +{tool.tags.length - 3} more
+              </span>
+            )}
+          </div>
+        )}
 
         {/* Tier and Complexity */}
         <div className="flex items-center gap-3 mb-4">
