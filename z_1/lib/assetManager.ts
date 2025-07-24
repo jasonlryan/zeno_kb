@@ -5,14 +5,11 @@ export interface SchemaField {
   generated?: boolean;
 }
 
-export interface Asset {
-  [key: string]: any;
-}
-
+import { getDataConfig, setDataConfig } from './redisConfigManager';
+import { ZenoConfig, ZenoAsset } from '../types/config';
 import fs from 'fs';
 import path from 'path';
 
-const dataFilePath = path.join(process.cwd(), 'z_1/public/config/data.json');
 const schemaFilePath = path.join(process.cwd(), 'z_1/data/schema.json');
 
 function loadSchema(): { fields: SchemaField[] } {
@@ -20,23 +17,22 @@ function loadSchema(): { fields: SchemaField[] } {
   return JSON.parse(raw);
 }
 
-function loadData() {
-  const raw = fs.readFileSync(dataFilePath, 'utf-8');
-  return JSON.parse(raw);
+async function loadData(): Promise<ZenoConfig> {
+  return await getDataConfig() as ZenoConfig;
 }
 
-function saveData(data: any) {
-  fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2), 'utf-8');
+async function saveData(data: ZenoConfig) {
+  await setDataConfig(data);
 }
 
 /**
- * Add a new asset to data.json using the schema definition
+ * Add a new asset to Redis data config using the schema definition
  */
-export function addAsset(asset: Asset) {
+export async function addAsset(asset: Partial<ZenoAsset>) {
   const schema = loadSchema();
-  const data = loadData();
+  const data = await loadData();
 
-  const newAsset: Asset = {};
+  const newAsset: any = {};
   for (const field of schema.fields) {
     if (field.generated && field.name === 'id') {
       newAsset.id = asset.id || Date.now().toString();
@@ -50,28 +46,28 @@ export function addAsset(asset: Asset) {
       newAsset.date_modified = new Date().toISOString();
       continue;
     }
-    if (asset[field.name] !== undefined) {
-      newAsset[field.name] = asset[field.name];
+    if (asset[field.name as keyof ZenoAsset] !== undefined) {
+      newAsset[field.name] = asset[field.name as keyof ZenoAsset];
     } else if (field.required) {
       newAsset[field.name] = field.type === 'array' ? [] : '';
     }
   }
 
   data.tools.push(newAsset);
-  saveData(data);
+  await saveData(data);
   return newAsset;
 }
 
 /**
- * Remove an asset by id from data.json
+ * Remove an asset by id from Redis data config
  */
-export function removeAsset(id: string) {
-  const data = loadData();
+export async function removeAsset(id: string) {
+  const data = await loadData();
   const originalLength = data.tools.length;
   data.tools = data.tools.filter((t: any) => t.id !== id);
   if (data.tools.length === originalLength) {
     return false;
   }
-  saveData(data);
+  await saveData(data);
   return true;
 }

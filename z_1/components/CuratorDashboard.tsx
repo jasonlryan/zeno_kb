@@ -356,12 +356,36 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
               tool={editingTool}
               onSave={async (toolData) => {
                 if (editingTool) {
-                  // Edit existing
-                  setTools((prev) =>
-                    prev.map((t) =>
-                      t.id === editingTool.id ? { ...t, ...toolData } : t
-                    )
-                  );
+                  // Edit existing - persist to API
+                  try {
+                    const res = await fetch(`/api/tools/${editingTool.id}`, {
+                      method: "PUT",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify(toolData),
+                    });
+                    if (res.ok) {
+                      const { tool: updatedTool } = await res.json();
+                      setTools((prev) =>
+                        prev.map((t) =>
+                          t.id === editingTool.id ? updatedTool : t
+                        )
+                      );
+                    } else {
+                      // fallback: update locally if API fails
+                      setTools((prev) =>
+                        prev.map((t) =>
+                          t.id === editingTool.id ? { ...t, ...toolData } : t
+                        )
+                      );
+                    }
+                  } catch (err) {
+                    // fallback: update locally if API fails
+                    setTools((prev) =>
+                      prev.map((t) =>
+                        t.id === editingTool.id ? { ...t, ...toolData } : t
+                      )
+                    );
+                  }
                 } else {
                   // Add new (persist to API)
                   try {
