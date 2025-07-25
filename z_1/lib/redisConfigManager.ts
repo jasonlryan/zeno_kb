@@ -2,6 +2,9 @@ import { Redis } from '@upstash/redis';
 
 const redis = Redis.fromEnv();
 
+// Export redis instance for other modules
+export { redis };
+
 const CONFIG_KEYS = {
   app: "app-config",
   content: "content-config",

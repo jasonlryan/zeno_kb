@@ -1,6 +1,6 @@
 {
   "summary": {
-    "violations": 720
+    "violations": 946
   },
   "files": {
     "demo.tsx": [
@@ -248,6 +248,13 @@
       },
       {
         "file": "app/page.tsx",
+        "line": 467,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-2' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "app/page.tsx",
         "line": 476,
         "type": "should-use-zeno",
         "message": "Class 'mx-auto' should use zeno- system instead of raw Tailwind",
@@ -262,6 +269,27 @@
       },
       {
         "file": "app/page.tsx",
+        "line": 493,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-6' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "app/page.tsx",
+        "line": 504,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-6' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "app/page.tsx",
+        "line": 523,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-6' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "app/page.tsx",
         "line": 544,
         "type": "should-use-zeno",
         "message": "Class 'py-16' should use zeno- system instead of raw Tailwind",
@@ -272,6 +300,20 @@
         "line": 545,
         "type": "should-use-zeno",
         "message": "Class 'mx-auto' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "app/page.tsx",
+        "line": 545,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-4' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "app/page.tsx",
+        "line": 560,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-6' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
@@ -297,6 +339,20 @@
       },
       {
         "file": "app/page.tsx",
+        "line": 565,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-4' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "app/page.tsx",
+        "line": 566,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-2' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "app/page.tsx",
         "line": 590,
         "type": "should-use-zeno",
         "message": "Class 'py-16' should use zeno- system instead of raw Tailwind",
@@ -304,9 +360,23 @@
       },
       {
         "file": "app/page.tsx",
+        "line": 601,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-6' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "app/page.tsx",
         "line": 610,
         "type": "should-use-zeno",
         "message": "Class 'py-16' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "app/page.tsx",
+        "line": 621,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-6' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
@@ -325,6 +395,13 @@
       },
       {
         "file": "app/page.tsx",
+        "line": 625,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-4' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "app/page.tsx",
         "line": 635,
         "type": "should-use-zeno",
         "message": "Class 'py-16' should use zeno- system instead of raw Tailwind",
@@ -335,6 +412,34 @@
         "line": 645,
         "type": "should-use-zeno",
         "message": "Class 'mb-8' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "app/page.tsx",
+        "line": 650,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-4' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "app/page.tsx",
+        "line": 656,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-4' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "app/page.tsx",
+        "line": 664,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-4' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "app/page.tsx",
+        "line": 683,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-6' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
@@ -370,6 +475,13 @@
         "line": 716,
         "type": "should-use-zeno",
         "message": "Class 'py-16' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "app/page.tsx",
+        "line": 725,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-6' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
@@ -418,13 +530,6 @@
         "file": "app/page.tsx",
         "line": 791,
         "type": "should-use-zeno",
-        "message": "Class 'sm:zeno-px-6' should use zeno- system instead of raw Tailwind",
-        "suggestion": "Replace with zeno- equivalent or approved utility"
-      },
-      {
-        "file": "app/page.tsx",
-        "line": 791,
-        "type": "should-use-zeno",
         "message": "Class 'py-6' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       }
@@ -467,6 +572,13 @@
       },
       {
         "file": "components/AccessRequestForm.tsx",
+        "line": 77,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-2' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/AccessRequestForm.tsx",
         "line": 80,
         "type": "should-use-zeno",
         "message": "Class 'dark:text-gray-400' should use zeno- system instead of raw Tailwind",
@@ -477,6 +589,13 @@
         "line": 89,
         "type": "should-use-zeno",
         "message": "Class 'dark:text-gray-300' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/AccessRequestForm.tsx",
+        "line": 89,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-2' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
@@ -683,6 +802,13 @@
         "file": "components/AuthPanel.tsx",
         "line": 71,
         "type": "should-use-zeno",
+        "message": "Class 'mb-4' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/AuthPanel.tsx",
+        "line": 71,
+        "type": "should-use-zeno",
         "message": "Class 'h-12' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
@@ -744,6 +870,13 @@
       }
     ],
     "components/CategoryTile.tsx": [
+      {
+        "file": "components/CategoryTile.tsx",
+        "line": 24,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-4' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
       {
         "file": "components/CategoryTile.tsx",
         "line": 25,
@@ -981,6 +1114,13 @@
         "file": "components/ChatPanel.tsx",
         "line": 213,
         "type": "should-use-zeno",
+        "message": "Class 'px-6' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/ChatPanel.tsx",
+        "line": 213,
+        "type": "should-use-zeno",
         "message": "Class 'py-3' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
@@ -1060,6 +1200,13 @@
         "file": "components/CommentModal.tsx",
         "line": 76,
         "type": "should-use-zeno",
+        "message": "Class 'px-6' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/CommentModal.tsx",
+        "line": 76,
+        "type": "should-use-zeno",
         "message": "Class 'py-3' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
@@ -1072,6 +1219,13 @@
       },
       {
         "file": "components/CommentModal.tsx",
+        "line": 90,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-2' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/CommentModal.tsx",
         "line": 102,
         "type": "should-use-zeno",
         "message": "Class 'px-3' should use zeno- system instead of raw Tailwind",
@@ -1093,6 +1247,13 @@
       },
       {
         "file": "components/CommentModal.tsx",
+        "line": 110,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-2' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/CommentModal.tsx",
         "line": 118,
         "type": "should-use-zeno",
         "message": "Class 'px-3' should use zeno- system instead of raw Tailwind",
@@ -1110,6 +1271,13 @@
         "line": 118,
         "type": "should-use-zeno",
         "message": "Class 'focus:ring-green-500' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/CommentModal.tsx",
+        "line": 133,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-2' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
@@ -1217,6 +1385,13 @@
         "line": 247,
         "type": "should-use-zeno",
         "message": "Class 'space-x-8' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/CuratorDashboard.tsx",
+        "line": 247,
+        "type": "should-use-zeno",
+        "message": "Class 'px-6' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
@@ -1412,6 +1587,13 @@
         "file": "components/CuratorDashboard.tsx",
         "line": 357,
         "type": "should-use-zeno",
+        "message": "Class 'px-6' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/CuratorDashboard.tsx",
+        "line": 357,
+        "type": "should-use-zeno",
         "message": "Class 'py-3' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
@@ -1433,6 +1615,13 @@
         "file": "components/CuratorDashboard.tsx",
         "line": 365,
         "type": "should-use-zeno",
+        "message": "Class 'px-6' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/CuratorDashboard.tsx",
+        "line": 365,
+        "type": "should-use-zeno",
         "message": "Class 'py-3' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
@@ -1448,6 +1637,13 @@
         "line": 380,
         "type": "should-use-zeno",
         "message": "Class 'dark:hover:bg-gray-700' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/CuratorDashboard.tsx",
+        "line": 382,
+        "type": "should-use-zeno",
+        "message": "Class 'px-6' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
@@ -1543,6 +1739,13 @@
       },
       {
         "file": "components/CuratorDashboard.tsx",
+        "line": 420,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-4' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/CuratorDashboard.tsx",
         "line": 425,
         "type": "should-use-zeno",
         "message": "Class 'px-4' should use zeno- system instead of raw Tailwind",
@@ -1601,6 +1804,13 @@
         "file": "components/CuratorDashboard.tsx",
         "line": 478,
         "type": "should-use-zeno",
+        "message": "Class 'px-6' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/CuratorDashboard.tsx",
+        "line": 478,
+        "type": "should-use-zeno",
         "message": "Class 'py-4' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
@@ -1629,7 +1839,21 @@
         "file": "components/CuratorDashboard.tsx",
         "line": 488,
         "type": "should-use-zeno",
+        "message": "Class 'px-6' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/CuratorDashboard.tsx",
+        "line": 488,
+        "type": "should-use-zeno",
         "message": "Class 'py-4' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/CuratorDashboard.tsx",
+        "line": 491,
+        "type": "should-use-zeno",
+        "message": "Class 'px-6' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
@@ -1643,7 +1867,21 @@
         "file": "components/CuratorDashboard.tsx",
         "line": 528,
         "type": "should-use-zeno",
+        "message": "Class 'px-6' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/CuratorDashboard.tsx",
+        "line": 528,
+        "type": "should-use-zeno",
         "message": "Class 'py-4' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/CuratorDashboard.tsx",
+        "line": 555,
+        "type": "should-use-zeno",
+        "message": "Class 'px-6' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
@@ -1713,6 +1951,13 @@
         "file": "components/CuratorDashboard.tsx",
         "line": 687,
         "type": "should-use-zeno",
+        "message": "Class 'px-6' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/CuratorDashboard.tsx",
+        "line": 687,
+        "type": "should-use-zeno",
         "message": "Class 'py-3' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
@@ -1727,6 +1972,13 @@
         "file": "components/CuratorDashboard.tsx",
         "line": 690,
         "type": "should-use-zeno",
+        "message": "Class 'px-6' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/CuratorDashboard.tsx",
+        "line": 690,
+        "type": "should-use-zeno",
         "message": "Class 'py-3' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
@@ -1741,6 +1993,13 @@
         "file": "components/CuratorDashboard.tsx",
         "line": 693,
         "type": "should-use-zeno",
+        "message": "Class 'px-6' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/CuratorDashboard.tsx",
+        "line": 693,
+        "type": "should-use-zeno",
         "message": "Class 'py-3' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
@@ -1755,6 +2014,13 @@
         "file": "components/CuratorDashboard.tsx",
         "line": 696,
         "type": "should-use-zeno",
+        "message": "Class 'px-6' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/CuratorDashboard.tsx",
+        "line": 696,
+        "type": "should-use-zeno",
         "message": "Class 'py-3' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
@@ -1763,6 +2029,13 @@
         "line": 696,
         "type": "should-use-zeno",
         "message": "Class 'dark:text-gray-300' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/CuratorDashboard.tsx",
+        "line": 699,
+        "type": "should-use-zeno",
+        "message": "Class 'px-6' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
@@ -1791,6 +2064,13 @@
         "line": 741,
         "type": "should-use-zeno",
         "message": "Class 'dark:hover:bg-gray-700' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/CuratorDashboard.tsx",
+        "line": 743,
+        "type": "should-use-zeno",
+        "message": "Class 'px-6' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
@@ -1867,6 +2147,13 @@
         "file": "components/CuratorDashboard.tsx",
         "line": 757,
         "type": "should-use-zeno",
+        "message": "Class 'px-6' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/CuratorDashboard.tsx",
+        "line": 757,
+        "type": "should-use-zeno",
         "message": "Class 'py-4' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
@@ -1882,6 +2169,13 @@
         "line": 762,
         "type": "should-use-zeno",
         "message": "Class 'dark:text-gray-400' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/CuratorDashboard.tsx",
+        "line": 767,
+        "type": "should-use-zeno",
+        "message": "Class 'px-6' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
@@ -1930,6 +2224,13 @@
         "file": "components/CuratorDashboard.tsx",
         "line": 787,
         "type": "should-use-zeno",
+        "message": "Class 'px-6' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/CuratorDashboard.tsx",
+        "line": 787,
+        "type": "should-use-zeno",
         "message": "Class 'py-4' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
@@ -1966,6 +2267,13 @@
         "line": 788,
         "type": "should-use-zeno",
         "message": "Class 'dark:text-gray-200' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/CuratorDashboard.tsx",
+        "line": 792,
+        "type": "should-use-zeno",
+        "message": "Class 'px-6' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
@@ -2035,6 +2343,13 @@
       },
       {
         "file": "components/FavoriteModal.tsx",
+        "line": 59,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-4' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/FavoriteModal.tsx",
         "line": 61,
         "type": "should-use-zeno",
         "message": "Class 'text-red-500' should use zeno- system instead of raw Tailwind",
@@ -2070,6 +2385,13 @@
       },
       {
         "file": "components/FavoriteModal.tsx",
+        "line": 74,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-4' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/FavoriteModal.tsx",
         "line": 75,
         "type": "should-use-zeno",
         "message": "Class 'bg-muted' should use zeno- system instead of raw Tailwind",
@@ -2084,6 +2406,13 @@
       },
       {
         "file": "components/FavoriteModal.tsx",
+        "line": 75,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-4' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/FavoriteModal.tsx",
         "line": 76,
         "type": "should-use-zeno",
         "message": "Class 'mb-1' should use zeno- system instead of raw Tailwind",
@@ -2094,6 +2423,13 @@
         "line": 79,
         "type": "should-use-zeno",
         "message": "Class 'dark:text-gray-400' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/FavoriteModal.tsx",
+        "line": 79,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-2' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
@@ -2143,6 +2479,13 @@
         "line": 88,
         "type": "should-use-zeno",
         "message": "Class 'dark:text-gray-300' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/FavoriteModal.tsx",
+        "line": 88,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-2' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
@@ -2217,6 +2560,13 @@
       }
     ],
     "components/FeaturedCarousel.tsx": [
+      {
+        "file": "components/FeaturedCarousel.tsx",
+        "line": 49,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-4' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
       {
         "file": "components/FeaturedCarousel.tsx",
         "line": 56,
@@ -2315,6 +2665,13 @@
         "line": 66,
         "type": "should-use-zeno",
         "message": "Class 'overflow-y-auto' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/FilterPanel.tsx",
+        "line": 69,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-2' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
@@ -2664,6 +3021,13 @@
       },
       {
         "file": "components/LearningGuideCard.tsx",
+        "line": 35,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-4' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/LearningGuideCard.tsx",
         "line": 37,
         "type": "should-use-zeno",
         "message": "Class 'text-2xl' should use zeno- system instead of raw Tailwind",
@@ -2681,6 +3045,27 @@
         "line": 49,
         "type": "should-use-zeno",
         "message": "Class 'mb-3' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/LearningGuideCard.tsx",
+        "line": 52,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-4' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/LearningGuideCard.tsx",
+        "line": 58,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-4' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/LearningGuideCard.tsx",
+        "line": 59,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-2' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
@@ -2720,6 +3105,20 @@
       },
       {
         "file": "components/LearningGuideCard.tsx",
+        "line": 85,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-4' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/LearningGuideCard.tsx",
+        "line": 86,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-2' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/LearningGuideCard.tsx",
         "line": 87,
         "type": "should-use-zeno",
         "message": "Class 'text-green-600' should use zeno- system instead of raw Tailwind",
@@ -2755,6 +3154,20 @@
       },
       {
         "file": "components/LearningGuideCard.tsx",
+        "line": 116,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-4' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/LearningGuideCard.tsx",
+        "line": 131,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-4' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/LearningGuideCard.tsx",
         "line": 141,
         "type": "should-use-zeno",
         "message": "Class 'bg-gray-100' should use zeno- system instead of raw Tailwind",
@@ -2772,6 +3185,13 @@
         "line": 141,
         "type": "should-use-zeno",
         "message": "Class 'py-1' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/LearningGuideCard.tsx",
+        "line": 148,
+        "type": "should-use-zeno",
+        "message": "Class 'px-6' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
@@ -2848,6 +3268,20 @@
       },
       {
         "file": "components/LearningGuideDetail.tsx",
+        "line": 114,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-6' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/LearningGuideDetail.tsx",
+        "line": 118,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-2' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/LearningGuideDetail.tsx",
         "line": 119,
         "type": "should-use-zeno",
         "message": "Class 'bg-blue-100' should use zeno- system instead of raw Tailwind",
@@ -2897,6 +3331,13 @@
       },
       {
         "file": "components/LearningGuideDetail.tsx",
+        "line": 161,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-6' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/LearningGuideDetail.tsx",
         "line": 167,
         "type": "should-use-zeno",
         "message": "Class 'bg-blue-50' should use zeno- system instead of raw Tailwind",
@@ -2907,6 +3348,13 @@
         "line": 167,
         "type": "should-use-zeno",
         "message": "Class 'p-4' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/LearningGuideDetail.tsx",
+        "line": 167,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-6' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
@@ -2935,6 +3383,20 @@
         "line": 174,
         "type": "should-use-zeno",
         "message": "Class 'p-4' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/LearningGuideDetail.tsx",
+        "line": 174,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-6' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/LearningGuideDetail.tsx",
+        "line": 175,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-2' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
@@ -2998,6 +3460,13 @@
         "line": 197,
         "type": "should-use-zeno",
         "message": "Class 'text-orange-800' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/LearningGuideDetail.tsx",
+        "line": 197,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-4' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
@@ -3079,6 +3548,13 @@
       },
       {
         "file": "components/LearningGuideDetail.tsx",
+        "line": 233,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-4' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/LearningGuideDetail.tsx",
         "line": 235,
         "type": "should-use-zeno",
         "message": "Class 'bg-green-600' should use zeno- system instead of raw Tailwind",
@@ -3089,6 +3565,13 @@
         "line": 244,
         "type": "should-use-zeno",
         "message": "Class 'text-green-800' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/LearningGuideDetail.tsx",
+        "line": 244,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-4' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
@@ -3240,9 +3723,30 @@
       },
       {
         "file": "components/LearningGuideDetail.tsx",
+        "line": 389,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-4' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/LearningGuideDetail.tsx",
+        "line": 392,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-4' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/LearningGuideDetail.tsx",
         "line": 395,
         "type": "should-use-zeno",
         "message": "Class 'bg-green-600' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/LearningGuideDetail.tsx",
+        "line": 395,
+        "type": "should-use-zeno",
+        "message": "Class 'px-6' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
@@ -3278,6 +3782,13 @@
         "line": 401,
         "type": "should-use-zeno",
         "message": "Class 'bg-red-600' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/LearningGuideDetail.tsx",
+        "line": 401,
+        "type": "should-use-zeno",
+        "message": "Class 'px-6' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
@@ -3320,6 +3831,13 @@
         "line": 410,
         "type": "should-use-zeno",
         "message": "Class 'mb-3' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/LearningGuideDetail.tsx",
+        "line": 415,
+        "type": "should-use-zeno",
+        "message": "Class 'px-6' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
@@ -3392,6 +3910,13 @@
         "line": 79,
         "type": "should-use-zeno",
         "message": "Class 'mx-auto' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/PasswordProtection.tsx",
+        "line": 79,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-4' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
@@ -3594,6 +4119,13 @@
         "line": 83,
         "type": "should-use-zeno",
         "message": "Class 'dark:hover:bg-gray-700' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/ToolCard.tsx",
+        "line": 98,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-2' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
@@ -3810,6 +4342,13 @@
       },
       {
         "file": "components/ToolDetailModal.tsx",
+        "line": 230,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-6' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/ToolDetailModal.tsx",
         "line": 234,
         "type": "should-use-zeno",
         "message": "Class 'font-extrabold' should use zeno- system instead of raw Tailwind",
@@ -3831,9 +4370,37 @@
       },
       {
         "file": "components/ToolDetailModal.tsx",
+        "line": 270,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-6' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/ToolDetailModal.tsx",
+        "line": 275,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-4' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/ToolDetailModal.tsx",
+        "line": 298,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-4' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/ToolDetailModal.tsx",
         "line": 299,
         "type": "should-use-zeno",
         "message": "Class 'mr-2' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/ToolDetailModal.tsx",
+        "line": 401,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-4' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
@@ -3915,9 +4482,30 @@
       },
       {
         "file": "components/ToolDetailModal.tsx",
+        "line": 450,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-2' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/ToolDetailModal.tsx",
+        "line": 453,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-4' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/ToolDetailModal.tsx",
         "line": 459,
         "type": "should-use-zeno",
         "message": "Class 'bg-yellow-600' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/ToolDetailModal.tsx",
+        "line": 459,
+        "type": "should-use-zeno",
+        "message": "Class 'px-6' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
@@ -4048,28 +4636,28 @@
       },
       {
         "file": "components/ToolDetailModal.tsx",
-        "line": 514,
+        "line": 516,
         "type": "should-use-zeno",
         "message": "Class 'ml-2' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
         "file": "components/ToolDetailModal.tsx",
-        "line": 522,
+        "line": 526,
         "type": "should-use-zeno",
         "message": "Class 'ml-2' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
         "file": "components/ToolDetailModal.tsx",
-        "line": 541,
+        "line": 545,
         "type": "should-use-zeno",
         "message": "Class 'mr-2' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
         "file": "components/ToolDetailModal.tsx",
-        "line": 543,
+        "line": 547,
         "type": "should-use-zeno",
         "message": "Class 'mr-2' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
@@ -4102,6 +4690,13 @@
         "line": 201,
         "type": "should-use-zeno",
         "message": "Class 'dark:hover:bg-gray-700' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/ToolFormModal.tsx",
+        "line": 210,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-2' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
@@ -4225,6 +4820,13 @@
       },
       {
         "file": "components/ToolFormModal.tsx",
+        "line": 326,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-2' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/ToolFormModal.tsx",
         "line": 327,
         "type": "should-use-zeno",
         "message": "Class 'mb-0' should use zeno- system instead of raw Tailwind",
@@ -4277,6 +4879,13 @@
         "line": 367,
         "type": "should-use-zeno",
         "message": "Class 'py-1' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/ToolFormModal.tsx",
+        "line": 402,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-2' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
@@ -4358,6 +4967,20 @@
       },
       {
         "file": "components/ToolFormModal.tsx",
+        "line": 453,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-2' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/ToolFormModal.tsx",
+        "line": 479,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-2' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/ToolFormModal.tsx",
         "line": 480,
         "type": "should-use-zeno",
         "message": "Class 'mb-0' should use zeno- system instead of raw Tailwind",
@@ -4435,6 +5058,13 @@
       },
       {
         "file": "components/ToolFormModal.tsx",
+        "line": 542,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-2' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/ToolFormModal.tsx",
         "line": 577,
         "type": "should-use-zeno",
         "message": "Class 'pt-4' should use zeno- system instead of raw Tailwind",
@@ -4481,6 +5111,13 @@
       },
       {
         "file": "components/UserDeleteModal.tsx",
+        "line": 54,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-4' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/UserDeleteModal.tsx",
         "line": 55,
         "type": "should-use-zeno",
         "message": "Class 'text-red-600' should use zeno- system instead of raw Tailwind",
@@ -4519,6 +5156,20 @@
         "line": 63,
         "type": "should-use-zeno",
         "message": "Class 'h-6' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/UserDeleteModal.tsx",
+        "line": 78,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-6' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/UserDeleteModal.tsx",
+        "line": 79,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-4' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
@@ -4600,9 +5251,23 @@
       },
       {
         "file": "components/UserDeleteModal.tsx",
+        "line": 103,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-4' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/UserDeleteModal.tsx",
         "line": 104,
         "type": "should-use-zeno",
         "message": "Class 'dark:text-gray-300' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/UserDeleteModal.tsx",
+        "line": 104,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-2' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
@@ -4631,6 +5296,13 @@
         "line": 121,
         "type": "should-use-zeno",
         "message": "Class 'dark:text-gray-300' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/UserDeleteModal.tsx",
+        "line": 121,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-2' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
@@ -4674,6 +5346,13 @@
         "file": "components/UserList.tsx",
         "line": 127,
         "type": "should-use-zeno",
+        "message": "Class 'px-6' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/UserList.tsx",
+        "line": 127,
+        "type": "should-use-zeno",
         "message": "Class 'py-3' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
@@ -4688,6 +5367,13 @@
         "file": "components/UserList.tsx",
         "line": 130,
         "type": "should-use-zeno",
+        "message": "Class 'px-6' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/UserList.tsx",
+        "line": 130,
+        "type": "should-use-zeno",
         "message": "Class 'py-3' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
@@ -4702,6 +5388,13 @@
         "file": "components/UserList.tsx",
         "line": 133,
         "type": "should-use-zeno",
+        "message": "Class 'px-6' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/UserList.tsx",
+        "line": 133,
+        "type": "should-use-zeno",
         "message": "Class 'py-3' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
@@ -4710,6 +5403,13 @@
         "line": 133,
         "type": "should-use-zeno",
         "message": "Class 'dark:text-gray-300' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/UserList.tsx",
+        "line": 136,
+        "type": "should-use-zeno",
+        "message": "Class 'px-6' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
@@ -4730,7 +5430,21 @@
         "file": "components/UserList.tsx",
         "line": 144,
         "type": "should-use-zeno",
+        "message": "Class 'px-6' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/UserList.tsx",
+        "line": 144,
+        "type": "should-use-zeno",
         "message": "Class 'py-4' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/UserList.tsx",
+        "line": 147,
+        "type": "should-use-zeno",
+        "message": "Class 'px-6' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
@@ -4744,7 +5458,21 @@
         "file": "components/UserList.tsx",
         "line": 156,
         "type": "should-use-zeno",
+        "message": "Class 'px-6' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/UserList.tsx",
+        "line": 156,
+        "type": "should-use-zeno",
         "message": "Class 'py-4' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/UserList.tsx",
+        "line": 159,
+        "type": "should-use-zeno",
+        "message": "Class 'px-6' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
@@ -4828,6 +5556,13 @@
       },
       {
         "file": "components/UserRoleModal.tsx",
+        "line": 66,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-4' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/UserRoleModal.tsx",
         "line": 72,
         "type": "should-use-zeno",
         "message": "Class 'text-gray-400' should use zeno- system instead of raw Tailwind",
@@ -4856,9 +5591,30 @@
       },
       {
         "file": "components/UserRoleModal.tsx",
+        "line": 90,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-4' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/UserRoleModal.tsx",
         "line": 91,
         "type": "should-use-zeno",
         "message": "Class 'dark:text-gray-400' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/UserRoleModal.tsx",
+        "line": 91,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-2' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "components/UserRoleModal.tsx",
+        "line": 99,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-6' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
@@ -4944,9 +5700,23 @@
       },
       {
         "file": "app/comment-retrieval/page.tsx",
+        "line": 36,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-4' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "app/comment-retrieval/page.tsx",
         "line": 37,
         "type": "should-use-zeno",
         "message": "Class 'bg-gray-100' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "app/comment-retrieval/page.tsx",
+        "line": 38,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-4' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
@@ -5039,7 +5809,49 @@
         "file": "app/user-guide/page.tsx",
         "line": 6,
         "type": "should-use-zeno",
+        "message": "Class 'mb-4' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "app/user-guide/page.tsx",
+        "line": 6,
+        "type": "should-use-zeno",
         "message": "Class 'text-green-700' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "app/user-guide/page.tsx",
+        "line": 9,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-6' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "app/user-guide/page.tsx",
+        "line": 15,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-6' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "app/user-guide/page.tsx",
+        "line": 16,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-2' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "app/user-guide/page.tsx",
+        "line": 27,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-6' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "app/user-guide/page.tsx",
+        "line": 28,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-2' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
@@ -5058,6 +5870,20 @@
       },
       {
         "file": "app/user-guide/page.tsx",
+        "line": 50,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-6' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "app/user-guide/page.tsx",
+        "line": 51,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-2' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "app/user-guide/page.tsx",
         "line": 54,
         "type": "should-use-zeno",
         "message": "Class 'list-disc' should use zeno- system instead of raw Tailwind",
@@ -5072,6 +5898,20 @@
       },
       {
         "file": "app/user-guide/page.tsx",
+        "line": 74,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-6' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "app/user-guide/page.tsx",
+        "line": 75,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-2' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "app/user-guide/page.tsx",
         "line": 76,
         "type": "should-use-zeno",
         "message": "Class 'list-disc' should use zeno- system instead of raw Tailwind",
@@ -5082,6 +5922,13 @@
         "line": 76,
         "type": "should-use-zeno",
         "message": "Class 'list-inside' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "app/user-guide/page.tsx",
+        "line": 95,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-2' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
       },
       {
@@ -5093,10 +5940,871 @@
       },
       {
         "file": "app/user-guide/page.tsx",
+        "line": 106,
+        "type": "should-use-zeno",
+        "message": "Class 'mb-2' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "app/user-guide/page.tsx",
         "line": 109,
         "type": "should-use-zeno",
         "message": "Class 'text-green-700' should use zeno- system instead of raw Tailwind",
         "suggestion": "Replace with zeno- equivalent or approved utility"
+      }
+    ],
+    "node_modules/@types/react/index.d.ts": [
+      {
+        "file": "node_modules/@types/react/index.d.ts",
+        "line": 1368,
+        "type": "should-use-zeno",
+        "message": "Class 'MyClassName' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      }
+    ],
+    "node_modules/next-auth/providers/yandex.d.ts": [
+      {
+        "file": "node_modules/next-auth/providers/yandex.d.ts",
+        "line": 2,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      },
+      {
+        "file": "node_modules/next-auth/providers/yandex.d.ts",
+        "line": 5,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/react-day-picker/src/DayPicker.test.tsx": [
+      {
+        "file": "node_modules/react-day-picker/src/DayPicker.test.tsx",
+        "line": 40,
+        "type": "should-use-zeno",
+        "message": "Class 'custom-class' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "node_modules/react-day-picker/src/DayPicker.test.tsx",
+        "line": 43,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/react-day-picker/src/DayPicker.tsx": [
+      {
+        "file": "node_modules/react-day-picker/src/DayPicker.tsx",
+        "line": 468,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/react-dom/cjs/react-dom-client.development.js": [
+      {
+        "file": "node_modules/react-dom/cjs/react-dom-client.development.js",
+        "line": 2748,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      },
+      {
+        "file": "node_modules/react-dom/cjs/react-dom-client.development.js",
+        "line": 18405,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/react-dom/cjs/react-dom-profiling.development.js": [
+      {
+        "file": "node_modules/react-dom/cjs/react-dom-profiling.development.js",
+        "line": 2756,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      },
+      {
+        "file": "node_modules/react-dom/cjs/react-dom-profiling.development.js",
+        "line": 18417,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/react-dom/cjs/react-dom-server-legacy.browser.development.js": [
+      {
+        "file": "node_modules/react-dom/cjs/react-dom-server-legacy.browser.development.js",
+        "line": 852,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js": [
+      {
+        "file": "node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js",
+        "line": 852,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/react-dom/cjs/react-dom-server-legacy.node.production.js": [
+      {
+        "file": "node_modules/react-dom/cjs/react-dom-server-legacy.node.production.js",
+        "line": 376,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/react-dom/cjs/react-dom-server.browser.development.js": [
+      {
+        "file": "node_modules/react-dom/cjs/react-dom-server.browser.development.js",
+        "line": 1131,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/react-dom/cjs/react-dom-server.bun.development.js": [
+      {
+        "file": "node_modules/react-dom/cjs/react-dom-server.bun.development.js",
+        "line": 1708,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/react-dom/cjs/react-dom-server.bun.production.js": [
+      {
+        "file": "node_modules/react-dom/cjs/react-dom-server.bun.production.js",
+        "line": 506,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/react-dom/cjs/react-dom-server.edge.development.js": [
+      {
+        "file": "node_modules/react-dom/cjs/react-dom-server.edge.development.js",
+        "line": 1127,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/react-dom/cjs/react-dom-server.edge.production.js": [
+      {
+        "file": "node_modules/react-dom/cjs/react-dom-server.edge.production.js",
+        "line": 663,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/react-dom/cjs/react-dom-server.node.development.js": [
+      {
+        "file": "node_modules/react-dom/cjs/react-dom-server.node.development.js",
+        "line": 1069,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/react-dom/cjs/react-dom-server.node.production.js": [
+      {
+        "file": "node_modules/react-dom/cjs/react-dom-server.node.production.js",
+        "line": 605,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/typescript/lib/tsserverlibrary.d.ts": [
+      {
+        "file": "node_modules/typescript/lib/tsserverlibrary.d.ts",
+        "line": 10878,
+        "type": "should-use-zeno",
+        "message": "Class 'class' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "node_modules/typescript/lib/tsserverlibrary.d.ts",
+        "line": 10878,
+        "type": "should-use-zeno",
+        "message": "Class 'name' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      }
+    ],
+    "node_modules/typescript/lib/typescript.d.ts": [
+      {
+        "file": "node_modules/typescript/lib/typescript.d.ts",
+        "line": 6976,
+        "type": "should-use-zeno",
+        "message": "Class 'class' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "node_modules/typescript/lib/typescript.d.ts",
+        "line": 6976,
+        "type": "should-use-zeno",
+        "message": "Class 'name' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      }
+    ],
+    "node_modules/@radix-ui/react-alert-dialog/src/AlertDialog.stories.tsx": [
+      {
+        "file": "node_modules/@radix-ui/react-alert-dialog/src/AlertDialog.stories.tsx",
+        "line": 67,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      },
+      {
+        "file": "node_modules/@radix-ui/react-alert-dialog/src/AlertDialog.stories.tsx",
+        "line": 98,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      },
+      {
+        "file": "node_modules/@radix-ui/react-alert-dialog/src/AlertDialog.stories.tsx",
+        "line": 102,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      },
+      {
+        "file": "node_modules/@radix-ui/react-alert-dialog/src/AlertDialog.stories.tsx",
+        "line": 138,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      },
+      {
+        "file": "node_modules/@radix-ui/react-alert-dialog/src/AlertDialog.stories.tsx",
+        "line": 142,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      },
+      {
+        "file": "node_modules/@radix-ui/react-alert-dialog/src/AlertDialog.stories.tsx",
+        "line": 180,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      },
+      {
+        "file": "node_modules/@radix-ui/react-alert-dialog/src/AlertDialog.stories.tsx",
+        "line": 184,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      },
+      {
+        "file": "node_modules/@radix-ui/react-alert-dialog/src/AlertDialog.stories.tsx",
+        "line": 220,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      },
+      {
+        "file": "node_modules/@radix-ui/react-alert-dialog/src/AlertDialog.stories.tsx",
+        "line": 224,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      },
+      {
+        "file": "node_modules/@radix-ui/react-alert-dialog/src/AlertDialog.stories.tsx",
+        "line": 260,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      },
+      {
+        "file": "node_modules/@radix-ui/react-alert-dialog/src/AlertDialog.stories.tsx",
+        "line": 261,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/@types/react/ts5.0/index.d.ts": [
+      {
+        "file": "node_modules/@types/react/ts5.0/index.d.ts",
+        "line": 1367,
+        "type": "should-use-zeno",
+        "message": "Class 'MyClassName' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      }
+    ],
+    "node_modules/eslint/lib/rules/quotes.js": [
+      {
+        "file": "node_modules/eslint/lib/rules/quotes.js",
+        "line": 181,
+        "type": "should-use-zeno",
+        "message": "Class 'foo' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "node_modules/eslint/lib/rules/quotes.js",
+        "line": 187,
+        "type": "should-use-zeno",
+        "message": "Class 'foo' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      }
+    ],
+    "node_modules/next-auth/src/providers/yandex.ts": [
+      {
+        "file": "node_modules/next-auth/src/providers/yandex.ts",
+        "line": 2,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      },
+      {
+        "file": "node_modules/next-auth/src/providers/yandex.ts",
+        "line": 5,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/react-hot-toast/src/components/toast-bar.tsx": [
+      {
+        "file": "node_modules/react-hot-toast/src/components/toast-bar.tsx",
+        "line": 91,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/react-hot-toast/src/components/toaster.tsx": [
+      {
+        "file": "node_modules/react-hot-toast/src/components/toaster.tsx",
+        "line": 99,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/tailwindcss/lib/lib/defaultExtractor.js": [
+      {
+        "file": "node_modules/tailwindcss/lib/lib/defaultExtractor.js",
+        "line": 259,
+        "type": "arbitrary-colour",
+        "message": "Arbitrary-value Tailwind colour outside brand palette",
+        "suggestion": "Use CSS variables (var(--zeno-*)) or predefined utilities"
+      }
+    ],
+    "node_modules/tailwindcss/src/lib/defaultExtractor.js": [
+      {
+        "file": "node_modules/tailwindcss/src/lib/defaultExtractor.js",
+        "line": 235,
+        "type": "arbitrary-colour",
+        "message": "Arbitrary-value Tailwind colour outside brand palette",
+        "suggestion": "Use CSS variables (var(--zeno-*)) or predefined utilities"
+      }
+    ],
+    "node_modules/@types/react/ts5.0/v18/index.d.ts": [
+      {
+        "file": "node_modules/@types/react/ts5.0/v18/index.d.ts",
+        "line": 1599,
+        "type": "should-use-zeno",
+        "message": "Class 'MyClassName' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      }
+    ],
+    "node_modules/next/dist/compiled/next-server/app-page-experimental.runtime.dev.js": [
+      {
+        "file": "node_modules/next/dist/compiled/next-server/app-page-experimental.runtime.dev.js",
+        "line": 2,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/next/dist/compiled/next-server/app-page-experimental.runtime.prod.js": [
+      {
+        "file": "node_modules/next/dist/compiled/next-server/app-page-experimental.runtime.prod.js",
+        "line": 2,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/next/dist/compiled/next-server/app-page-turbo-experimental.runtime.dev.js": [
+      {
+        "file": "node_modules/next/dist/compiled/next-server/app-page-turbo-experimental.runtime.dev.js",
+        "line": 2,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/next/dist/compiled/next-server/app-page-turbo-experimental.runtime.prod.js": [
+      {
+        "file": "node_modules/next/dist/compiled/next-server/app-page-turbo-experimental.runtime.prod.js",
+        "line": 2,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/next/dist/compiled/next-server/app-page-turbo.runtime.dev.js": [
+      {
+        "file": "node_modules/next/dist/compiled/next-server/app-page-turbo.runtime.dev.js",
+        "line": 2,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/next/dist/compiled/next-server/app-page-turbo.runtime.prod.js": [
+      {
+        "file": "node_modules/next/dist/compiled/next-server/app-page-turbo.runtime.prod.js",
+        "line": 2,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js": [
+      {
+        "file": "node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js",
+        "line": 2,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js": [
+      {
+        "file": "node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js",
+        "line": 2,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/next-auth/src/core/pages/error.tsx": [
+      {
+        "file": "node_modules/next-auth/src/core/pages/error.tsx",
+        "line": 38,
+        "type": "should-use-zeno",
+        "message": "Class 'site' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "node_modules/next-auth/src/core/pages/error.tsx",
+        "line": 61,
+        "type": "should-use-zeno",
+        "message": "Class 'button' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "node_modules/next-auth/src/core/pages/error.tsx",
+        "line": 78,
+        "type": "should-use-zeno",
+        "message": "Class 'button' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "node_modules/next-auth/src/core/pages/error.tsx",
+        "line": 91,
+        "type": "should-use-zeno",
+        "message": "Class 'error' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "node_modules/next-auth/src/core/pages/error.tsx",
+        "line": 103,
+        "type": "should-use-zeno",
+        "message": "Class 'card' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "node_modules/next-auth/src/core/pages/error.tsx",
+        "line": 104,
+        "type": "should-use-zeno",
+        "message": "Class 'logo' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "node_modules/next-auth/src/core/pages/error.tsx",
+        "line": 106,
+        "type": "should-use-zeno",
+        "message": "Class 'message' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      }
+    ],
+    "node_modules/next-auth/src/core/pages/signin.tsx": [
+      {
+        "file": "node_modules/next-auth/src/core/pages/signin.tsx",
+        "line": 113,
+        "type": "should-use-zeno",
+        "message": "Class 'signin' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "node_modules/next-auth/src/core/pages/signin.tsx",
+        "line": 136,
+        "type": "should-use-zeno",
+        "message": "Class 'card' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "node_modules/next-auth/src/core/pages/signin.tsx",
+        "line": 137,
+        "type": "should-use-zeno",
+        "message": "Class 'logo' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "node_modules/next-auth/src/core/pages/signin.tsx",
+        "line": 139,
+        "type": "should-use-zeno",
+        "message": "Class 'error' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "node_modules/next-auth/src/core/pages/signin.tsx",
+        "line": 165,
+        "type": "should-use-zeno",
+        "message": "Class 'provider' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "node_modules/next-auth/src/core/pages/signin.tsx",
+        "line": 178,
+        "type": "should-use-zeno",
+        "message": "Class 'button' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "node_modules/next-auth/src/core/pages/signin.tsx",
+        "line": 225,
+        "type": "should-use-zeno",
+        "message": "Class 'section-header' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "node_modules/next-auth/src/core/pages/signin.tsx",
+        "line": 251,
+        "type": "should-use-zeno",
+        "message": "Class 'section-header' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      }
+    ],
+    "node_modules/next-auth/src/core/pages/signout.tsx": [
+      {
+        "file": "node_modules/next-auth/src/core/pages/signout.tsx",
+        "line": 14,
+        "type": "should-use-zeno",
+        "message": "Class 'signout' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "node_modules/next-auth/src/core/pages/signout.tsx",
+        "line": 37,
+        "type": "should-use-zeno",
+        "message": "Class 'card' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "node_modules/next-auth/src/core/pages/signout.tsx",
+        "line": 38,
+        "type": "should-use-zeno",
+        "message": "Class 'logo' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      }
+    ],
+    "node_modules/next-auth/src/core/pages/verify-request.tsx": [
+      {
+        "file": "node_modules/next-auth/src/core/pages/verify-request.tsx",
+        "line": 13,
+        "type": "should-use-zeno",
+        "message": "Class 'verify-request' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "node_modules/next-auth/src/core/pages/verify-request.tsx",
+        "line": 25,
+        "type": "should-use-zeno",
+        "message": "Class 'card' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "node_modules/next-auth/src/core/pages/verify-request.tsx",
+        "line": 26,
+        "type": "should-use-zeno",
+        "message": "Class 'logo' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      },
+      {
+        "file": "node_modules/next-auth/src/core/pages/verify-request.tsx",
+        "line": 30,
+        "type": "should-use-zeno",
+        "message": "Class 'site' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      }
+    ],
+    "node_modules/@types/react/ts5.0/v18/ts5.0/index.d.ts": [
+      {
+        "file": "node_modules/@types/react/ts5.0/v18/ts5.0/index.d.ts",
+        "line": 1600,
+        "type": "should-use-zeno",
+        "message": "Class 'MyClassName' should use zeno- system instead of raw Tailwind",
+        "suggestion": "Replace with zeno- equivalent or approved utility"
+      }
+    ],
+    "node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js": [
+      {
+        "file": "node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js",
+        "line": 2797,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      },
+      {
+        "file": "node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js",
+        "line": 18958,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/next/dist/compiled/react-dom/cjs/react-dom-profiling.development.js": [
+      {
+        "file": "node_modules/next/dist/compiled/react-dom/cjs/react-dom-profiling.development.js",
+        "line": 2805,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      },
+      {
+        "file": "node_modules/next/dist/compiled/react-dom/cjs/react-dom-profiling.development.js",
+        "line": 18966,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/next/dist/compiled/react-dom/cjs/react-dom-server-legacy.browser.development.js": [
+      {
+        "file": "node_modules/next/dist/compiled/react-dom/cjs/react-dom-server-legacy.browser.development.js",
+        "line": 887,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/next/dist/compiled/react-dom/cjs/react-dom-server-legacy.node.development.js": [
+      {
+        "file": "node_modules/next/dist/compiled/react-dom/cjs/react-dom-server-legacy.node.development.js",
+        "line": 887,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/next/dist/compiled/react-dom/cjs/react-dom-server-legacy.node.production.js": [
+      {
+        "file": "node_modules/next/dist/compiled/react-dom/cjs/react-dom-server-legacy.node.production.js",
+        "line": 420,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/next/dist/compiled/react-dom/cjs/react-dom-server.browser.development.js": [
+      {
+        "file": "node_modules/next/dist/compiled/react-dom/cjs/react-dom-server.browser.development.js",
+        "line": 1192,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/next/dist/compiled/react-dom/cjs/react-dom-server.bun.production.js": [
+      {
+        "file": "node_modules/next/dist/compiled/react-dom/cjs/react-dom-server.bun.production.js",
+        "line": 580,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/next/dist/compiled/react-dom/cjs/react-dom-server.edge.development.js": [
+      {
+        "file": "node_modules/next/dist/compiled/react-dom/cjs/react-dom-server.edge.development.js",
+        "line": 1188,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/next/dist/compiled/react-dom/cjs/react-dom-server.edge.production.js": [
+      {
+        "file": "node_modules/next/dist/compiled/react-dom/cjs/react-dom-server.edge.production.js",
+        "line": 733,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/next/dist/compiled/react-dom/cjs/react-dom-server.node.development.js": [
+      {
+        "file": "node_modules/next/dist/compiled/react-dom/cjs/react-dom-server.node.development.js",
+        "line": 1132,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/next/dist/compiled/react-dom/cjs/react-dom-server.node.production.js": [
+      {
+        "file": "node_modules/next/dist/compiled/react-dom/cjs/react-dom-server.node.production.js",
+        "line": 683,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/next/dist/compiled/react-dom-experimental/cjs/react-dom-client.development.js": [
+      {
+        "file": "node_modules/next/dist/compiled/react-dom-experimental/cjs/react-dom-client.development.js",
+        "line": 2818,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      },
+      {
+        "file": "node_modules/next/dist/compiled/react-dom-experimental/cjs/react-dom-client.development.js",
+        "line": 23114,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/next/dist/compiled/react-dom-experimental/cjs/react-dom-profiling.development.js": [
+      {
+        "file": "node_modules/next/dist/compiled/react-dom-experimental/cjs/react-dom-profiling.development.js",
+        "line": 2826,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      },
+      {
+        "file": "node_modules/next/dist/compiled/react-dom-experimental/cjs/react-dom-profiling.development.js",
+        "line": 23122,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/next/dist/compiled/react-dom-experimental/cjs/react-dom-server-legacy.browser.development.js": [
+      {
+        "file": "node_modules/next/dist/compiled/react-dom-experimental/cjs/react-dom-server-legacy.browser.development.js",
+        "line": 934,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/next/dist/compiled/react-dom-experimental/cjs/react-dom-server-legacy.node.development.js": [
+      {
+        "file": "node_modules/next/dist/compiled/react-dom-experimental/cjs/react-dom-server-legacy.node.development.js",
+        "line": 934,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/next/dist/compiled/react-dom-experimental/cjs/react-dom-server-legacy.node.production.js": [
+      {
+        "file": "node_modules/next/dist/compiled/react-dom-experimental/cjs/react-dom-server-legacy.node.production.js",
+        "line": 464,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/next/dist/compiled/react-dom-experimental/cjs/react-dom-server.browser.development.js": [
+      {
+        "file": "node_modules/next/dist/compiled/react-dom-experimental/cjs/react-dom-server.browser.development.js",
+        "line": 1258,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/next/dist/compiled/react-dom-experimental/cjs/react-dom-server.bun.production.js": [
+      {
+        "file": "node_modules/next/dist/compiled/react-dom-experimental/cjs/react-dom-server.bun.production.js",
+        "line": 644,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/next/dist/compiled/react-dom-experimental/cjs/react-dom-server.edge.development.js": [
+      {
+        "file": "node_modules/next/dist/compiled/react-dom-experimental/cjs/react-dom-server.edge.development.js",
+        "line": 1260,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/next/dist/compiled/react-dom-experimental/cjs/react-dom-server.edge.production.js": [
+      {
+        "file": "node_modules/next/dist/compiled/react-dom-experimental/cjs/react-dom-server.edge.production.js",
+        "line": 798,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/next/dist/compiled/react-dom-experimental/cjs/react-dom-server.node.development.js": [
+      {
+        "file": "node_modules/next/dist/compiled/react-dom-experimental/cjs/react-dom-server.node.development.js",
+        "line": 1199,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/next/dist/compiled/react-dom-experimental/cjs/react-dom-server.node.production.js": [
+      {
+        "file": "node_modules/next/dist/compiled/react-dom-experimental/cjs/react-dom-server.node.production.js",
+        "line": 745,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      }
+    ],
+    "node_modules/next/dist/compiled/react-dom-experimental/cjs/react-dom-unstable_testing.development.js": [
+      {
+        "file": "node_modules/next/dist/compiled/react-dom-experimental/cjs/react-dom-unstable_testing.development.js",
+        "line": 2859,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
+      },
+      {
+        "file": "node_modules/next/dist/compiled/react-dom-experimental/cjs/react-dom-unstable_testing.development.js",
+        "line": 23337,
+        "type": "inline-style",
+        "message": "Inline style attribute is disallowed",
+        "suggestion": "Replace with approved utility classes or brand component"
       }
     ]
   }

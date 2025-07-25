@@ -40,6 +40,7 @@ import { UserList } from "../components/UserList";
 import UserGuidePage from "./user-guide/page";
 import { useFavorites } from "../hooks/useFavorites";
 import { FavoriteModal } from "../components/FavoriteModal";
+import { AnalyticsDashboard } from "../components/AnalyticsDashboard";
 
 // Configuration data loaded from config files
 
@@ -615,21 +616,7 @@ export default function HomePage() {
 
       case "analytics":
         if (role === "admin") {
-          return (
-            <div className="space-y-8">
-              <section>
-                <h2 className="zeno-heading text-card-foreground mb-6">
-                  Analytics dashboard
-                </h2>
-                <div className="text-center py-16">
-                  <Zap className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-                  <p className="zeno-body text-muted-foreground">
-                    Analytics and insights coming soon
-                  </p>
-                </div>
-              </section>
-            </div>
-          );
+          return <AnalyticsDashboard />;
         } else {
           return (
             <div className="text-center py-16">
