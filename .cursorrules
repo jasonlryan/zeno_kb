@@ -1,0 +1,27 @@
+# Zeno KB Cursor Rules
+
+## Development Server Rules
+
+- **ALWAYS** use `./dev.sh` to start the development server, NOT `pnpm dev` directly
+- The project structure is: root/zeno_kb/ contains z_1/ which is the Next.js app
+- When running commands that need to be in z_1 directory, use `cd z_1 && [command]`
+- The dev.sh script handles navigation to z_1 automatically
+
+## Directory Structure
+
+- Root: `/Users/jasonryan/Documents/zeno_kb/`
+- Next.js App: `/Users/jasonryan/Documents/zeno_kb/z_1/`
+- Always check current directory before running commands
+
+## Style Management Rules
+
+- Use `pnpm audit:styles` (from z_1 directory) to check style violations
+- All custom classes must use `zeno-` prefix
+- Dynamic Tailwind classes must be added to safelist in tailwind.config.ts
+- When making CSS changes, restart dev server to see changes
+
+## Never Do These Things
+
+- Never run `pnpm dev` from the root zeno_kb directory
+- Never assume terminal commands work without checking the current directory
+- Never forget that the user gets upset when I make directory mistakes repeatedly

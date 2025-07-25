@@ -33,6 +33,7 @@ export function ToolFormModal({
     tags: tool?.tags || [],
     function: tool?.function || "",
     created_by: tool?.created_by || "",
+    featured: tool?.featured || false,
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -54,6 +55,7 @@ export function ToolFormModal({
       tags: tool?.tags || [],
       function: tool?.function || "",
       created_by: tool?.created_by || "",
+      featured: tool?.featured || false,
     });
   }, [tool, isOpen]);
 
@@ -93,7 +95,10 @@ export function ToolFormModal({
     onClose();
   };
 
-  const handleInputChange = (field: string, value: string | string[]) => {
+  const handleInputChange = (
+    field: string,
+    value: string | string[] | boolean
+  ) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
     if (errors[field]) {
       setErrors((prev) => ({ ...prev, [field]: "" }));
@@ -187,8 +192,8 @@ export function ToolFormModal({
         )}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
-          <h2 className="zeno-heading text-xl font-semibold text-gray-900 dark:text-white">
+        <div className="flex items-center justify-between zeno-content-padding border-b border-gray-200 dark:border-gray-700">
+          <h2 className="zeno-heading text-xl font-semibold text-foreground dark:text-white">
             {tool ? "Edit Tool" : "Add New Tool"}
           </h2>
           <button
@@ -200,14 +205,14 @@ export function ToolFormModal({
           </button>
         </div>
         {/* Form */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+        <form onSubmit={handleSubmit} className="zeno-content-padding space-y-4">
           {tool && (
             <div className="flex gap-8 mb-2">
               <div>
-                <label className="zeno-body block text-xs font-medium text-gray-500 dark:text-gray-400 mb-0.5">
+                <label className="zeno-body block text-xs font-medium text-muted-foreground dark:text-gray-400 mb-0.5">
                   Created On
                 </label>
-                <div className="zeno-body text-sm text-gray-700 dark:text-gray-200">
+                <div className="zeno-body text-sm text-foreground dark:text-gray-200">
                   {tool.date_created
                     ? new Date(tool.date_created).toLocaleDateString("en-US", {
                         year: "numeric",
@@ -218,10 +223,10 @@ export function ToolFormModal({
                 </div>
               </div>
               <div>
-                <label className="zeno-body block text-xs font-medium text-gray-500 dark:text-gray-400 mb-0.5">
+                <label className="zeno-body block text-xs font-medium text-muted-foreground dark:text-gray-400 mb-0.5">
                   Created By
                 </label>
-                <div className="zeno-body text-sm text-gray-700 dark:text-gray-200">
+                <div className="zeno-body text-sm text-foreground dark:text-gray-200">
                   {tool.created_by || "-"}
                 </div>
               </div>
@@ -291,6 +296,31 @@ export function ToolFormModal({
               <p className="text-red-500 text-sm mt-1">{errors.url}</p>
             )}
           </div>
+
+          {/* Featured Toggle */}
+          <div>
+            <div className="flex items-center space-x-3">
+              <input
+                type="checkbox"
+                id="featured"
+                checked={formData.featured}
+                onChange={(e) =>
+                  handleInputChange("featured", e.target.checked)
+                }
+                className="zeno-checkbox"
+              />
+              <label
+                htmlFor="featured"
+                className="zeno-label mb-0 flex items-center"
+              >
+                <span className="mr-2">Featured Tool</span>
+                <span className="text-xs text-muted-foreground dark:text-gray-400">
+                  (Shows green border and appears in carousel)
+                </span>
+              </label>
+            </div>
+          </div>
+
           <div className="grid grid-cols-2 gap-4">
             <div>
               <div className="flex items-center justify-between mb-2">
@@ -307,7 +337,7 @@ export function ToolFormModal({
               </div>
 
               {showAddPrimaryCategory && (
-                <div className="mb-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                <div className="mb-3 p-3 bg-muted dark:bg-gray-800 rounded-lg">
                   <div className="flex gap-2">
                     <input
                       type="text"
@@ -381,7 +411,7 @@ export function ToolFormModal({
               </div>
 
               {showAddCategory && (
-                <div className="mb-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                <div className="mb-3 p-3 bg-muted dark:bg-gray-800 rounded-lg">
                   <div className="flex gap-2">
                     <input
                       type="text"
@@ -438,7 +468,7 @@ export function ToolFormModal({
                     )
                   )
                 ) : (
-                  <span className="text-gray-500 text-sm">
+                  <span className="text-muted-foreground text-sm">
                     No categories available
                   </span>
                 )}
@@ -458,7 +488,7 @@ export function ToolFormModal({
             </div>
 
             {showAddTag && (
-              <div className="mb-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+              <div className="mb-3 p-3 bg-muted dark:bg-gray-800 rounded-lg">
                 <div className="flex gap-2">
                   <input
                     type="text"
@@ -524,7 +554,7 @@ export function ToolFormModal({
                     </label>
                   ))
                 ) : (
-                  <span className="text-gray-500 text-sm">
+                  <span className="text-muted-foreground text-sm">
                     No tags available
                   </span>
                 );

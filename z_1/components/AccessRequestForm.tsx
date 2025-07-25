@@ -58,8 +58,8 @@ export function AccessRequestForm({
         )}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
-          <h2 className="zeno-heading text-xl font-bold text-gray-900 dark:text-white">
+        <div className="flex items-center justify-between zeno-content-padding border-b border-gray-200 dark:border-gray-700">
+          <h2 className="zeno-heading text-xl font-bold text-foreground dark:text-white">
             Request Access
           </h2>
           <button
@@ -72,12 +72,12 @@ export function AccessRequestForm({
         </div>
 
         {/* Content */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+        <form onSubmit={handleSubmit} className="zeno-content-padding space-y-4">
           <div>
-            <h3 className="font-medium text-gray-900 dark:text-white mb-2">
+            <h3 className="font-medium text-foreground dark:text-white mb-2">
               Tool: {tool.title}
             </h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-sm text-muted-foreground dark:text-gray-400">
               This specialist tool requires approval before access can be
               granted.
             </p>
@@ -86,7 +86,7 @@ export function AccessRequestForm({
           <div>
             <label
               htmlFor="justification"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+              className="block text-sm font-medium text-foreground dark:text-gray-300 mb-2"
             >
               Business Justification *
             </label>
@@ -116,7 +116,7 @@ export function AccessRequestForm({
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+              className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-foreground dark:text-gray-300 rounded-lg hover:bg-muted dark:hover:bg-gray-700 transition-colors"
             >
               Cancel
             </button>

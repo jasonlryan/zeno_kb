@@ -1,0 +1,331 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import Gotham and Dharma Gothic C Heavy fonts */
+/* Note: You'll need to purchase and host these fonts or use a font service */
+@import url("https://fonts.example.com/css?family=Gotham:400,700,900&display=swap");
+/* Replace the above with actual font imports when available */
+
+body {
+  font-family: 'Gotham', Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@layer base {
+  :root {
+    /* Zeno Brand Colors - Updated as per Brand Guidelines 2023 */
+    /* Primary Color */
+    --zeno-green: #00BE65; /* PMS 7481 */
+    
+    /* Secondary Greens */
+    --zeno-bright-green: #00FF00; /* PMS 802 */
+    --zeno-mid-green: #0C7547; /* PMS 7732 */
+    --zeno-deep-green: #043B32; /* PMS 343 */
+    
+    /* Secondary Highlight Colors */
+    --zeno-yellow: #FFFF00; /* PMS 803 */
+    --zeno-purple: #BD01FE; /* PMS 2592 */
+    --zeno-reddish-orange: #FF4536; /* PMS 171 */
+    --zeno-orange: #FF6A32; /* PMS 165 */
+    --zeno-deep-purple: #731CB2; /* PMS 2597 */
+    --zeno-lavender: #BC77FB; /* PMS 265 */
+    --zeno-burgundy: #590A3B; /* PMS 229 */
+    
+    /* Neutral Colors */
+    --zeno-black: #000000; /* Classic Black */
+    --zeno-white: #FFFFFF; /* White */
+    --zeno-light-gray: #F3F3F1; /* Light Gray */
+    --zeno-medium-gray: #E1E0D8; /* Medium Gray */
+    --zeno-dark-gray: #535953; /* Dark Gray */
+    
+    /* System Variables */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 152 100% 37%; /* Zeno Green in HSL */
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 152 100% 37%; /* Zeno Green in HSL */
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 152 100% 37%; /* Zeno Green in HSL */
+    --chart-1: 152 100% 37%; /* Zeno Green */
+    --chart-2: 120 100% 50%; /* Bright Green */
+    --chart-3: 154 85% 25%; /* Mid Green */
+    --chart-4: 60 100% 50%; /* Yellow */
+    --chart-5: 292 100% 50%; /* Purple */
+    --radius: 0.5rem;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 152 100% 37%; /* Zeno Green in HSL */
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 152 100% 37%; /* Zeno Green in HSL */
+  }
+  .dark {
+    /* Dark mode with Zeno brand colors */
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 152 100% 37%; /* Zeno Green in HSL - maintained in dark mode */
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 152 100% 37%; /* Zeno Green in HSL */
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 152 100% 37%; /* Zeno Green in HSL */
+    --chart-1: 152 100% 37%; /* Zeno Green */
+    --chart-2: 120 100% 50%; /* Bright Green */
+    --chart-3: 154 85% 25%; /* Mid Green */
+    --chart-4: 60 100% 50%; /* Yellow */
+    --chart-5: 292 100% 50%; /* Purple */
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 152 100% 37%; /* Zeno Green in HSL */
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 152 100% 37%; /* Zeno Green in HSL */
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Zeno Brand Pattern & Gradient Utilities */
+@layer components {
+  /* Zeno Gradients - As per Brand Guidelines 2023 */
+  .zeno-gradient {
+    background: linear-gradient(135deg, var(--zeno-green) 0%, var(--zeno-mid-green) 50%, var(--zeno-deep-green) 100%);
+  }
+  
+  /* Zeno Patterns - As per Brand Guidelines 2023 */
+  .zeno-pattern-dots {
+    background-color: var(--zeno-white);
+    background-image: radial-gradient(var(--zeno-green) 2px, transparent 2px);
+    background-size: 20px 20px;
+  }
+  
+  .zeno-pattern-lines {
+    background-color: var(--zeno-white);
+    background-image: linear-gradient(90deg, var(--zeno-green) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+  
+  .zeno-pattern-grid {
+    background-color: var(--zeno-white);
+    background-image: 
+      linear-gradient(var(--zeno-green) 1px, transparent 1px),
+      linear-gradient(90deg, var(--zeno-green) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+  
+  /* Typography Utilities - As per Brand Guidelines 2023 */
+  .zeno-headline {
+    font-family: 'Gotham Bold', 'Arial Bold', sans-serif;
+    letter-spacing: -0.04em; /* Kerning: -40 */
+    line-height: 0.95; /* Leading: -5% */
+  }
+  
+  .zeno-heading {
+    font-family: 'Gotham Bold', 'Arial Bold', sans-serif;
+    letter-spacing: -0.04em; /* Kerning: -40 */
+    line-height: 0.95; /* Leading: -5% */
+  }
+  
+  .zeno-body {
+    font-family: 'Gotham Book', 'Arial', sans-serif;
+    letter-spacing: 0; /* Kerning: 0 */
+    line-height: 1.2; /* Leading: +20% */
+  }
+  
+  .zeno-emphasis {
+    font-family: 'Gotham Bold', 'Arial Bold', sans-serif;
+    letter-spacing: -0.02em; /* Kerning: -20 */
+    line-height: 1.1; /* Leading: +10% */
+    font-weight: 600;
+  }
+  
+  .zeno-content-padding {
+    padding: 1.5rem; /* 24px - Auth branch card padding */
+  }
+  
+  .zeno-cta {
+    font-family: 'Gotham Book', 'Arial', sans-serif;
+    letter-spacing: 0.08em; /* Kerning: +80 */
+    text-transform: uppercase;
+  }
+  
+  .zeno-dharma {
+    font-family: 'Dharma Gothic C Heavy', 'Arial Black', sans-serif;
+    letter-spacing: 0.005em; /* Kerning: +5 */
+    line-height: 0.65; /* Leading: -35% */
+    text-transform: uppercase;
+  }
+  
+  /* Logo Safe Area Utility */
+  .zeno-logo-safe-area {
+    padding: 1rem; /* Adjust based on logo size */
+  }
+  
+    /* Tag Styling - Gray for all tags */
+  .zeno-tag {
+    @apply inline-flex items-center px-2 py-1 rounded text-xs font-medium;
+    @apply bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200;
+    @apply hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors cursor-pointer;
+  }
+
+  .zeno-tag-large {
+    @apply inline-flex items-center px-4 py-2 rounded-full text-sm font-medium;
+    @apply bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200;
+    @apply hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors cursor-pointer;
+  }
+
+  /* Category Styling - Green variant */
+  .zeno-category {
+    @apply inline-flex items-center px-4 py-2 rounded-full text-sm font-medium;
+    @apply bg-green-50 text-green-700 hover:bg-green-100 transition-colors cursor-pointer;
+  }
+  
+  /* Category Styling - Blue variant */
+  .zeno-category-blue {
+    @apply inline-flex items-center px-4 py-2 rounded-full text-sm font-medium;
+    @apply bg-blue-50 text-blue-700 hover:bg-blue-100 transition-colors cursor-pointer;
+  }
+  
+  /* Category Styling - Gray variant */
+  .zeno-category-gray {
+    @apply inline-flex items-center px-4 py-2 rounded-full text-sm font-medium;
+    @apply bg-gray-50 text-gray-700 hover:bg-gray-100 transition-colors cursor-pointer;
+  }
+  
+  /* Type Styling - Consistent across all components */
+  .zeno-type {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+    @apply bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200;
+  }
+  
+  /* Form Input Styling - Consistent across all forms */
+  .zeno-input {
+    @apply w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg;
+    @apply bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm;
+    @apply focus:outline-none focus:ring-2 focus:ring-primary;
+  }
+  
+  /* Form Label Styling */
+  .zeno-label {
+    @apply zeno-body block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1;
+  }
+  
+    /* Form Button Styling - Multiple variants */
+  .zeno-button-primary {
+    @apply px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors;
+  }
+  
+  .zeno-button-blue {
+    @apply px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors;
+  }
+  
+  .zeno-button-gray {
+    @apply px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors;
+  }
+
+  .zeno-button-secondary {
+    @apply px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors;
+  }
+
+  /* Large Action Button Styling - Multiple variants */
+  .zeno-button-large {
+    @apply inline-flex items-center bg-primary text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-primary/90 transition-colors duration-300 shadow-xl transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-primary;
+  }
+  
+  .zeno-button-large-blue {
+    @apply inline-flex items-center bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-700 transition-colors duration-300 shadow-xl transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-600;
+  }
+  
+  .zeno-button-large-gray {
+    @apply inline-flex items-center bg-gray-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-700 transition-colors duration-300 shadow-xl transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-gray-600;
+  }
+  
+  /* Search Input Styling */
+  .zeno-search {
+    @apply w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors text-sm;
+  }
+  
+  /* Checkbox Styling */
+  .zeno-checkbox {
+    @apply w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary;
+  }
+  
+    /* Card Badge Styling - Multiple variants */
+  .zeno-badge {
+    @apply bg-primary/10 text-primary text-xs font-semibold px-2.5 py-1 rounded-full;
+  }
+  
+  .zeno-badge-blue {
+    @apply bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-1 rounded-full;
+  }
+  
+  .zeno-badge-gray {
+    @apply bg-gray-100 text-gray-800 text-xs font-semibold px-2.5 py-1 rounded-full;
+  }
+
+  /* Info Box Styling - Multiple variants */
+  .zeno-info-box {
+    @apply bg-primary/5 border-l-4 border-primary p-4 mb-6;
+  }
+  
+  .zeno-info-box-blue {
+    @apply bg-blue-50 border-l-4 border-blue-400 p-4 mb-6;
+  }
+  
+  .zeno-info-box-gray {
+    @apply bg-gray-50 border-l-4 border-gray-400 p-4 mb-6;
+  }
+
+  /* Alert Box Styling - Multiple variants */
+  .zeno-alert-box {
+    @apply bg-primary/5 border border-primary/20 text-primary p-6 rounded-lg mb-8 shadow-inner;
+  }
+  
+  .zeno-alert-box-blue {
+    @apply bg-blue-50 border border-blue-200 text-blue-900 p-6 rounded-lg mb-8 shadow-inner;
+  }
+  
+  .zeno-alert-box-gray {
+    @apply bg-gray-50 border border-gray-200 text-gray-900 p-6 rounded-lg mb-8 shadow-inner;
+  }
+}

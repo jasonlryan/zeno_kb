@@ -50,15 +50,15 @@ export function FilterPanel({
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-gray-100">
           <div className="flex items-center gap-2">
-            <Filter size={18} className="text-gray-600" />
-            <h2 className="font-semibold text-gray-900">Filters</h2>
+            <Filter size={18} className="text-muted-foreground" />
+            <h2 className="font-semibold text-foreground">Filters</h2>
           </div>
           <button
             onClick={onToggle}
             className="p-1.5 hover:bg-gray-100 rounded-md transition-colors"
             aria-label="Close filters"
           >
-            <X size={16} className="text-gray-500" />
+            <X size={16} className="text-muted-foreground" />
           </button>
         </div>
 
@@ -66,7 +66,7 @@ export function FilterPanel({
         <div className="flex-1 p-4 space-y-6 overflow-y-auto">
           {/* Search */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Search Tools
             </label>
             <div className="relative">
@@ -86,7 +86,7 @@ export function FilterPanel({
 
           {/* Quick Filters */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-3">
+            <label className="block text-sm font-medium text-foreground mb-3">
               Quick Filters
             </label>
             <div className="space-y-3">
@@ -98,7 +98,7 @@ export function FilterPanel({
                   className="zeno-checkbox"
                 />
                 <Star size={14} className="ml-2 mr-1.5 text-yellow-500" />
-                <span className="text-sm text-gray-700 group-hover:text-gray-900">
+                <span className="text-sm text-foreground group-hover:text-foreground">
                   Featured Tools
                 </span>
               </label>
@@ -113,7 +113,7 @@ export function FilterPanel({
                 <span className="ml-2 mr-1.5 text-sm font-mono bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded">
                   GPT
                 </span>
-                <span className="text-sm text-gray-700 group-hover:text-gray-900">
+                <span className="text-sm text-foreground group-hover:text-foreground">
                   GPT Tools
                 </span>
               </label>
@@ -128,7 +128,7 @@ export function FilterPanel({
                 <span className="ml-2 mr-1.5 text-sm font-mono bg-green-100 text-green-800 px-1.5 py-0.5 rounded">
                   PLT
                 </span>
-                <span className="text-sm text-gray-700 group-hover:text-gray-900">
+                <span className="text-sm text-foreground group-hover:text-foreground">
                   Platforms
                 </span>
               </label>
@@ -143,7 +143,7 @@ export function FilterPanel({
                 <span className="ml-2 mr-1.5 text-sm font-mono bg-orange-100 text-orange-800 px-1.5 py-0.5 rounded">
                   TL
                 </span>
-                <span className="text-sm text-gray-700 group-hover:text-gray-900">
+                <span className="text-sm text-foreground group-hover:text-foreground">
                   Tools
                 </span>
               </label>
@@ -151,9 +151,9 @@ export function FilterPanel({
           </div>
 
           {/* Results Summary */}
-          <div className="bg-gray-50 rounded-lg p-3">
-            <div className="text-sm text-gray-600">
-              <span className="font-medium text-gray-900">{tools.length}</span>{" "}
+          <div className="bg-muted rounded-lg p-3">
+            <div className="text-sm text-muted-foreground">
+              <span className="font-medium text-foreground">{tools.length}</span>{" "}
               tools available
             </div>
             {hasActiveFilters && (

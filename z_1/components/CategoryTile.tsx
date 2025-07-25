@@ -16,7 +16,7 @@ export function CategoryTile({
   return (
     <div
       className={cn(
-        "bg-white dark:bg-gray-800 rounded-lg border-2 border-gray-200 dark:border-gray-700 p-6 cursor-pointer transition-all duration-200 hover:shadow-md hover:scale-[1.02]",
+        "bg-white dark:bg-gray-800 rounded-lg border-2 border-gray-200 dark:border-gray-700 zeno-content-padding cursor-pointer transition-all duration-200 hover:shadow-md hover:scale-[1.02]",
         className
       )}
       onClick={() => onSelect?.(category.id)}
@@ -26,15 +26,15 @@ export function CategoryTile({
           <span className="text-2xl">{category.icon}</span>
         </div>
         <div className="flex-1">
-          <h3 className="font-semibold text-gray-900 dark:text-white">
+          <h3 className="font-semibold text-foreground dark:text-white">
             {category.title}
           </h3>
-          <span className="text-sm text-gray-500 dark:text-gray-400">
+          <span className="text-sm text-muted-foreground dark:text-gray-400">
             {category.count} tools
           </span>
         </div>
       </div>
-      <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
+      <p className="text-sm text-muted-foreground dark:text-gray-400 line-clamp-2">
         {category.description}
       </p>
     </div>

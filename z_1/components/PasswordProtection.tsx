@@ -11,6 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Lock, LogOut } from "lucide-react";
+import { useSupabaseAuth } from "../hooks/useSupabaseAuth";
 
 interface PasswordProtectionProps {
   children: React.ReactNode;
@@ -19,6 +20,7 @@ interface PasswordProtectionProps {
 export default function PasswordProtection({
   children,
 }: PasswordProtectionProps) {
+  const { signOut } = useSupabaseAuth();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -29,9 +31,12 @@ export default function PasswordProtection({
     const authStatus = localStorage.getItem("zeno-auth");
     if (authStatus === "authenticated") {
       setIsAuthenticated(true);
+    } else {
+      // If password protection is not authenticated, also clear any stale Supabase sessions
+      signOut().catch(console.error);
     }
     setIsLoading(false);
-  }, []);
+  }, [signOut]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -45,14 +50,22 @@ export default function PasswordProtection({
     }
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    // Sign out from both systems
     setIsAuthenticated(false);
     localStorage.removeItem("zeno-auth");
+
+    // Also sign out from Supabase to ensure clean session
+    try {
+      await signOut();
+    } catch (error) {
+      console.error("Error signing out from Supabase:", error);
+    }
   };
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-muted flex items-center justify-center">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-green-500"></div>
       </div>
     );
@@ -60,13 +73,13 @@ export default function PasswordProtection({
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-muted flex items-center justify-center p-4">
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
             <div className="mx-auto mb-4 h-12 w-12 rounded-full bg-green-100 flex items-center justify-center">
               <Lock className="h-6 w-6 text-green-600" />
             </div>
-            <CardTitle className="text-2xl font-bold text-gray-900">
+            <CardTitle className="text-2xl font-bold text-foreground">
               Zeno Knowledge Hub
             </CardTitle>
             <CardDescription>

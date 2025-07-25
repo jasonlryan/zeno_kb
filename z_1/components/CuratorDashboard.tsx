@@ -233,11 +233,11 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
       )}
     >
       {/* Header */}
-      <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-        <h2 className="zeno-heading text-xl font-semibold text-gray-900 dark:text-white">
+      <div className="zeno-content-padding border-b border-gray-200 dark:border-gray-700">
+        <h2 className="zeno-heading text-xl font-semibold text-foreground dark:text-white">
           Curator Dashboard
         </h2>
-        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+        <p className="text-sm text-muted-foreground dark:text-gray-400 mt-1">
           Manage your content and resources
         </p>
       </div>
@@ -253,11 +253,11 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
                 "py-4 px-1 border-b-2 font-medium text-sm transition-colors",
                 activeTab === tab.id
                   ? "border-blue-500 text-blue-600 dark:text-blue-400"
-                  : "border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+                  : "border-transparent text-muted-foreground hover:text-foreground dark:text-gray-400 dark:hover:text-gray-300"
               )}
             >
               {tab.label}
-              <span className="ml-2 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 py-0.5 px-2 rounded-full text-xs">
+              <span className="ml-2 bg-gray-100 dark:bg-gray-700 text-muted-foreground dark:text-gray-400 py-0.5 px-2 rounded-full text-xs">
                 {tab.count}
               </span>
             </button>
@@ -266,11 +266,11 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
       </div>
 
       {/* Content */}
-      <div className="p-6">
+      <div className="zeno-content-padding">
         {activeTab === "assets" && (
           <div className="space-y-4">
             <div className="flex justify-between items-center">
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white">
+              <h3 className="text-lg font-medium text-foreground dark:text-white">
                 Asset Management
               </h3>
               <button
@@ -294,12 +294,12 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
                 placeholder="Search assets..."
                 value={searchQuery}
                 onChange={handleSearchChange}
-                className="zeno-search pl-10 pr-10 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                className="zeno-search pl-10 pr-10 bg-white dark:bg-gray-700 text-foreground dark:text-white zeno-placeholder"
               />
               {searchQuery && (
                 <button
                   onClick={clearSearch}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-muted-foreground dark:hover:text-gray-300"
                 >
                   <svg
                     className="h-5 w-5"
@@ -337,7 +337,7 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
 
             {/* Search Results Info */}
             {searchQuery && (
-              <div className="text-sm text-gray-600 dark:text-gray-400">
+              <div className="text-sm text-muted-foreground dark:text-gray-400">
                 {assetsCount === 0 ? (
                   <span>No assets found for "{searchQuery}"</span>
                 ) : (
@@ -352,7 +352,7 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
             {/* Assets Table */}
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                <thead style={{ backgroundColor: "var(--zeno-green)" }}>
+                <thead className="bg-primary">
                   <tr>
                     <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider w-32">
                       Actions
@@ -362,6 +362,9 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
                     </SortableHeader>
 
                     <SortableHeader field="type">Type</SortableHeader>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                      Featured
+                    </th>
                     <SortableHeader field="categories">
                       Categories
                     </SortableHeader>
@@ -374,9 +377,9 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
                   {sortedTools.map((tool) => (
                     <tr
                       key={tool.id}
-                      className="hover:bg-gray-50 dark:hover:bg-gray-700"
+                      className="hover:bg-muted dark:hover:bg-gray-700"
                     >
-                      <td className="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
+                      <td className="px-6 py-4 zeno-nowrap text-left text-sm font-medium">
                         <div className="flex items-center justify-start space-x-2">
                           <button
                             className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
@@ -395,7 +398,7 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
                             <ExternalLink size={16} />
                           </button>
                           <button
-                            className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300"
+                            className="text-muted-foreground hover:text-foreground dark:text-gray-400 dark:hover:text-gray-300"
                             onClick={() => {
                               setEditingTool(tool);
                               setIsModalOpen(true);
@@ -414,12 +417,12 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
                         {deleteConfirmId === tool.id && (
                           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
                             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 max-w-md w-full">
-                              <h3 className="text-lg font-semibold mb-4 break-words whitespace-normal text-center">
+                              <h3 className="text-lg font-semibold mb-4 break-words text-center">
                                 Are you sure you want to delete this asset?
                               </h3>
                               <div className="flex justify-center space-x-4">
                                 <button
-                                  className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 transition-colors"
+                                  className="px-4 py-2 bg-gray-300 text-foreground rounded hover:bg-gray-400 transition-colors"
                                   onClick={() => setDeleteConfirmId(null)}
                                 >
                                   Cancel
@@ -475,17 +478,54 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
                       <td className="px-6 py-4 w-1/3">
                         <div className="flex items-start">
                           <div className="ml-0 min-w-0 flex-1">
-                            <div className="text-sm font-medium text-gray-900 dark:text-white">
+                            <div className="text-sm font-medium text-foreground dark:text-white">
                               {tool.title}
                             </div>
                           </div>
                         </div>
                       </td>
 
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      <td className="px-6 py-4 zeno-nowrap">
                         <span className="zeno-type">{tool.type || "-"}</span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      <td className="px-6 py-4 zeno-nowrap">
+                        <button
+                          onClick={async (e) => {
+                            e.stopPropagation();
+                            try {
+                              const updatedTool = {
+                                ...tool,
+                                featured: !tool.featured,
+                              };
+                              const res = await fetch(`/api/tools/${tool.id}`, {
+                                method: "PUT",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify(updatedTool),
+                              });
+                              if (res.ok) {
+                                setTools((prev) =>
+                                  prev.map((t) =>
+                                    t.id === tool.id ? updatedTool : t
+                                  )
+                                );
+                              }
+                            } catch (error) {
+                              console.error(
+                                "Error updating featured status:",
+                                error
+                              );
+                            }
+                          }}
+                          className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium transition-colors ${
+                            tool.featured
+                              ? "bg-green-100 text-green-800 hover:bg-green-200 dark:bg-green-900 dark:text-green-200"
+                              : "bg-gray-100 text-gray-800 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300"
+                          }`}
+                        >
+                          {tool.featured ? "✓ Featured" : "Set Featured"}
+                        </button>
+                      </td>
+                      <td className="px-6 py-4 zeno-nowrap">
                         {(() => {
                           const toolTagCategories = getToolTagCategories(tool);
                           return toolTagCategories.length > 0 ? (
@@ -512,7 +552,7 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
                           );
                         })()}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                      <td className="px-6 py-4 zeno-nowrap text-sm text-muted-foreground dark:text-gray-400">
                         {(tool.date_modified &&
                           tool.date_modified.trim() !== "") ||
                         (tool.date_created &&
@@ -523,14 +563,14 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
                                 getLastUpdated(tool).toISOString()
                               )}
                             </span>
-                            <span className="text-xs text-gray-400 dark:text-gray-500">
+                            <span className="text-xs text-gray-400 dark:text-muted-foreground">
                               {getLastUpdated(tool).toLocaleDateString()}
                             </span>
                           </div>
                         ) : (
                           <div className="flex flex-col">
                             <span>Recently added</span>
-                            <span className="text-xs text-gray-400 dark:text-gray-500">
+                            <span className="text-xs text-gray-400 dark:text-muted-foreground">
                               {new Date().toLocaleDateString()}
                             </span>
                           </div>
@@ -631,7 +671,7 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
         {activeTab === "tags" && (
           <div className="space-y-4">
             <div className="flex justify-between items-center">
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white">
+              <h3 className="text-lg font-medium text-foreground dark:text-white">
                 Tag Management
               </h3>
               <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
@@ -642,21 +682,21 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
             {/* Tags Table */}
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                <thead className="bg-gray-50 dark:bg-gray-700">
+                <thead className="bg-muted dark:bg-gray-700">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground dark:text-gray-300 uppercase tracking-wider">
                       Tag Name
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground dark:text-gray-300 uppercase tracking-wider">
                       Usage Count
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground dark:text-gray-300 uppercase tracking-wider">
                       Usage %
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground dark:text-gray-300 uppercase tracking-wider">
                       Category
                     </th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-right text-xs font-medium text-muted-foreground dark:text-gray-300 uppercase tracking-wider">
                       Actions
                     </th>
                   </tr>
@@ -698,9 +738,9 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
                     return (
                       <tr
                         key={index}
-                        className="hover:bg-gray-50 dark:hover:bg-gray-700"
+                        className="hover:bg-muted dark:hover:bg-gray-700"
                       >
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-6 py-4 zeno-nowrap">
                           <div className="flex items-center">
                             <div className="flex-shrink-0 h-8 w-8">
                               <div className="h-8 w-8 rounded-full bg-purple-100 dark:bg-purple-900 flex items-center justify-center">
@@ -708,48 +748,50 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
                               </div>
                             </div>
                             <div className="ml-4">
-                              <div className="text-sm font-medium text-gray-900 dark:text-white">
+                              <div className="text-sm font-medium text-foreground dark:text-white">
                                 {tag.name}
                               </div>
                             </div>
                           </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-6 py-4 zeno-nowrap">
                           <div className="flex items-center">
-                            <span className="text-sm font-medium text-gray-900 dark:text-white">
+                            <span className="text-sm font-medium text-foreground dark:text-white">
                               {tag.count}
                             </span>
-                            <span className="ml-2 text-xs text-gray-500 dark:text-gray-400">
+                            <span className="ml-2 text-xs text-muted-foreground dark:text-gray-400">
                               asset{tag.count !== 1 ? "s" : ""}
                             </span>
                           </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-6 py-4 zeno-nowrap">
                           <div className="flex items-center">
                             <div className="flex-1 bg-gray-200 dark:bg-gray-600 rounded-full h-2 mr-2 max-w-24">
                               <div
-                                className="bg-blue-600 h-2 rounded-full"
-                                style={{
-                                  width: `${Math.min(
-                                    parseFloat(usagePercentage),
-                                    100
-                                  )}%`,
-                                }}
+                                className="bg-blue-600 h-2 rounded-full zeno-progress-bar"
+                                style={
+                                  {
+                                    "--progress-width": `${Math.min(
+                                      parseFloat(usagePercentage),
+                                      100
+                                    )}%`,
+                                  } as React.CSSProperties
+                                }
                               ></div>
                             </div>
-                            <span className="text-sm text-gray-900 dark:text-white">
+                            <span className="text-sm text-foreground dark:text-white">
                               {usagePercentage}%
                             </span>
                           </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-6 py-4 zeno-nowrap">
                           <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
                             {getTagCategory(tag.name)}
                           </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <td className="px-6 py-4 zeno-nowrap text-right text-sm font-medium">
                           <div className="flex items-center justify-end space-x-2">
-                            <button className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300">
+                            <button className="text-muted-foreground hover:text-foreground dark:text-gray-400 dark:hover:text-gray-300">
                               <Edit size={16} />
                             </button>
                             <button className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300">

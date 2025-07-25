@@ -55,16 +55,16 @@ export function CommentModal({
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200">
+        <div className="flex items-center justify-between zeno-content-padding border-b border-gray-200">
           <div className="flex items-center gap-2">
             <MessageSquare className="w-5 h-5 text-green-600" />
-            <h2 className="zeno-heading text-lg font-semibold text-gray-900">
+            <h2 className="zeno-heading text-lg font-semibold text-foreground">
               Add Comment
             </h2>
           </div>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 transition-colors"
+            className="text-gray-400 hover:text-muted-foreground transition-colors"
             aria-label="Close"
           >
             <X className="w-5 h-5" />
@@ -73,21 +73,21 @@ export function CommentModal({
 
         {/* Tool Context */}
         {toolTitle && (
-          <div className="px-6 py-3 bg-gray-50 border-b border-gray-200">
-            <p className="text-sm text-gray-600">
+          <div className="px-6 py-3 bg-muted border-b border-gray-200">
+            <p className="text-sm text-muted-foreground">
               Commenting on:{" "}
-              <span className="font-medium text-gray-900">{toolTitle}</span>
+              <span className="font-medium text-foreground">{toolTitle}</span>
             </p>
           </div>
         )}
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+        <form onSubmit={handleSubmit} className="zeno-content-padding space-y-4">
           {/* Name Field */}
           <div>
             <label
               htmlFor="name"
-              className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2"
+              className="flex items-center gap-2 text-sm font-medium text-foreground mb-2"
             >
               <User className="w-4 h-4" />
               Your Name *
@@ -107,7 +107,7 @@ export function CommentModal({
           <div>
             <label
               htmlFor="priority"
-              className="block text-sm font-medium text-gray-700 mb-2"
+              className="block text-sm font-medium text-foreground mb-2"
             >
               Priority
             </label>
@@ -130,7 +130,7 @@ export function CommentModal({
           <div>
             <label
               htmlFor="comment"
-              className="block text-sm font-medium text-gray-700 mb-2"
+              className="block text-sm font-medium text-foreground mb-2"
             >
               Comment *
             </label>
@@ -150,7 +150,7 @@ export function CommentModal({
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+              className="flex-1 px-4 py-2 border border-gray-300 text-foreground rounded-lg hover:bg-muted transition-colors"
             >
               Cancel
             </button>

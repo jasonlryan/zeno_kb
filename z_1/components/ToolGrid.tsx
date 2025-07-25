@@ -1,39 +1,41 @@
 "use client";
 import { cn } from "@/lib/utils";
-import TemplateAwareToolCard from "./TemplateAwareToolCard";
+import { ToolCard } from "./ToolCard";
 import type { Tool } from "../types";
 
 interface ToolGridProps {
   tools: Tool[];
   onSelect: (id: string) => void;
-  onBookmark?: (id: string) => void;
+  onFavorite?: (id: string) => void;
   onTagClick?: (tag: string) => void;
-  bookmarkedIds?: Set<string>;
+  isFavorite?: (id: string) => boolean;
   className?: string;
 }
 
 export function ToolGrid({
   tools,
   onSelect,
-  onBookmark,
+  onFavorite,
   onTagClick,
-  bookmarkedIds = new Set(),
+  isFavorite = () => false,
   className,
 }: ToolGridProps) {
   return (
     <div
       className={cn(
-        "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6",
+        "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 zeno-content-padding",
         className
       )}
     >
       {tools.map((tool) => (
-        <TemplateAwareToolCard
+        <ToolCard
           key={tool.id}
           tool={tool}
           onSelect={onSelect}
+          onFavorite={onFavorite}
           onTagClick={onTagClick}
-          className="h-64 flex flex-col"
+          isFavorite={isFavorite(tool.id)}
+          className="flex flex-col"
         />
       ))}
     </div>

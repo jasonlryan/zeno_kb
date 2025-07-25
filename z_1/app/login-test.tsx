@@ -1,4 +1,4 @@
-import { useSupabaseAuth } from '../hooks/useSupabaseAuth';
+import { useSupabaseAuth } from "../hooks/useSupabaseAuth";
 
 export default function LoginTestPage() {
   const { user, role, loading, signIn, signOut } = useSupabaseAuth();
@@ -11,15 +11,21 @@ export default function LoginTestPage() {
 
   if (!user) {
     return (
-      <div style={{ padding: 32 }}>
-        <h2>Not logged in</h2>
-        <button onClick={() => signIn(testAdmin.email, testAdmin.password)} style={{ marginRight: 8 }}>
+      <div className="zeno-content-padding">
+        <h2 className="zeno-heading">Not logged in</h2>
+        <button
+          onClick={() => signIn(testAdmin.email, testAdmin.password)}
+          className="zeno-button zeno-primary mr-2"
+        >
           Login as Admin
         </button>
-        <button onClick={() => signIn(testStandard.email, testStandard.password)}>
+        <button
+          onClick={() => signIn(testStandard.email, testStandard.password)}
+          className="zeno-button zeno-secondary"
+        >
           Login as Standard
         </button>
-        <p style={{ marginTop: 16, color: 'gray' }}>
+        <p className="zeno-body text-muted-foreground mt-4">
           (Replace passwords in code before testing)
         </p>
       </div>
@@ -27,12 +33,24 @@ export default function LoginTestPage() {
   }
 
   return (
-    <div style={{ padding: 32 }}>
-      <h2>Logged in as: {user.email}</h2>
-      <p>Role: <b>{role}</b></p>
-      {role === "admin" && <div style={{ color: 'green', margin: '16px 0' }}>Welcome, admin! You can see admin content.</div>}
-      {role === "standard" && <div style={{ color: 'blue', margin: '16px 0' }}>Welcome, standard user! You have limited access.</div>}
-      <button onClick={signOut}>Sign Out</button>
+    <div className="zeno-content-padding">
+      <h2 className="zeno-heading">Logged in as: {user.email}</h2>
+      <p className="zeno-body">
+        Role: <b>{role}</b>
+      </p>
+      {role === "admin" && (
+        <div className="text-green-600 my-4 zeno-body">
+          Welcome, admin! You can see admin content.
+        </div>
+      )}
+      {role === "standard" && (
+        <div className="text-blue-600 my-4 zeno-body">
+          Welcome, standard user! You have limited access.
+        </div>
+      )}
+      <button onClick={signOut} className="zeno-button zeno-secondary">
+        Sign Out
+      </button>
     </div>
   );
-} 
+}

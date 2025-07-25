@@ -34,8 +34,8 @@ export default function CommentRetrievalPage() {
   return (
     <div className="max-w-2xl mx-auto py-12">
       <h1 className="text-2xl font-bold mb-4">Comment Retrieval</h1>
-      <div className="bg-gray-100 p-6 rounded shadow">
-        <p className="text-gray-700 mb-4">
+      <div className="bg-gray-100 zeno-content-padding rounded shadow">
+        <p className="text-foreground mb-4">
           Download all comments from Redis (Upstash):
         </p>
         <button

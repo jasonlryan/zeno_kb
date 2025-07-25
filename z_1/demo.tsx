@@ -194,6 +194,8 @@ export default function ComponentDemo() {
           <FeaturedCarousel
             tools={sampleTools}
             onSelect={(id) => console.log("Selected tool:", id)}
+            onFavorite={(id) => console.log("Favorited tool:", id)}
+            isFavorite={(id) => false}
           />
         </section>
 

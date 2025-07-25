@@ -15,6 +15,14 @@ export { ToolFormModal } from "./ToolFormModal"
 export { FilterPanel } from "./FilterPanel"
 export { CommentModal } from "./CommentModal"
 
+// User Management Components
+export { UserList } from "./UserList"
+export { UserRoleModal } from "./UserRoleModal"
+export { UserDeleteModal } from "./UserDeleteModal"
+
+// Favorites Components
+export { FavoriteModal } from "./FavoriteModal"
+
 // Hooks
 export { useLocalSearch } from "../hooks/useLocalSearch"
 export { usePagination } from "../hooks/usePagination"

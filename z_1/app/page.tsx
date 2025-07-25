@@ -10,6 +10,7 @@ import {
   Zap,
   Filter,
   ChevronLeft,
+  Heart,
 } from "lucide-react";
 import { AppShell } from "../components/AppShell";
 import { ToolCardDemo } from "../components/ToolCard";
@@ -37,6 +38,8 @@ import type { Tool, Category, SidebarSection } from "../types";
 import { useSupabaseAuth } from "../hooks/useSupabaseAuth";
 import { UserList } from "../components/UserList";
 import UserGuidePage from "./user-guide/page";
+import { useFavorites } from "../hooks/useFavorites";
+import { FavoriteModal } from "../components/FavoriteModal";
 
 // Configuration data loaded from config files
 
@@ -60,6 +63,10 @@ export default function HomePage() {
   const [isFilterOpen, setIsFilterOpen] = useState(
     false && featureFlags.enableFilters
   );
+
+  // Favorites state
+  const [favoriteModalOpen, setFavoriteModalOpen] = useState(false);
+  const [toolToFavorite, setToolToFavorite] = useState<Tool | null>(null);
 
   // Add URL hash-based routing persistence
   useEffect(() => {
@@ -200,6 +207,13 @@ export default function HomePage() {
   } = useAPITools();
   const categories = useCategories();
   const { role } = useSupabaseAuth();
+  const {
+    favorites,
+    isFavorite,
+    addFavorite,
+    removeFavorite,
+    loading: favoritesLoading,
+  } = useFavorites();
 
   // FILTERS: Debug log for development
   React.useEffect(() => {
@@ -332,6 +346,30 @@ export default function HomePage() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
+  // Favorites handlers
+  const handleFavoriteClick = (toolId: string) => {
+    const tool = allTools.find((t) => t.id === toolId);
+    if (!tool) return;
+
+    if (isFavorite(toolId)) {
+      // Remove from favorites
+      removeFavorite(toolId).catch(console.error);
+    } else {
+      // Show modal to add with note
+      setToolToFavorite(tool);
+      setFavoriteModalOpen(true);
+    }
+  };
+
+  const handleFavoriteSave = async (toolId: string, note: string) => {
+    try {
+      await addFavorite(toolId, note);
+    } catch (error) {
+      console.error("Error saving favorite:", error);
+      throw error;
+    }
+  };
+
   // Enhanced back navigation that works with browser back button
   const handleBack = React.useCallback(() => {
     // Use browser's back functionality
@@ -411,7 +449,7 @@ export default function HomePage() {
   // NOW we can have conditional returns after all hooks are called
   if (navLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen text-lg text-gray-500">
+      <div className="flex items-center justify-center min-h-screen text-lg text-muted-foreground">
         Loading navigation...
       </div>
     );
@@ -426,10 +464,10 @@ export default function HomePage() {
           <div className="space-y-8">
             {/* Page Title */}
             <section className="text-center py-8">
-              <h1 className="text-4xl font-bold text-green-600 mb-2">
+              <h1 className="zeno-heading text-4xl text-primary mb-2">
                 Welcome to the Zeno AI Knowledge Hub
               </h1>
-              <p className="text-xl text-gray-900 dark:text-gray-100">
+              <p className="zeno-body text-xl text-foreground">
                 Your AI toolkit, all in one place
               </p>
             </section>
@@ -445,7 +483,9 @@ export default function HomePage() {
             <FeaturedCarousel
               tools={featuredTools}
               onSelect={handleToolSelect}
+              onFavorite={handleFavoriteClick}
               onTagClick={handleTagClick}
+              isFavorite={isFavorite}
             />
 
             {/* Categories */}
@@ -468,7 +508,9 @@ export default function HomePage() {
               <ToolGrid
                 tools={allTools}
                 onSelect={handleToolSelect}
+                onFavorite={handleFavoriteClick}
                 onTagClick={handleTagClick}
+                isFavorite={isFavorite}
               />
             </section>
           </div>
@@ -488,25 +530,54 @@ export default function HomePage() {
               <ToolGrid
                 tools={displayTools}
                 onSelect={handleToolSelect}
+                onFavorite={handleFavoriteClick}
                 onTagClick={handleTagClick}
+                isFavorite={isFavorite}
               />
             </section>
           </div>
         );
 
       case "library":
+        if (favoritesLoading) {
+          return (
+            <div className="text-center py-16">
+              <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-primary mx-auto mb-4"></div>
+              <p className="zeno-body text-muted-foreground">
+                Loading your library...
+              </p>
+            </div>
+          );
+        }
+
+        const favoriteTools = allTools.filter((tool) =>
+          favorites.some((fav) => fav.tool_id === tool.id)
+        );
+
         return (
           <div className="space-y-8">
             <section>
               <h2 className="zeno-heading text-card-foreground mb-6">
-                Your library
+                My Library ({favoriteTools.length})
               </h2>
-              <div className="text-center py-16">
-                <BookOpen className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-                <p className="zeno-body text-muted-foreground">
-                  Your saved tools and bookmarks will appear here
-                </p>
-              </div>
+              {favoriteTools.length === 0 ? (
+                <div className="text-center py-16">
+                  <Heart className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                  <p className="zeno-body text-muted-foreground mb-2">
+                    No saved tools yet
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    Click the heart icon on any tool to save it to your library
+                  </p>
+                </div>
+              ) : (
+                <ToolGrid
+                  tools={favoriteTools}
+                  onSelect={handleToolSelect}
+                  onFavorite={handleFavoriteClick}
+                  isFavorite={isFavorite}
+                />
+              )}
             </section>
           </div>
         );
@@ -624,7 +695,9 @@ export default function HomePage() {
                 <ToolGrid
                   tools={categoryTools}
                   onSelect={handleToolSelect}
+                  onFavorite={handleFavoriteClick}
                   onTagClick={handleTagClick}
+                  isFavorite={isFavorite}
                 />
               ) : (
                 <div className="text-center py-16">
@@ -660,13 +733,10 @@ export default function HomePage() {
             <ToolDetailPage
               tool={selectedTool}
               onBack={handleBackToHome}
-              onFavorite={(toolId) => {
-                console.log("Toggle favorite for tool:", toolId);
-                // TODO: Implement favorites functionality
-              }}
+              onFavorite={handleFavoriteClick}
               onCategoryClick={handleCategorySelect}
               onTagClick={handleTagClick}
-              isFavorite={false} // TODO: Implement favorites state
+              isFavorite={isFavorite(selectedTool.id)}
             />
           </div>
         );
@@ -723,6 +793,17 @@ export default function HomePage() {
           </div>
         </div>
       </div>
+
+      {/* Favorite Modal */}
+      <FavoriteModal
+        tool={toolToFavorite}
+        isOpen={favoriteModalOpen}
+        onClose={() => {
+          setFavoriteModalOpen(false);
+          setToolToFavorite(null);
+        }}
+        onSave={handleFavoriteSave}
+      />
     </AppShell>
   );
 }

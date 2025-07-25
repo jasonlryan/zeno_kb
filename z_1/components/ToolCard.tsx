@@ -1,25 +1,25 @@
 "use client";
 import React from "react";
-import { Bookmark, BookmarkCheck, ExternalLink } from "lucide-react";
+import { Heart, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useComponentContent } from "../hooks/useConfig";
 import type { Tool } from "../types";
 
 interface ToolCardProps {
   tool: Tool;
-  onBookmark?: (id: string) => void;
+  onFavorite?: (id: string) => void;
   onSelect?: (id: string) => void;
   onTagClick?: (tag: string) => void;
-  bookmarked?: boolean;
+  isFavorite?: boolean;
   className?: string;
 }
 
 export function ToolCard({
   tool,
-  onBookmark,
+  onFavorite,
   onSelect,
   onTagClick,
-  bookmarked = false,
+  isFavorite = false,
   className,
 }: ToolCardProps) {
   const content = useComponentContent("toolCard") as any;
@@ -58,66 +58,79 @@ export function ToolCard({
   return (
     <div
       className={cn(
-        "bg-card border border-border rounded-lg zeno-content-padding cursor-pointer transition-all duration-200 hover:shadow-lg hover:scale-[1.02]",
+        "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4 cursor-pointer transition-all duration-200 hover:shadow-md hover:border-gray-300 dark:hover:border-gray-600 min-h-[280px]",
         tool.featured && "ring-2 ring-primary/30 border-primary/30",
         className
       )}
       onClick={() => onSelect?.(tool.id)}
     >
       <div className="flex flex-col h-full">
-        <div className="flex justify-between items-start mb-3">
-          <div className="flex flex-wrap gap-2">
-            <span className="zeno-type">{tool.type}</span>
-            <span
-              className={cn(
-                "px-2 py-0.5 rounded-full text-xs font-medium border",
-                getTierColor(tool.tier)
-              )}
-            >
-              {tool.tier}
-            </span>
-            <span
-              className={cn(
-                "px-2 py-0.5 rounded-full text-xs font-medium border",
-                getComplexityColor(tool.complexity)
-              )}
-            >
-              {tool.complexity}
-            </span>
-          </div>
+        {/* Header with type and favorite */}
+        <div className="flex items-start justify-between mb-3">
+          <span
+            className={cn(
+              "zeno-type",
+              `zeno-type-${tool.type.toLowerCase().replace(/\s+/g, "-")}`
+            )}
+          >
+            {tool.type}
+          </span>
           <button
             onClick={(e) => {
               e.stopPropagation();
-              onBookmark?.(tool.id);
+              onFavorite?.(tool.id);
             }}
-            className="p-2 rounded-lg hover:bg-secondary transition-colors"
+            className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex-shrink-0"
             aria-label={
-              bookmarked ? safeContent.actions.unsave : safeContent.actions.save
+              isFavorite ? "Remove from favorites" : "Add to favorites"
             }
           >
-            {bookmarked ? (
-              <BookmarkCheck className="w-5 h-5 text-primary" />
-            ) : (
-              <Bookmark className="w-5 h-5 text-muted-foreground" />
-            )}
+            <Heart
+              className={`w-4 h-4 transition-colors ${
+                isFavorite ? "text-red-500" : "text-gray-400 hover:text-red-400"
+              }`}
+              fill={isFavorite ? "currentColor" : "none"}
+            />
           </button>
         </div>
 
-        <h3 className="zeno-heading text-base font-semibold text-card-foreground mb-2 line-clamp-2">
+        {/* Title */}
+        <h3 className="text-sm font-semibold text-foreground dark:text-white mb-2 line-clamp-2 leading-tight">
           {tool.title}
         </h3>
 
-        <p className="zeno-body text-xs text-muted-foreground mb-3 line-clamp-3 flex-grow">
+        {/* Description */}
+        <p className="text-xs text-muted-foreground dark:text-gray-300 mb-3 line-clamp-3 flex-grow leading-relaxed">
           {tool.description}
         </p>
 
-        {/* Tags section - only show if tags is an array and has items */}
+        {/* Metadata badges */}
+        <div className="flex flex-wrap gap-1.5 mb-3">
+          <span
+            className={cn(
+              "px-2 py-0.5 rounded-full text-xs font-medium",
+              getTierColor(tool.tier)
+            )}
+          >
+            {tool.tier}
+          </span>
+          <span
+            className={cn(
+              "px-2 py-0.5 rounded-full text-xs font-medium",
+              getComplexityColor(tool.complexity)
+            )}
+          >
+            {tool.complexity}
+          </span>
+        </div>
+
+        {/* Tags */}
         {Array.isArray(tool.tags) && tool.tags.length > 0 && (
-          <div className="flex flex-wrap gap-2 mb-2">
+          <div className="flex flex-wrap gap-1">
             {tool.tags.slice(0, 3).map((tag, index) => (
               <button
                 key={index}
-                className="zeno-tag"
+                className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-700 text-foreground dark:text-gray-300 rounded text-xs hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
                 onClick={(e) => {
                   e.stopPropagation();
                   onTagClick?.(tag);
@@ -127,14 +140,12 @@ export function ToolCard({
               </button>
             ))}
             {tool.tags.length > 3 && (
-              <span className="text-xs text-gray-500 dark:text-gray-400">
-                +{tool.tags.length - 3} more
+              <span className="text-xs text-muted-foreground dark:text-gray-400 px-1">
+                +{tool.tags.length - 3}
               </span>
             )}
           </div>
         )}
-
-        {/* Categories removed from cards - still available in modal and curator dashboard */}
       </div>
     </div>
   );
@@ -165,8 +176,8 @@ export function ToolCardDemo() {
     <div className="max-w-sm">
       <ToolCard
         tool={sampleTool}
-        onBookmark={(id) => console.log("Bookmarked:", id)}
-        onSelect={(id) => console.log("Selected:", id)}
+        onFavorite={(id: string) => console.log("Favorited:", id)}
+        onSelect={(id: string) => console.log("Selected:", id)}
       />
     </div>
   );

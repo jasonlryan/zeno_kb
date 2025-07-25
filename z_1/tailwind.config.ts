@@ -126,6 +126,33 @@ const config: Config = {
       },
     },
   },
+  safelist: [
+    // Preserve dynamic zeno-type classes
+    'zeno-type-gpt',
+    'zeno-type-platform', 
+    'zeno-type-tool',
+    'zeno-type-doc',
+    'zeno-type-video',
+    'zeno-type-fearless-u',
+    'zeno-type-sharepoint',
+    'zeno-type-learning-guide',
+    'zeno-type-script',
+    // Valid Tailwind classes being flagged as violations
+    'placeholder-gray-500',
+    'dark:placeholder-gray-400',
+    'whitespace-nowrap',
+    'whitespace-normal',
+    'transform',
+    '-translate-y-1/2',
+    'hover:-translate-y-1',
+    'group',
+    'snap-x',
+    'snap-mandatory',
+    'snap-start',
+    'list-disc',
+    'list-inside',
+    'list-decimal',
+  ],
   plugins: [require("tailwindcss-animate")],
 }
 

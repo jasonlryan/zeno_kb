@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { cn } from "@/lib/utils";
 import {
   ChevronLeft,
   Heart,
@@ -132,7 +133,7 @@ const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
       case "Tool":
         return <Settings size={20} className="text-orange-600" />;
       default:
-        return <Info size={20} className="text-gray-500" />;
+        return <Info size={20} className="text-muted-foreground" />;
     }
   };
 
@@ -208,7 +209,7 @@ const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
 
   if (!tool) {
     return (
-      <div className="container mx-auto p-6 text-center text-gray-600">
+      <div className="container mx-auto zeno-content-padding text-center text-muted-foreground">
         <p>No tool selected. Please go back to the homepage.</p>
         <button
           onClick={onBack}
@@ -221,7 +222,7 @@ const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
   }
 
   return (
-    <div className="bg-gray-50 min-h-full">
+    <div className="bg-muted min-h-full">
       <div className="container mx-auto">
         {/* Main Tool Details Card */}
         <div className="bg-white rounded-xl shadow-lg p-8 border border-gray-200 zeno-content-padding">
@@ -230,15 +231,15 @@ const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
             <div className="flex items-start space-x-4">
               {getTypeIcon(tool.type)}
               <div>
-                <h2 className="zeno-heading text-4xl font-extrabold text-gray-900">
+                <h2 className="zeno-heading text-4xl font-extrabold text-foreground">
                   {tool.title}
                 </h2>
                 <div className="flex items-center space-x-2 mt-2">
-                  <span className="zeno-body text-sm text-gray-500">
+                  <span className="zeno-body text-sm text-muted-foreground">
                     Type: {tool.type}
                   </span>
                   <span className="text-gray-300">•</span>
-                  <span className="zeno-body text-sm text-gray-500">
+                  <span className="zeno-body text-sm text-muted-foreground">
                     Function: {tool.function}
                   </span>
                 </div>
@@ -249,20 +250,24 @@ const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
                 onClick={() => onFavorite(tool.id)}
                 className={`p-3 rounded-full transition-colors duration-200 ${
                   isFavorite
-                    ? "text-red-500 bg-red-100"
-                    : "text-gray-400 hover:text-red-500 hover:bg-gray-100"
+                    ? "text-red-500 bg-red-100 hover:bg-red-200"
+                    : "text-muted-foreground hover:text-red-500 hover:bg-gray-100 dark:hover:bg-gray-800"
                 }`}
                 aria-label={
                   isFavorite ? "Remove from favorites" : "Add to favorites"
                 }
               >
-                <Heart fill={isFavorite ? "currentColor" : "none"} size={28} />
+                <Heart
+                  fill={isFavorite ? "currentColor" : "none"}
+                  size={28}
+                  className="transition-all duration-200"
+                />
               </button>
             )}
           </div>
 
           {/* Description */}
-          <p className="zeno-body text-gray-700 text-lg mb-6 leading-relaxed">
+          <p className="zeno-body text-foreground text-lg mb-6 leading-relaxed">
             {tool.description}
           </p>
 
@@ -272,7 +277,10 @@ const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
               <>
                 <span className="zeno-body font-semibold">Type:</span>
                 <button
-                  className="zeno-type hover:bg-green-200 transition-colors cursor-pointer"
+                  className={cn(
+                    "zeno-type transition-colors cursor-pointer",
+                    `zeno-type-${tool.type.toLowerCase().replace(/\s+/g, "-")}`
+                  )}
                   onClick={() =>
                     typeof onTagClick === "function"
                       ? onTagClick(tool.type)
@@ -425,7 +433,7 @@ const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
               </span>
             )}
             {tool.complexity && (
-              <span className="bg-gray-100 text-gray-700 text-sm px-4 py-2 rounded-full font-medium">
+              <span className="bg-gray-100 text-foreground text-sm px-4 py-2 rounded-full font-medium">
                 Complexity: {tool.complexity}
               </span>
             )}
@@ -433,7 +441,7 @@ const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
 
           {/* Access Control or Action Button */}
           {isSpecialist ? (
-            <div className="bg-yellow-50 border border-yellow-300 text-yellow-800 p-6 rounded-lg mb-8 flex items-start shadow-inner">
+            <div className="bg-yellow-50 border border-yellow-300 text-yellow-800 zeno-content-padding rounded-lg mb-8 flex items-start shadow-inner">
               <AlertCircle
                 className="mr-3 text-yellow-600 mt-1 flex-shrink-0"
                 size={24}
@@ -469,7 +477,7 @@ const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
           )}
 
           {/* Type-Specific Caveats & Best Practices */}
-          <div className="bg-green-50 border border-green-200 text-green-900 p-6 rounded-lg mb-8 shadow-inner">
+          <div className="bg-green-50 border border-green-200 text-green-900 zeno-content-padding rounded-lg mb-8 shadow-inner">
             <div className="flex items-start">
               <CheckCircle
                 className="mr-3 text-green-600 mt-1 flex-shrink-0"
@@ -492,26 +500,30 @@ const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
 
           {/* Additional Tool Information */}
           {tool.date_added && (
-            <div className="bg-gray-50 border border-gray-200 p-4 rounded-lg mb-8">
+            <div className="bg-muted border border-gray-200 p-4 rounded-lg mb-8">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                 <div>
-                  <span className="font-medium text-gray-700">Added:</span>
-                  <span className="ml-2 text-gray-600">
+                  <span className="font-medium text-foreground">Added:</span>
+                  <span className="ml-2 text-muted-foreground">
                     {new Date(tool.date_added).toLocaleDateString()}
                   </span>
                 </div>
                 {tool.added_by && (
                   <div>
-                    <span className="font-medium text-gray-700">Added by:</span>
-                    <span className="ml-2 text-gray-600">{tool.added_by}</span>
+                    <span className="font-medium text-foreground">
+                      Added by:
+                    </span>
+                    <span className="ml-2 text-muted-foreground">
+                      {tool.added_by}
+                    </span>
                   </div>
                 )}
                 {tool.scheduled_feature_date && (
                   <div>
-                    <span className="font-medium text-gray-700">
+                    <span className="font-medium text-foreground">
                       Featured on:
                     </span>
-                    <span className="ml-2 text-gray-600">
+                    <span className="ml-2 text-muted-foreground">
                       {new Date(
                         tool.scheduled_feature_date
                       ).toLocaleDateString()}

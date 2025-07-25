@@ -21,7 +21,9 @@ export function useSupabaseAuth() {
         if (error) {
           console.error('Error fetching session', error);
         }
-        setUser(session?.user ?? null);
+        const currentUser = session?.user ?? null;
+        console.log('📝 Session loaded - User ID:', currentUser?.id || 'No user');
+        setUser(currentUser);
       } catch (err) {
         console.error('Supabase auth error', err);
         setUser(null);
@@ -34,8 +36,10 @@ export function useSupabaseAuth() {
     if (!supabase) return;
 
     const { data: listener } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        setUser(session?.user ?? null);
+      (event, session) => {
+        const currentUser = session?.user ?? null;
+        console.log('🔄 Auth state changed:', event, 'User ID:', currentUser?.id || 'No user');
+        setUser(currentUser);
       }
     );
 

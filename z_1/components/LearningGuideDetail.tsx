@@ -106,7 +106,7 @@ export function LearningGuideDetail({
     : 0;
 
   return (
-    <div className="bg-gray-50 min-h-full">
+    <div className="bg-muted min-h-full">
       <div className="container mx-auto">
         {/* Main Learning Guide Card */}
         <div className="bg-white rounded-xl shadow-lg p-8 border border-gray-200">
@@ -120,21 +120,21 @@ export function LearningGuideDetail({
                     Learning Guide
                   </span>
                   {tool.estimated_read_time && (
-                    <div className="flex items-center gap-1 text-sm text-gray-600">
+                    <div className="flex items-center gap-1 text-sm text-muted-foreground">
                       <Clock size={16} />
                       <span>{tool.estimated_read_time}</span>
                     </div>
                   )}
                 </div>
-                <h2 className="text-4xl font-extrabold text-gray-900">
+                <h2 className="text-4xl font-extrabold text-foreground">
                   {tool.title}
                 </h2>
                 <div className="flex items-center space-x-2 mt-2">
-                  <span className="text-sm text-gray-500">
+                  <span className="text-sm text-muted-foreground">
                     Tier: {tool.tier}
                   </span>
                   <span className="text-gray-300">•</span>
-                  <span className="text-sm text-gray-500">
+                  <span className="text-sm text-muted-foreground">
                     Complexity: {tool.complexity}
                   </span>
                 </div>
@@ -158,7 +158,7 @@ export function LearningGuideDetail({
           </div>
 
           {/* Description */}
-          <p className="text-gray-700 text-lg mb-6 leading-relaxed">
+          <p className="text-foreground text-lg mb-6 leading-relaxed">
             {tool.description}
           </p>
 
@@ -171,10 +171,12 @@ export function LearningGuideDetail({
 
           {/* Presenter Info */}
           {tool.presenter && (
-            <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-6">
+            <div className="bg-muted border border-gray-200 rounded-lg p-4 mb-6">
               <div className="flex items-center gap-2 mb-2">
-                <User size={16} className="text-gray-600" />
-                <span className="font-medium text-gray-700">Presented by:</span>
+                <User size={16} className="text-muted-foreground" />
+                <span className="font-medium text-foreground">
+                  Presented by:
+                </span>
               </div>
               <p className="text-gray-800">{tool.presenter}</p>
             </div>
@@ -182,7 +184,7 @@ export function LearningGuideDetail({
 
           {/* Prerequisites Section */}
           {tool.prerequisites && tool.prerequisites.length > 0 && (
-            <div className="bg-orange-50 border border-orange-200 rounded-lg p-6 mb-8">
+            <div className="bg-orange-50 border border-orange-200 rounded-lg zeno-content-padding mb-8">
               <div className="flex items-start">
                 <BookOpen
                   className="mr-3 text-orange-600 mt-1 flex-shrink-0"
@@ -210,7 +212,7 @@ export function LearningGuideDetail({
 
           {/* Learning Objectives with Progress */}
           {tool.learning_objectives && tool.learning_objectives.length > 0 && (
-            <div className="bg-green-50 border border-green-200 rounded-lg p-6 mb-8">
+            <div className="bg-green-50 border border-green-200 rounded-lg zeno-content-padding mb-8">
               <div className="flex items-start">
                 <Target
                   className="mr-3 text-green-600 mt-1 flex-shrink-0"
@@ -230,8 +232,12 @@ export function LearningGuideDetail({
                   {/* Progress Bar */}
                   <div className="w-full bg-green-200 rounded-full h-2 mb-4">
                     <div
-                      className="bg-green-600 h-2 rounded-full transition-all duration-300"
-                      style={{ width: `${progressPercentage}%` }}
+                      className="bg-green-600 h-2 rounded-full transition-all duration-300 zeno-progress-bar"
+                      style={
+                        {
+                          "--progress-width": `${progressPercentage}%`,
+                        } as React.CSSProperties
+                      }
                     ></div>
                   </div>
 
@@ -293,7 +299,7 @@ export function LearningGuideDetail({
             >
               {tool.tier}
             </span>
-            <span className="bg-gray-100 text-gray-700 text-sm px-4 py-2 rounded-full font-medium">
+            <span className="bg-gray-100 text-foreground text-sm px-4 py-2 rounded-full font-medium">
               Complexity: {tool.complexity}
             </span>
           </div>
@@ -312,7 +318,7 @@ export function LearningGuideDetail({
           </div>
 
           {/* Learning Tips */}
-          <div className="bg-blue-50 border border-blue-200 text-blue-900 p-6 rounded-lg mb-8 shadow-inner">
+          <div className="bg-blue-50 border border-blue-200 text-blue-900 zeno-content-padding rounded-lg mb-8 shadow-inner">
             <div className="flex items-start">
               <AlertCircle
                 className="mr-3 text-blue-600 mt-1 flex-shrink-0"
@@ -344,27 +350,33 @@ export function LearningGuideDetail({
 
           {/* Additional Information */}
           {tool.date_added && (
-            <div className="bg-gray-50 border border-gray-200 p-4 rounded-lg mb-8">
+            <div className="bg-muted border border-gray-200 p-4 rounded-lg mb-8">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                 <div className="flex items-center gap-2">
-                  <Calendar size={16} className="text-gray-500" />
-                  <span className="font-medium text-gray-700">Added:</span>
-                  <span className="text-gray-600">
+                  <Calendar size={16} className="text-muted-foreground" />
+                  <span className="font-medium text-foreground">Added:</span>
+                  <span className="text-muted-foreground">
                     {new Date(tool.date_added).toLocaleDateString()}
                   </span>
                 </div>
                 {tool.added_by && (
                   <div className="flex items-center gap-2">
-                    <User size={16} className="text-gray-500" />
-                    <span className="font-medium text-gray-700">Curator:</span>
-                    <span className="text-gray-600">{tool.added_by}</span>
+                    <User size={16} className="text-muted-foreground" />
+                    <span className="font-medium text-foreground">
+                      Curator:
+                    </span>
+                    <span className="text-muted-foreground">
+                      {tool.added_by}
+                    </span>
                   </div>
                 )}
                 {tool.content_type && (
                   <div className="flex items-center gap-2">
-                    <BookOpen size={16} className="text-gray-500" />
-                    <span className="font-medium text-gray-700">Format:</span>
-                    <span className="text-gray-600">{tool.content_type}</span>
+                    <BookOpen size={16} className="text-muted-foreground" />
+                    <span className="font-medium text-foreground">Format:</span>
+                    <span className="text-muted-foreground">
+                      {tool.content_type}
+                    </span>
                   </div>
                 )}
               </div>
@@ -372,7 +384,7 @@ export function LearningGuideDetail({
           )}
 
           {/* Feedback Widget */}
-          <div className="bg-gray-50 border border-gray-200 p-6 rounded-lg shadow-inner">
+          <div className="bg-muted border border-gray-200 zeno-content-padding rounded-lg shadow-inner">
             <div className="flex flex-col items-center">
               <p className="font-semibold text-gray-800 mb-4 text-lg">
                 Was this learning guide helpful?
@@ -395,7 +407,7 @@ export function LearningGuideDetail({
 
             <div className="border-t border-gray-300 pt-4">
               <div className="flex flex-col items-center">
-                <p className="text-gray-600 mb-3 text-center">
+                <p className="text-muted-foreground mb-3 text-center">
                   Have suggestions or feedback about this learning guide?
                 </p>
                 <button

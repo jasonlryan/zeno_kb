@@ -9,18 +9,18 @@ import type { Tool } from "../types";
 interface FeaturedCarouselProps {
   tools: Tool[];
   onSelect: (id: string) => void;
-  onBookmark?: (id: string) => void;
+  onFavorite?: (id: string) => void;
   onTagClick?: (tag: string) => void;
-  bookmarkedIds?: Set<string>;
+  isFavorite?: (id: string) => boolean;
   className?: string;
 }
 
 export function FeaturedCarousel({
   tools,
   onSelect,
-  onBookmark,
+  onFavorite,
   onTagClick,
-  bookmarkedIds = new Set(),
+  isFavorite = () => false,
   className,
 }: FeaturedCarouselProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -42,25 +42,25 @@ export function FeaturedCarousel({
   return (
     <div
       className={cn(
-        "relative border border-gray-200 dark:border-gray-700 rounded-lg p-6",
+        "relative border border-gray-200 dark:border-gray-700 rounded-lg zeno-content-padding",
         className
       )}
     >
       <div className="flex items-center justify-between mb-4">
-        <h2 className="zeno-heading text-xl font-semibold text-gray-900 dark:text-white">
+        <h2 className="zeno-heading text-xl font-semibold text-foreground dark:text-white">
           Featured Tools
         </h2>
         <div className="flex space-x-2">
           <button
             onClick={() => scroll("left")}
-            className="p-2 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+            className="p-2 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-muted dark:hover:bg-gray-700 transition-colors"
             aria-label="Scroll left"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
           <button
             onClick={() => scroll("right")}
-            className="p-2 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+            className="p-2 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-muted dark:hover:bg-gray-700 transition-colors"
             aria-label="Scroll right"
           >
             <ChevronRight className="w-5 h-5" />
@@ -68,20 +68,16 @@ export function FeaturedCarousel({
         </div>
       </div>
 
-      <div
-        ref={scrollRef}
-        className="flex space-x-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory"
-        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-      >
+      <div ref={scrollRef} className="flex space-x-4 zeno-scroll-snap">
         {featuredTools.map((tool) => (
-          <div key={tool.id} className="flex-none w-80 snap-start">
+          <div key={tool.id} className="flex-none w-80 zeno-snap-item">
             <ToolCard
               tool={tool}
               onSelect={onSelect}
-              onBookmark={onBookmark}
+              onFavorite={onFavorite}
               onTagClick={onTagClick}
-              bookmarked={bookmarkedIds.has(tool.id)}
-              className="h-80 flex flex-col"
+              isFavorite={isFavorite(tool.id)}
+              className="min-h-[320px] flex flex-col"
             />
           </div>
         ))}

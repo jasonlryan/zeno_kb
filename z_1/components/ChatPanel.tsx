@@ -82,7 +82,7 @@ export function ChatPanel({
     return content
       .replace(
         /\*\*(.*?)\*\*/g,
-        '<strong class="font-semibold text-gray-900 dark:text-white">$1</strong>'
+        '<strong class="font-semibold text-foreground dark:text-white">$1</strong>'
       )
       .replace(
         /\*(.*?)\*/g,
@@ -90,7 +90,7 @@ export function ChatPanel({
       )
       .replace(
         /`(.*?)`/g,
-        '<code class="bg-gray-200 dark:bg-gray-600 text-gray-900 dark:text-gray-100 px-2 py-1 rounded text-sm font-mono">$1</code>'
+        '<code class="bg-gray-200 dark:bg-gray-600 text-foreground dark:text-gray-100 px-2 py-1 rounded text-sm font-mono">$1</code>'
       )
       .replace(
         /\[([^\]]+)\]\(([^)]+)\)/g,
@@ -133,7 +133,7 @@ export function ChatPanel({
       {/* Messages */}
       <div
         ref={messagesContainerRef}
-        className="flex-1 overflow-y-auto p-6 space-y-4 bg-gray-50 dark:bg-gray-900"
+        className="flex-1 overflow-y-auto zeno-content-padding space-y-4 bg-muted dark:bg-gray-900"
         onScroll={handleScroll}
       >
         {messages.map((message) => (
@@ -149,7 +149,7 @@ export function ChatPanel({
                 "max-w-[85%] px-4 py-3 rounded-lg shadow-sm",
                 message.sender === "user"
                   ? "bg-green-600 text-white"
-                  : "bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700"
+                  : "bg-white dark:bg-gray-800 text-foreground dark:text-white border border-gray-200 dark:border-gray-700"
               )}
             >
               <div
@@ -168,7 +168,7 @@ export function ChatPanel({
                   "text-xs mt-2 opacity-70",
                   message.sender === "user"
                     ? "text-green-100"
-                    : "text-gray-500 dark:text-gray-400"
+                    : "text-muted-foreground dark:text-gray-400"
                 )}
               >
                 {message.timestamp instanceof Date
@@ -183,14 +183,8 @@ export function ChatPanel({
             <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 px-4 py-3 rounded-lg shadow-sm">
               <div className="flex space-x-1">
                 <div className="w-2 h-2 bg-green-500 rounded-full animate-bounce"></div>
-                <div
-                  className="w-2 h-2 bg-green-500 rounded-full animate-bounce"
-                  style={{ animationDelay: "0.1s" }}
-                ></div>
-                <div
-                  className="w-2 h-2 bg-green-500 rounded-full animate-bounce"
-                  style={{ animationDelay: "0.2s" }}
-                ></div>
+                <div className="w-2 h-2 bg-green-500 rounded-full animate-bounce [animation-delay:0.1s]"></div>
+                <div className="w-2 h-2 bg-green-500 rounded-full animate-bounce [animation-delay:0.2s]"></div>
               </div>
             </div>
           </div>
@@ -210,7 +204,7 @@ export function ChatPanel({
             onChange={(e) => setInput(e.target.value)}
             placeholder="Ask about AI tools and resources..."
             disabled={isLoading}
-            className="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent disabled:opacity-50 transition-colors"
+            className="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-foreground dark:text-white zeno-placeholder focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent disabled:opacity-50 transition-colors"
             ref={inputRef}
           />
           <button
