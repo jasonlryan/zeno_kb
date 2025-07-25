@@ -46,7 +46,7 @@ const ignorePatterns = opts.ignore
         });
       }
 
-      // 2. Detect arbitrary Tailwind colours (bg-[#...], text-[#...])
+      // 2. Detect arbitrary Tailwind colours (e.g., bg-#hex, text-#hex)
       if (
         /(bg|text|border|ring|outline|shadow)-\[#[0-9a-fA-F]{3,6}\]/.test(
           lineContent

@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "audit:styles": "node tools/styleAuditor.js"
+    "audit:styles": "node tools/styleAuditor.js --ignore \"**/node_modules/**\""
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
