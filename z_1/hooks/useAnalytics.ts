@@ -20,13 +20,17 @@ export function useAnalytics() {
         timestamp: Date.now(),
       };
 
-      await fetch('/api/analytics', {
+      const response = await fetch('/api/analytics', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(analyticsEvent),
       });
+      
+      if (!response.ok) {
+        console.error('Analytics request failed:', response.status);
+      }
     } catch (error) {
       console.error('Failed to track analytics event:', error);
     }
@@ -71,6 +75,11 @@ export function useAnalytics() {
 
 // Simple session ID generator
 function getSessionId(): string {
+  // Check if we're in browser environment
+  if (typeof window === 'undefined' || typeof sessionStorage === 'undefined') {
+    return Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
+  }
+  
   let sessionId = sessionStorage.getItem('analytics-session-id');
   if (!sessionId) {
     sessionId = Math.random().toString(36).substr(2, 9) + Date.now().toString(36);

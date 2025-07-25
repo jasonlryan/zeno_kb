@@ -3,6 +3,7 @@ import React from "react";
 import { Heart, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useComponentContent } from "../hooks/useConfig";
+import { useAnalytics } from "../hooks/useAnalytics";
 import type { Tool } from "../types";
 
 interface ToolCardProps {
@@ -23,6 +24,7 @@ export function ToolCard({
   className,
 }: ToolCardProps) {
   const content = useComponentContent("toolCard") as any;
+  const { trackToolView, trackToolFavorite } = useAnalytics();
 
   // Provide fallback content if content is null or loading
   const safeContent = content || {
@@ -62,7 +64,10 @@ export function ToolCard({
         tool.featured && "ring-2 ring-primary/30 border-primary/30",
         className
       )}
-      onClick={() => onSelect?.(tool.id)}
+      onClick={() => {
+        trackToolView(tool.id, tool.title);
+        onSelect?.(tool.id);
+      }}
     >
       <div className="flex flex-col h-full">
         {/* Header with type and favorite */}
@@ -78,6 +83,7 @@ export function ToolCard({
           <button
             onClick={(e) => {
               e.stopPropagation();
+              trackToolFavorite(tool.id, tool.title);
               onFavorite?.(tool.id);
             }}
             className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex-shrink-0"

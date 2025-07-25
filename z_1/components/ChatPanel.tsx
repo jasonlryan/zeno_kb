@@ -4,6 +4,7 @@ import type React from "react";
 import { useState, useRef, useEffect, useCallback } from "react";
 import { Send, MessageCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useAnalytics } from "../hooks/useAnalytics";
 import type { Message } from "../types";
 
 interface ChatPanelProps {
@@ -233,8 +234,12 @@ export function ChatPanelDemo() {
     },
   ]);
   const [isLoading, setIsLoading] = useState(false);
+  const { trackChatQuery, trackChatResponse } = useAnalytics();
 
   const handleSend = async (message: string) => {
+    // Track the user query
+    trackChatQuery(message);
+
     const userMessage: Message = {
       id: Date.now().toString(),
       content: message,
@@ -262,10 +267,12 @@ export function ChatPanelDemo() {
 
       // Use streaming response with empty tools array for now
       // The AI service will load tools from the knowledge base
+      let fullResponse = "";
       await aiService.generateStreamingResponse(
         message,
         [], // Empty array since AI service loads from knowledge base
         (chunk: string) => {
+          fullResponse += chunk;
           setMessages((prev) =>
             prev.map((msg) =>
               msg.id === aiMessageId
@@ -275,6 +282,9 @@ export function ChatPanelDemo() {
           );
         }
       );
+
+      // Track the complete AI response
+      trackChatResponse(fullResponse);
     } catch (error) {
       console.error("Error getting AI response:", error);
 
