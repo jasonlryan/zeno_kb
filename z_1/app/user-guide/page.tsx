@@ -2,18 +2,18 @@ import React from "react";
 
 export default function UserGuidePage() {
   return (
-    <div className="zeno-content-padding max-w-4xl mx-auto py-10 px-8">
-      <h1 className="zeno-heading text-3xl font-bold mb-4 text-green-700">
+    <div className="zeno-page space-y-8">
+      <h1 className="zeno-heading zeno-heading-xl zeno-text-green">
         Zeno AI Knowledge Base – Beta User Guide
       </h1>
-      <p className="zeno-body mb-6">
+      <p className="zeno-body">
         Welcome to the Zeno AI Knowledge Base beta!
         <br />
         Thank you for helping us test and improve our platform.
       </p>
 
-      <section className="mb-6">
-        <h2 className="zeno-heading text-xl font-semibold mb-2">
+      <section>
+        <h2 className="zeno-heading zeno-heading-lg">
           What is the Zeno AI Knowledge Base?
         </h2>
         <p className="zeno-body">
@@ -24,9 +24,9 @@ export default function UserGuidePage() {
         </p>
       </section>
 
-      <section className="mb-6">
-        <h2 className="zeno-heading text-xl font-semibold mb-2">How to Use</h2>
-        <ol className="zeno-body list-decimal list-inside space-y-1">
+      <section>
+        <h2 className="zeno-heading zeno-heading-lg">How to Use</h2>
+        <ol className="zeno-body zeno-list-decimal space-y-1">
           <li>
             <b>Chat with the AI:</b> On the home page, simply type your question
             for the AI (for example, “What’s a good tool for audience insights?”
@@ -47,11 +47,11 @@ export default function UserGuidePage() {
         </ol>
       </section>
 
-      <section className="mb-6">
-        <h2 className="zeno-heading text-xl font-semibold mb-2">
+      <section>
+        <h2 className="zeno-heading zeno-heading-lg">
           What Can You Find Here?
         </h2>
-        <ul className="zeno-body list-disc list-inside space-y-1">
+        <ul className="zeno-body zeno-list-disc space-y-1">
           <li>
             <b>AI Tools:</b> Custom GPTs for audience insights, marketing
             trends, research, and more.
@@ -71,9 +71,9 @@ export default function UserGuidePage() {
         </ul>
       </section>
 
-      <section className="mb-6">
-        <h2 className="zeno-heading text-xl font-semibold mb-2">What to Try</h2>
-        <ul className="zeno-body list-disc list-inside space-y-1">
+      <section>
+        <h2 className="zeno-heading zeno-heading-lg">What to Try</h2>
+        <ul className="zeno-body zeno-list-disc space-y-1">
           <li>
             Ask the AI Assistant about a specific audience (e.g., “Tell me about
             Gen Z insights”).
@@ -92,7 +92,7 @@ export default function UserGuidePage() {
       </section>
 
       <section>
-        <h2 className="zeno-heading text-xl font-semibold mb-2">Need Help?</h2>
+        <h2 className="zeno-heading zeno-heading-lg">Need Help?</h2>
         <p className="zeno-body">
           If you have questions or feedback, use the feedback button or contact
           our support team.
@@ -102,11 +102,9 @@ export default function UserGuidePage() {
         </p>
       </section>
 
-      <section className="mt-8">
-        <h2 className="zeno-heading text-xl font-semibold mb-2">
-          Share Your Experience
-        </h2>
-        <p className="zeno-body text-green-700">
+      <section>
+        <h2 className="zeno-heading zeno-heading-lg">Share Your Experience</h2>
+        <p className="zeno-body zeno-text-green">
           We encourage you to keep a log of your experience as you use the Test
           Guide. Your feedback is critical to help us improve—please share your
           notes, suggestions, and any issues you encounter with the team!

@@ -536,4 +536,34 @@ body {
   .zeno-progress-bar {
     width: var(--progress-width, 0%);
   }
+
+  /* ============================================
+   * PAGE & TYPOGRAPHY UTILITIES (App additions)
+   * ============================================ */
+  @layer components {
+    /* Page wrapper with standard max-width and padding */
+    .zeno-page {
+      max-width: 60rem; /* ~960px */
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: var(--zeno-space-lg);
+      padding-right: var(--zeno-space-lg);
+      padding-top: var(--zeno-space-xl);
+      padding-bottom: var(--zeno-space-xl);
+    }
+
+    /* Responsive heading scales */
+    .zeno-heading-xl {
+      @apply text-3xl font-bold;
+    }
+
+    .zeno-heading-lg {
+      @apply text-xl font-semibold;
+    }
+
+    /* Brand green text */
+    .zeno-text-green {
+      color: var(--zeno-green);
+    }
+  }
 }
