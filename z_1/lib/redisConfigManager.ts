@@ -1,3 +1,11 @@
+/**
+ * ZENO KB - Redis Config Manager
+ *
+ * Provides functions to get/set configuration and data in Redis (Upstash).
+ * Used by configManager, assetManager, API routes, and scripts for all Redis-based config and data access.
+ *
+ * Core to configuration and data storage in Zeno Knowledge Base.
+ */
 import { Redis } from '@upstash/redis';
 
 const redis = Redis.fromEnv();

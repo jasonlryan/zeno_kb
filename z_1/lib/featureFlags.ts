@@ -1,6 +1,10 @@
 /**
- * Feature flags configuration
- * Controls which features are enabled/disabled
+ * ZENO KB - Feature Flags
+ *
+ * Provides feature flag toggles for enabling/disabling app features.
+ * Used in app/page and other components to conditionally enable features.
+ *
+ * Useful for staged rollouts and experimental features in Zeno Knowledge Base.
  */
 
 export const featureFlags = {

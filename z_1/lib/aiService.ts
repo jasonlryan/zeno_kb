@@ -1,3 +1,11 @@
+/**
+ * ZENO KB - AI Service
+ *
+ * Provides AI/LLM response generation for chat and other features using OpenAI APIs.
+ * Used by the useAIChat hook and other app logic to generate responses, summaries, and completions.
+ *
+ * Core to all AI-driven features in Zeno Knowledge Base.
+ */
 import OpenAI from 'openai';
 import type { Tool } from "../types";
 import type { SearchResult } from './supabaseClient';

@@ -1,3 +1,11 @@
+/**
+ * ZENO KB - Asset Manager
+ *
+ * Handles CRUD operations for tool assets (add, remove, update tools).
+ * Used by API routes for tools and by the Curator Dashboard for content management.
+ *
+ * Core to tool management in Zeno Knowledge Base.
+ */
 export interface SchemaField {
   name: string;
   type: string;

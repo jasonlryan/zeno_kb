@@ -1,3 +1,11 @@
+/**
+ * ZENO KB - Date Utils
+ *
+ * Utility functions for date formatting and manipulation.
+ * Used in CuratorDashboard and other components for displaying relative and formatted dates.
+ *
+ * Essential for user-friendly date/time display in Zeno Knowledge Base.
+ */
 import type { Tool } from "../types";
 
 /**

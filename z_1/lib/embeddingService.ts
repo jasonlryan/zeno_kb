@@ -1,3 +1,12 @@
+/**
+ * ZENO KB - Embedding Service
+ *
+ * Handles vector embedding storage, retrieval, and hybrid search for tools and queries.
+ * Integrates with OpenAI for embedding generation and Supabase (pgvector) for storage and search.
+ * Used by API routes (chat, generate-embeddings) and embeddingSyncService to power semantic search.
+ *
+ * Core to all vector-based search and embedding sync in Zeno Knowledge Base.
+ */
 import OpenAI from 'openai'
 import { supabaseAdmin, type ToolEmbedding, type SearchResult } from './supabaseClient'
 import type { Tool } from '../types'

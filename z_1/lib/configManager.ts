@@ -1,3 +1,11 @@
+/**
+ * ZENO KB - Config Manager
+ *
+ * Centralized configuration management for the app, wrapping Redis config manager and providing higher-level config logic.
+ * Used throughout the app for accessing and updating configuration data.
+ *
+ * Core to configuration logic in Zeno Knowledge Base.
+ */
 import type { ZenoAsset, ZenoConfig } from '../types/config';
 
 import {
@@ -6,11 +14,6 @@ import {
   getDataConfig as fetchDataConfig,
 } from './redisConfigManager';
 
-/**
- * ConfigManager - Centralized configuration management
- * Provides type-safe access to all application configuration
- * All config is now loaded from Redis (no static file imports)
- */
 class ConfigManager {
   private appConfig: any;
   private contentConfig: any;

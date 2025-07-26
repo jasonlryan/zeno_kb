@@ -1,3 +1,11 @@
+/**
+ * ZENO KB - Config Context
+ *
+ * React context and provider for application configuration (app, content, data, taxonomy).
+ * Used by the useConfig hook and in app/layout to provide config state throughout the app.
+ *
+ * Essential for app-wide configuration management in Zeno Knowledge Base.
+ */
 "use client";
 
 import React, {

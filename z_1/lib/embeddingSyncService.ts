@@ -1,3 +1,12 @@
+/**
+ * ZENO KB - Embedding Sync Service
+ *
+ * Orchestrates syncing of tool data with the vector store (Supabase pgvector).
+ * Ensures that whenever a tool is created, updated, or deleted, the vector DB is kept in sync.
+ * Used by API routes for tools and embedding sync.
+ *
+ * Essential for maintaining up-to-date semantic search in Zeno Knowledge Base.
+ */
 import { embeddingService } from './embeddingService';
 import { supabaseAdmin } from './supabaseClient';
 

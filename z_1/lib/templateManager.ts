@@ -1,3 +1,11 @@
+/**
+ * ZENO KB - Template Manager
+ *
+ * Manages templates for learning guides and tools, including template lookup and type checks.
+ * Used in LearningGuideCard, ToolDetailModal, and other components for template-driven UI.
+ *
+ * Core to template-based rendering in Zeno Knowledge Base.
+ */
 import React from 'react';
 import type { Tool } from '../types';
 

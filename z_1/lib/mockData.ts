@@ -1,3 +1,11 @@
+/**
+ * ZENO KB - Mock Data
+ *
+ * Provides mock data and helper functions for development, testing, and category generation.
+ * Used in configManager and app/page for generating categories and fallback data.
+ *
+ * Useful for development, testing, and as a fallback in Zeno Knowledge Base.
+ */
 import type { Tool, Category } from "../types";
 
 // Function to generate categories from real data
@@ -47,7 +55,7 @@ export function generateCategoriesFromData(tools: Tool[]): Category[] {
   Object.entries(functionGroups).forEach(([groupKey, groupData]) => {
     // Count tools that belong to this function group
     const toolsInGroup = tools.filter(tool => 
-      groupData.functions.includes(tool.function)
+      tool.function && groupData.functions.includes(tool.function)
     );
 
     // Only create category if there are tools in this group

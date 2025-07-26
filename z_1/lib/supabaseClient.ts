@@ -1,3 +1,11 @@
+/**
+ * ZENO KB - Supabase Client
+ *
+ * Exports initialized Supabase clients (admin and public) for database access.
+ * Used throughout the app and backend for all Supabase/Postgres operations, including vector storage.
+ *
+ * Core to all database access in Zeno Knowledge Base.
+ */
 import { createClient } from '@supabase/supabase-js'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL

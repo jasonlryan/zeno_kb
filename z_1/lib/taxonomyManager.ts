@@ -1,3 +1,11 @@
+/**
+ * ZENO KB - Taxonomy Manager
+ *
+ * Manages taxonomy (categories, tags, filters) for tools and content.
+ * Used by the useTaxonomy hook and throughout the app for filtering, grouping, and tag logic.
+ *
+ * Core to taxonomy-driven UI and filtering in Zeno Knowledge Base.
+ */
 import { Tool } from '@/types';
 
 export interface FilterState {
