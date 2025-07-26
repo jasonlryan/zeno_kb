@@ -14,6 +14,7 @@ import {
   Search,
   ChevronUp,
   ChevronDown,
+  Download,
 } from "lucide-react";
 import { ToolFormModal } from "./ToolFormModal";
 import { formatRelativeTime } from "@/lib/dateUtils";
@@ -44,6 +45,7 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isExporting, setIsExporting] = useState(false);
 
   // Sorting state
   const [sortField, setSortField] = useState<SortField>("lastUpdated");
@@ -182,6 +184,35 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
     setSearchQuery("");
   };
 
+  const downloadToolData = async (format: "csv" | "json" = "csv") => {
+    try {
+      setIsExporting(true);
+      setError(null);
+
+      const response = await fetch(`/api/export/tools?format=${format}`);
+      if (!response.ok) {
+        throw new Error(`Export failed: ${response.statusText}`);
+      }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `zeno-tools-${
+        new Date().toISOString().split("T")[0]
+      }.${format}`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Export failed");
+      console.error("Export failed:", err);
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
   // Sortable column header component
   const SortableHeader = ({
     field,
@@ -234,42 +265,65 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
     >
       {/* Header */}
       <div className="zeno-content-padding border-b border-gray-200 dark:border-gray-700">
-        <h2 className="zeno-heading-xl text-foreground dark:text-white">
-          Curator Dashboard
-        </h2>
-        <p className="zeno-text-sm text-muted-foreground dark:text-gray-400 mt-1">
-          Manage your content and resources
-        </p>
+        <div className="flex justify-between items-start">
+          <div>
+            <h2 className="zeno-heading-xl text-foreground dark:text-white">
+              Curator Dashboard
+            </h2>
+            <p className="zeno-text-sm text-muted-foreground dark:text-gray-400 mt-1">
+              Manage your content and resources
+            </p>
+          </div>
+          <button
+            onClick={() => downloadToolData("csv")}
+            disabled={isExporting}
+            className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
+            title="Download CSV"
+          >
+            <Download size={20} />
+          </button>
+        </div>
       </div>
 
       {/* Tabs */}
       <div className="border-b border-gray-200 dark:border-gray-700">
-        <nav className="flex space-x-8 px-6">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={cn(
-                "py-4 px-1 border-b-2 font-medium text-sm transition-colors",
-                activeTab === tab.id
-                  ? "border-blue-500 text-blue-600 dark:text-blue-400"
-                  : "border-transparent text-muted-foreground hover:text-foreground dark:text-gray-400 dark:hover:text-gray-300"
-              )}
-            >
-              {tab.label}
-              <span className="ml-2 bg-gray-100 dark:bg-gray-700 text-muted-foreground dark:text-gray-400 py-0.5 px-2 rounded-full text-xs">
-                {tab.count}
-              </span>
-            </button>
-          ))}
-        </nav>
+        <div className="flex justify-between items-center px-6">
+          <nav className="flex space-x-8">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={cn(
+                  "py-4 px-1 border-b-2 font-medium text-sm transition-colors",
+                  activeTab === tab.id
+                    ? "border-blue-500 text-blue-600 dark:text-blue-400"
+                    : "border-transparent text-muted-foreground hover:text-foreground dark:text-gray-400 dark:hover:text-gray-300"
+                )}
+              >
+                {tab.label}
+                <span className="ml-2 bg-gray-100 dark:bg-gray-700 text-muted-foreground dark:text-gray-400 py-0.5 px-2 rounded-full text-xs">
+                  {tab.count}
+                </span>
+              </button>
+            ))}
+          </nav>
+          <button
+            className="zeno-button-blue"
+            onClick={() => {
+              setEditingTool(undefined);
+              setIsModalOpen(true);
+            }}
+          >
+            Add Asset
+          </button>
+        </div>
       </div>
 
       {/* Content */}
       <div className="zeno-content-padding">
         {activeTab === "assets" && (
           <div className="space-y-3">
-            {/* Search and Add Asset Row */}
+            {/* Search Row */}
             <div className="flex justify-between items-center gap-4">
               <div className="relative flex-1 max-w-md">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -303,15 +357,6 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
                   </button>
                 )}
               </div>
-              <button
-                className="zeno-button-blue"
-                onClick={() => {
-                  setEditingTool(undefined);
-                  setIsModalOpen(true);
-                }}
-              >
-                Add Asset
-              </button>
             </div>
 
             {/* Error Display */}

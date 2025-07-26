@@ -120,29 +120,20 @@ export function AnalyticsDashboard({ className }: AnalyticsDashboardProps) {
   return (
     <div className={cn("zeno-page space-y-8", className)}>
       {/* Header */}
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-start">
         <div>
           <h1 className="zeno-heading zeno-heading-xl">Analytics Dashboard</h1>
           <p className="zeno-body text-muted-foreground">
             Track user engagement and tool performance
           </p>
         </div>
-        <div className="flex gap-2">
-          <button
-            onClick={() => downloadReport("csv")}
-            className="zeno-button-blue flex items-center gap-2"
-          >
-            <Download size={16} />
-            Export CSV
-          </button>
-          <button
-            onClick={() => downloadReport("json")}
-            className="zeno-button-secondary flex items-center gap-2"
-          >
-            <Download size={16} />
-            Export JSON
-          </button>
-        </div>
+        <button
+          onClick={() => downloadReport("csv")}
+          className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
+          title="Download CSV"
+        >
+          <Download size={20} />
+        </button>
       </div>
 
       {/* Stats Cards */}

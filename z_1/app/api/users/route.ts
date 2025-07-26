@@ -51,6 +51,72 @@ export async function GET() {
   }
 }
 
+export async function POST(request: Request) {
+  try {
+    const { email, role } = await request.json();
+
+    if (!email || !role) {
+      return NextResponse.json({ error: 'Email and role are required' }, { status: 400 });
+    }
+
+    // Check if user already exists in the users table
+    const { data: existingUser, error: selectError } = await supabase
+      .from('users')
+      .select('id, email')
+      .eq('email', email)
+      .single();
+
+    if (selectError && selectError.code !== 'PGRST116') { // PGRST116 is "not found"
+      console.error('Error checking existing user:', selectError);
+      return NextResponse.json({ error: selectError.message }, { status: 500 });
+    }
+
+    if (existingUser) {
+      return NextResponse.json({ error: 'User already exists' }, { status: 400 });
+    }
+
+    // Create user in Supabase Auth
+    const { data: authData, error: authError } = await supabase.auth.admin.createUser({
+      email,
+      email_confirm: true, // Auto-confirm email
+      user_metadata: { role }
+    });
+
+    if (authError) {
+      console.error('Auth error:', authError);
+      return NextResponse.json({ error: authError.message }, { status: 500 });
+    }
+
+    // Add user to the users table with role
+    const { error: tableError } = await supabase
+      .from('users')
+      .insert({ 
+        id: authData.user.id,
+        email, 
+        role 
+      });
+
+    if (tableError) {
+      console.error('Database error:', tableError);
+      // Try to clean up the auth user if table insert fails
+      await supabase.auth.admin.deleteUser(authData.user.id);
+      return NextResponse.json({ error: tableError.message }, { status: 500 });
+    }
+
+    return NextResponse.json({ 
+      success: true, 
+      user: {
+        id: authData.user.id,
+        email: authData.user.email,
+        role
+      }
+    });
+  } catch (error: any) {
+    console.error('Create user error:', error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
+
 export async function PUT(request: Request) {
   try {
     const { userId, email, role } = await request.json();

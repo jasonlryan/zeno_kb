@@ -599,16 +599,7 @@ export default function HomePage() {
 
       case "users":
         if (role === "admin") {
-          return (
-            <div className="space-y-8">
-              <section>
-                <h2 className="zeno-heading text-card-foreground mb-6">
-                  User management
-                </h2>
-                <UserList role={role} />
-              </section>
-            </div>
-          );
+          return <UserList role={role} />;
         } else {
           return (
             <div className="text-center py-16">

@@ -7,7 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "audit:styles": "node tools/styleAuditor.js --ignore \"**/node_modules/**\""
+    "audit:styles": "node scripts/utilities/styleAuditor.js --ignore \"**/node_modules/**\"",
+    "export:data": "node scripts/utilities/redisDataExporter.js",
+    "export:analytics": "node scripts/utilities/analyticsDataExporter.js",
+    "export:complete": "node scripts/utilities/completeDataExporter.js",
+    "export:backup": "node scripts/utilities/completeDataExporter.js --output=./backups"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
@@ -44,6 +48,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "1.0.4",
+    "csv-stringify": "^6.6.0",
     "date-fns": "^3.0.0",
     "dotenv": "^17.2.0",
     "embla-carousel-react": "8.5.1",

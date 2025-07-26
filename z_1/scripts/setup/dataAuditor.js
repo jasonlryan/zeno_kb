@@ -58,7 +58,7 @@ class DataAuditor {
     };
 
     // Load and parse schema.json once for the instance
-    const schemaPath = path.resolve(__dirname, "../data/schema.json");
+    const schemaPath = path.resolve(__dirname, "../../data/schema.json");
     this.schema = JSON.parse(fs.readFileSync(schemaPath, "utf8"));
   }
 
@@ -71,7 +71,7 @@ class DataAuditor {
       const data = this.loadData(filePath);
 
       // Load and parse schema.json
-      // const schemaPath = path.resolve(__dirname, "../data/schema.json");
+      // const schemaPath = path.resolve(__dirname, "../../data/schema.json");
       // const schema = JSON.parse(fs.readFileSync(schemaPath, "utf8"));
 
       // Helper: Get schema field by name
@@ -495,7 +495,7 @@ class DataAuditor {
       warnings: this.warnings,
     };
 
-    const reportPath = path.join(__dirname, "audit-report.json");
+    const reportPath = path.join(__dirname, "../reports/audit-report.json");
     fs.writeFileSync(reportPath, JSON.stringify(report, null, 2));
     console.log(`\n📄 Detailed report saved to: ${reportPath}`);
   }

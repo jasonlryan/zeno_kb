@@ -1,7 +1,21 @@
 #!/usr/bin/env node
 /**
- * Zeno KB — Styles Audit Tool
- * Scans project files for style violations against brand rules.
+ * ZENO KB - Style Compliance Auditor
+ *
+ * PURPOSE: Scans project files for style violations against Zeno brand rules.
+ *          Ensures consistent use of zeno- prefixed classes and prevents
+ *          arbitrary colors and inline styles.
+ *
+ * STATUS: PRODUCTION UTILITY - Used for maintaining brand consistency
+ *
+ * USAGE: pnpm audit:styles
+ *        node scripts/utilities/styleAuditor.js --ignore "**/ node_modules;
+/**"
+ *
+ * INPUT: Project files (.tsx, .ts, .jsx, .js, .css, .scss)
+ * OUTPUT: Style violation report and exit code
+ *
+ * DEPENDENCIES: commander, fast-glob, chalk
  */
 const { program } = require("commander");
 const fg = require("fast-glob");

@@ -1,5 +1,22 @@
+/**
+ * ZENO KB - Test User Creator
+ *
+ * PURPOSE: Creates test users in Supabase from a CSV file.
+ *          Used for development and testing purposes to populate
+ *          the authentication system with test accounts.
+ *
+ * STATUS: DEVELOPMENT UTILITY - Used for testing and development setup
+ *
+ * USAGE: node scripts/setup/create_test_users.js
+ *
+ * INPUT: CSV file with email addresses (users/users.csv)
+ * OUTPUT: Test users created in Supabase Auth
+ *
+ * DEPENDENCIES: Supabase, csv-parse, .env.local with Supabase credentials
+ */
+
 const path = require("path");
-require("dotenv").config({ path: path.join(__dirname, ".env.local") });
+require("dotenv").config({ path: path.join(__dirname, "../../.env.local") });
 const { createClient } = require("@supabase/supabase-js");
 const fs = require("fs");
 const { parse } = require("csv-parse/sync");
@@ -30,7 +47,7 @@ async function createUser(email) {
 }
 
 async function main() {
-  const csvPath = path.join(__dirname, "users/users.csv");
+  const csvPath = path.join(__dirname, "../../users/users.csv");
   if (!fs.existsSync(csvPath)) {
     console.error("CSV file not found:", csvPath);
     process.exit(1);

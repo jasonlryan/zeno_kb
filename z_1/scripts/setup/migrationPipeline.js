@@ -75,7 +75,7 @@
 const fs = require("fs");
 const path = require("path");
 const DataAuditor = require("./dataAuditor");
-const URLHealthChecker = require("./urlHealthChecker");
+const URLHealthChecker = require("../infra/urlHealthChecker");
 const DataConverter = require("./dataConverter");
 
 class MigrationPipeline {
@@ -83,12 +83,12 @@ class MigrationPipeline {
     // Configuration and options for the migration process
     this.options = {
       dryRun: options.dryRun || false,
-      backupDir: options.backupDir || path.join(__dirname, "backups"),
+      backupDir: options.backupDir || path.join(__dirname, "../backups"),
       targetConfig:
-        options.targetConfig || path.join(__dirname, "../config/data.json"),
+        options.targetConfig || path.join(__dirname, "../../config/data.json"),
       publicConfig:
         options.publicConfig ||
-        path.join(__dirname, "../public/config/data.json"),
+        path.join(__dirname, "../../public/config/data.json"),
       rollbackOnly: options.rollbackOnly || false,
       auditOnly: options.auditOnly || false,
       verbose: options.verbose || false,
@@ -419,7 +419,7 @@ class MigrationPipeline {
     }
 
     // Use required fields from schema
-    const schemaPath = path.resolve(__dirname, "../data/schema.json");
+    const schemaPath = path.resolve(__dirname, "../../data/schema.json");
     const schema = JSON.parse(fs.readFileSync(schemaPath, "utf8"));
     const requiredFields = schema.fields
       .filter((f) => f.required)
@@ -562,8 +562,8 @@ class MigrationPipeline {
 
     const filesToClean = [
       this.tempDataPath,
-      path.join(__dirname, "audit-report.json"),
-      path.join(__dirname, "url-health-report.json"),
+      path.join(__dirname, "../reports/audit-report.json"),
+      path.join(__dirname, "../reports/url-health-report.json"),
     ];
 
     const cleanedFiles = [];
@@ -709,7 +709,7 @@ class MigrationPipeline {
     }
 
     // Save detailed report
-    const reportPath = path.join(__dirname, "migration-report.json");
+    const reportPath = path.join(__dirname, "../reports/migration-report.json");
     const report = {
       timestamp: endTime.toISOString(),
       duration,

@@ -20,6 +20,7 @@ export { CommentModal } from "./CommentModal"
 export { UserList } from "./UserList"
 export { UserRoleModal } from "./UserRoleModal"
 export { UserDeleteModal } from "./UserDeleteModal"
+export { AddUserModal } from "./AddUserModal"
 
 // Favorites Components
 export { FavoriteModal } from "./FavoriteModal"

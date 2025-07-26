@@ -59,7 +59,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const schemaPath = path.resolve(__dirname, "../data/schema.json");
+const schemaPath = path.resolve(__dirname, "../../data/schema.json");
 const schema = JSON.parse(fs.readFileSync(schemaPath, "utf8"));
 
 // Use csv-parse for robust CSV parsing

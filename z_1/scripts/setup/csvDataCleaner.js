@@ -28,7 +28,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const schemaPath = path.resolve(__dirname, "../data/schema.json");
+const schemaPath = path.resolve(__dirname, "../../data/schema.json");
 const schema = JSON.parse(fs.readFileSync(schemaPath, "utf8"));
 
 class CSVDataCleaner {
@@ -357,7 +357,7 @@ class CSVDataCleaner {
 // Main execution
 async function main() {
   const args = process.argv.slice(2);
-  const inputPath = args[0] || "../data/zeno_kb_assets.csv";
+  const inputPath = args[0] || "../../data/zeno_kb_assets.csv";
   const outputArg = args.find((arg) => arg.startsWith("--output="));
   const outputPath = outputArg
     ? outputArg.split("=")[1]

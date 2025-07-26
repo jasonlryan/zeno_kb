@@ -51,7 +51,7 @@ const path = require("path");
 const https = require("https");
 const http = require("http");
 
-const schemaPath = path.resolve(__dirname, "../data/schema.json");
+const schemaPath = path.resolve(__dirname, "../../data/schema.json");
 const schema = JSON.parse(fs.readFileSync(schemaPath, "utf8"));
 
 class URLHealthChecker {
@@ -549,7 +549,10 @@ class URLHealthChecker {
       },
     };
 
-    const reportPath = path.join(__dirname, "url-health-report.json");
+    const reportPath = path.join(
+      __dirname,
+      "../reports/url-health-report.json"
+    );
     fs.writeFileSync(reportPath, JSON.stringify(report, null, 2));
     console.log(`\n📄 Detailed report saved to: ${reportPath}`);
   }

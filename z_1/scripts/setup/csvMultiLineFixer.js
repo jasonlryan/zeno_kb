@@ -1,6 +1,19 @@
-// csvMultiLineFixer.js
-// Usage: node csvMultiLineFixer.js input.csv output.csv
-// Fixes multi-line fields in CSVs by merging rows until the correct number of columns is reached.
+/**
+ * ZENO KB - CSV Multiline Field Fixer
+ *
+ * PURPOSE: Fixes multi-line fields in CSV files by merging rows until the correct
+ *          number of columns is reached. Handles cases where CSV fields contain
+ *          newlines that break the row structure.
+ *
+ * STATUS: DEVELOPMENT UTILITY - Used for data preparation during migration
+ *
+ * USAGE: node scripts/data/csvMultiLineFixer.js input.csv output.csv
+ *
+ * INPUT: CSV file with broken row structure due to multiline fields
+ * OUTPUT: Fixed CSV file with proper row structure
+ *
+ * DEPENDENCIES: Node.js fs module
+ */
 
 const fs = require("fs");
 const path = require("path");

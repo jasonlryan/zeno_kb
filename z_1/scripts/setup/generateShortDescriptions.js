@@ -1,6 +1,22 @@
+/**
+ * ZENO KB - Factual Description Generator
+ *
+ * PURPOSE: Generates factual, descriptive short descriptions for tools using OpenAI.
+ *          Creates simple, clear descriptions that explain what the tool does.
+ *          Examples: "Analyzes Gen Z consumer behavior", "Provides CEO decision-making insights"
+ *
+ * STATUS: PRODUCTION READY - Used to generate tool card descriptions
+ *
+ * USAGE: node scripts/content/generateBetterDescriptions.js
+ *
+ * OUTPUT: Updates Redis with factual shortDescription field for all tools
+ *
+ * DEPENDENCIES: OpenAI API, Redis, .env.local with API keys
+ */
+
 const { Redis } = require("@upstash/redis");
 const OpenAI = require("openai");
-require("dotenv").config({ path: "../.env.local" });
+require("dotenv").config({ path: "../../.env.local" });
 
 // Initialize Redis and OpenAI clients
 const redis = new Redis({
@@ -12,11 +28,11 @@ const openai = new OpenAI({
   apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
 });
 
-async function generateUserFocusedDescription(title, description) {
+async function generateBetterDescription(title, description) {
   if (!description || description.trim().length === 0) {
-    return `Use when you need ${title
+    return `Provides insights and analysis for ${title
       .replace("Custom GPT: ", "")
-      .toLowerCase()} insights.`;
+      .toLowerCase()}.`;
   }
 
   try {
@@ -25,27 +41,17 @@ async function generateUserFocusedDescription(title, description) {
       messages: [
         {
           role: "system",
-          content: `You are writing user-focused tool descriptions that explain WHEN and WHY someone would use each tool. Write a brief description (max 8 words) that starts with one of these patterns:
-          
-- "Use when..." 
-- "Useful for..."
-- "Designed to..."
-- "Perfect for..."
-- "Ideal when..."
-- "Best for..."
-
-Focus on the USER'S NEED, not what the tool analyzes. Think about the business situation or problem the user is trying to solve.
+          content: `You are writing factual, descriptive tool descriptions. Write a simple, clear description (max 10 words) that explains what the tool does. Be specific and factual. Avoid marketing language like "unlock", "transform", "uncover", "revolutionary", "powerful", "enhance", "boost", "elevate", "drive". Just describe what it does in plain language.
 
 Examples:
-- "Use when targeting Gen Z consumers"
-- "Useful for executive decision-making"
-- "Perfect for condensing long reports"
-- "Ideal when planning TikTok campaigns"
-- "Best for cybersecurity strategy planning"`,
+- "Analyzes Gen Z consumer behavior and purchasing patterns"
+- "Provides CEO decision-making insights and leadership trends"  
+- "Creates concise summaries from lengthy documents"
+- "Tracks TikTok trends and viral content patterns"`,
         },
         {
           role: "user",
-          content: `Title: ${title}\n\nFull Description: ${description}\n\nWrite a user-focused description (max 8 words) that explains when/why to use this:`,
+          content: `Title: ${title}\n\nFull Description: ${description}\n\nWrite a factual description (max 10 words) of what this tool does:`,
         },
       ],
       max_tokens: 40,
@@ -55,18 +61,18 @@ Examples:
     return response.choices[0].message.content.trim();
   } catch (error) {
     console.error(`Error generating description for ${title}:`, error.message);
-    // Fallback: create a user-focused description from the title
+    // Fallback: create a simple description from the title
     const cleanTitle = title
       .replace("Custom GPT: ", "")
       .replace("GPT", "")
       .trim();
-    return `Use when you need ${cleanTitle.toLowerCase()} insights.`;
+    return `Provides ${cleanTitle.toLowerCase()} insights and analysis.`;
   }
 }
 
-async function updateToUserFocusedDescriptions() {
+async function updateDescriptions() {
   try {
-    console.log("🎯 Generating user-focused descriptions...");
+    console.log("🔍 Fetching tools from Redis...");
 
     // Get all tools from Redis
     const dataConfig = await redis.get("data-config");
@@ -96,16 +102,16 @@ async function updateToUserFocusedDescriptions() {
         const globalIndex = i + index;
         console.log(`  ${globalIndex + 1}/${tools.length}: ${tool.title}`);
 
-        const userFocusedDescription = await generateUserFocusedDescription(
+        const betterDescription = await generateBetterDescription(
           tool.title,
           tool.description
         );
 
         // Update shortDescription
-        tools[globalIndex].shortDescription = userFocusedDescription;
+        tools[globalIndex].shortDescription = betterDescription;
 
-        console.log(`    ✅ "${userFocusedDescription}"`);
-        return userFocusedDescription;
+        console.log(`    ✅ "${betterDescription}"`);
+        return betterDescription;
       });
 
       await Promise.all(promises);
@@ -119,15 +125,17 @@ async function updateToUserFocusedDescriptions() {
     }
 
     // Update Redis with the modified data
-    console.log("\n💾 Updating Redis with user-focused descriptions...");
+    console.log("\n💾 Updating Redis with better descriptions...");
     const updatedConfig = { ...dataConfig, tools };
     await redis.set("data-config", updatedConfig);
 
     console.log(`\n🎉 Successfully updated ${processed} tools!`);
-    console.log("✅ All tools now have user-focused shortDescription field");
+    console.log(
+      "✅ All tools now have better, more descriptive shortDescription field"
+    );
 
     // Show some examples
-    console.log("\n📝 New user-focused short descriptions:");
+    console.log("\n📝 New descriptive short descriptions:");
     tools.slice(0, 8).forEach((tool, i) => {
       console.log(`  ${i + 1}. ${tool.title}`);
       console.log(`     New: "${tool.shortDescription}"`);
@@ -140,7 +148,7 @@ async function updateToUserFocusedDescriptions() {
 
 // Run the script
 if (require.main === module) {
-  updateToUserFocusedDescriptions()
+  updateDescriptions()
     .then(() => {
       console.log("🏁 Script completed successfully!");
       process.exit(0);
@@ -151,7 +159,4 @@ if (require.main === module) {
     });
 }
 
-module.exports = {
-  generateUserFocusedDescription,
-  updateToUserFocusedDescriptions,
-};
+module.exports = { generateBetterDescription, updateDescriptions };

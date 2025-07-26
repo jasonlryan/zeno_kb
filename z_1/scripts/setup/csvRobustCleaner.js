@@ -1,6 +1,18 @@
-// csvRobustCleaner.js
-// Usage: node csvRobustCleaner.js input.csv output.csv
-// Cleans CSV by handling quoted multi-line fields and removing rows with missing required fields.
+/**
+ * ZENO KB - CSV Robust Cleaner
+ *
+ * PURPOSE: Cleans CSV files by handling quoted multi-line fields and removing
+ *          rows with missing required fields. Uses csv-parse for robust parsing.
+ *
+ * STATUS: DEVELOPMENT UTILITY - Used for data preparation during migration
+ *
+ * USAGE: node scripts/data/csvRobustCleaner.js input.csv output.csv
+ *
+ * INPUT: CSV file with potential formatting issues
+ * OUTPUT: Cleaned CSV file with valid rows only
+ *
+ * DEPENDENCIES: csv-parse, csv-stringify
+ */
 
 const fs = require("fs");
 const parse = require("csv-parse/sync").parse;

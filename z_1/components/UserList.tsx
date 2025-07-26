@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { UserRoleModal } from "./UserRoleModal";
 import { UserDeleteModal } from "./UserDeleteModal";
+import { AddUserModal } from "./AddUserModal";
 import { Button } from "./ui/button";
 
 interface User {
@@ -21,6 +22,7 @@ export const UserList: React.FC<UserListProps> = ({ role }) => {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isRoleModalOpen, setIsRoleModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false);
 
   const fetchUsers = async () => {
     if (role !== "admin") return;
@@ -102,6 +104,29 @@ export const UserList: React.FC<UserListProps> = ({ role }) => {
     }
   };
 
+  const handleAddUser = async (email: string, role: string) => {
+    try {
+      const response = await fetch("/api/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, role }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to add user");
+      }
+
+      // Refresh the user list
+      await fetchUsers();
+    } catch (error) {
+      console.error("Error adding user:", error);
+      throw error;
+    }
+  };
+
   const getRoleBadgeColor = (userRole: string) => {
     switch (userRole) {
       case "admin":
@@ -120,6 +145,24 @@ export const UserList: React.FC<UserListProps> = ({ role }) => {
 
   return (
     <>
+      {/* Header */}
+      <div className="flex justify-between items-start mb-6">
+        <div>
+          <h2 className="zeno-heading-xl text-foreground dark:text-white">
+            User Management
+          </h2>
+          <p className="zeno-text-sm text-muted-foreground dark:text-gray-400 mt-1">
+            Manage user accounts and permissions
+          </p>
+        </div>
+        <Button
+          onClick={() => setIsAddUserModalOpen(true)}
+          className="zeno-button-blue"
+        >
+          Add User
+        </Button>
+      </div>
+
       <div className="overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
           <thead className="bg-muted dark:bg-gray-700">
@@ -200,6 +243,12 @@ export const UserList: React.FC<UserListProps> = ({ role }) => {
           setSelectedUser(null);
         }}
         onConfirm={handleUserDelete}
+      />
+
+      <AddUserModal
+        isOpen={isAddUserModalOpen}
+        onClose={() => setIsAddUserModalOpen(false)}
+        onSave={handleAddUser}
       />
     </>
   );
