@@ -37,6 +37,14 @@ body {
     --zeno-lavender: #BC77FB; /* PMS 265 */
     --zeno-burgundy: #590A3B; /* PMS 229 */
     
+    /* Blue Colors for UI */
+    --zeno-primary-blue: #3B82F6; /* Blue 500 */
+    --zeno-mid-blue: #2563EB; /* Blue 600 */
+    --zeno-light-blue: #DBEAFE; /* Blue 100 */
+    
+    /* Gray Colors for UI */
+    --zeno-gray: #6B7280; /* Gray 500 */
+    
     /* Neutral Colors */
     --zeno-black: #000000; /* Classic Black */
     --zeno-white: #FFFFFF; /* White */
@@ -292,6 +300,53 @@ body {
     box-shadow: 0 0 0 2px var(--component-border, var(--zeno-green));
   }
   
+  /* Button Variants */
+  .zeno-button-blue {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background-color: var(--zeno-primary-blue);
+    color: white;
+    border: 1px solid var(--zeno-primary-blue);
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .zeno-button-blue:hover {
+    background-color: var(--zeno-mid-blue);
+    border-color: var(--zeno-mid-blue);
+    transform: translateY(-1px);
+  }
+  
+  .zeno-button-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background-color: var(--zeno-light-gray);
+    color: var(--zeno-dark-gray);
+    border: 1px solid var(--zeno-gray);
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .zeno-button-secondary:hover {
+    background-color: var(--zeno-gray);
+    color: white;
+    transform: translateY(-1px);
+  }
+  
   /* ============================================
    * BADGE SYSTEM
    * ============================================ */
@@ -324,12 +379,67 @@ body {
   }
   
   /* ============================================
-   * CATEGORY SYSTEM - Green for categories
+   * CATEGORY SYSTEM - Colorful categories
    * ============================================ */
   
   .zeno-category {
     @apply inline-flex items-center px-4 py-2 rounded-full text-sm font-medium;
     @apply bg-green-50 text-green-700 hover:bg-green-100 transition-colors cursor-pointer;
+  }
+
+  /* Professional Category Card Colors - Darker Zeno Green */
+  .zeno-category-card-audience {
+    background: linear-gradient(135deg, #f0f9f0 0%, #e8f5e8 100%);
+    border-color: var(--zeno-mid-green);
+  }
+  .zeno-category-card-audience .zeno-category-icon {
+    background-color: #e8f5e8;
+    color: var(--zeno-deep-green);
+  }
+
+  .zeno-category-card-executive {
+    background: linear-gradient(135deg, #f0f9f0 0%, #e8f5e8 100%);
+    border-color: var(--zeno-mid-green);
+  }
+  .zeno-category-card-executive .zeno-category-icon {
+    background-color: #e8f5e8;
+    color: var(--zeno-deep-green);
+  }
+
+  .zeno-category-card-industries {
+    background: linear-gradient(135deg, #f0f9f0 0%, #e8f5e8 100%);
+    border-color: var(--zeno-mid-green);
+  }
+  .zeno-category-card-industries .zeno-category-icon {
+    background-color: #e8f5e8;
+    color: var(--zeno-deep-green);
+  }
+
+  .zeno-category-card-digital {
+    background: linear-gradient(135deg, #f0f9f0 0%, #e8f5e8 100%);
+    border-color: var(--zeno-mid-green);
+  }
+  .zeno-category-card-digital .zeno-category-icon {
+    background-color: #e8f5e8;
+    color: var(--zeno-deep-green);
+  }
+
+  .zeno-category-card-ai {
+    background: linear-gradient(135deg, #f0f9f0 0%, #e8f5e8 100%);
+    border-color: var(--zeno-mid-green);
+  }
+  .zeno-category-card-ai .zeno-category-icon {
+    background-color: #e8f5e8;
+    color: var(--zeno-deep-green);
+  }
+
+  .zeno-category-card-brand {
+    background: linear-gradient(135deg, #f0f9f0 0%, #e8f5e8 100%);
+    border-color: var(--zeno-mid-green);
+  }
+  .zeno-category-card-brand .zeno-category-icon {
+    background-color: #e8f5e8;
+    color: var(--zeno-deep-green);
   }
   
   /* ============================================
@@ -552,14 +662,30 @@ body {
       padding-bottom: var(--zeno-space-xl);
     }
 
-    /* Responsive heading scales */
-    .zeno-heading-xl {
-      @apply text-3xl font-bold;
-    }
+    /* Responsive heading scales - sized to match sidebar menu proportions */
+      .zeno-heading-xl {
+    @apply text-xl font-bold; /* Page titles and major headings */
+  }
 
-    .zeno-heading-lg {
-      @apply text-xl font-semibold;
-    }
+  .zeno-heading-lg {
+    @apply text-lg font-semibold; /* Section headings */
+  }
+
+  .zeno-heading-md {
+    @apply text-base font-semibold; /* Card titles and smaller headings */
+  }
+
+  .zeno-text-base {
+    @apply text-base; /* Standard body text */
+  }
+
+  .zeno-text-sm {
+    @apply text-sm; /* Smaller body text and metadata */
+  }
+
+  .zeno-text-xs {
+    @apply text-xs; /* Labels and fine print */
+  }
 
     /* Brand green text */
     .zeno-text-green {

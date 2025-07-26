@@ -234,10 +234,10 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
     >
       {/* Header */}
       <div className="zeno-content-padding border-b border-gray-200 dark:border-gray-700">
-        <h2 className="zeno-heading text-xl font-semibold text-foreground dark:text-white">
+        <h2 className="zeno-heading-xl text-foreground dark:text-white">
           Curator Dashboard
         </h2>
-        <p className="text-sm text-muted-foreground dark:text-gray-400 mt-1">
+        <p className="zeno-text-sm text-muted-foreground dark:text-gray-400 mt-1">
           Manage your content and resources
         </p>
       </div>
@@ -268,11 +268,41 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
       {/* Content */}
       <div className="zeno-content-padding">
         {activeTab === "assets" && (
-          <div className="space-y-4">
-            <div className="flex justify-between items-center">
-              <h3 className="text-lg font-medium text-foreground dark:text-white">
-                Asset Management
-              </h3>
+          <div className="space-y-3">
+            {/* Search and Add Asset Row */}
+            <div className="flex justify-between items-center gap-4">
+              <div className="relative flex-1 max-w-md">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Search className="h-5 w-5 text-gray-400" />
+                </div>
+                <input
+                  type="text"
+                  placeholder="Search assets..."
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                  className="zeno-search pl-10 pr-10 bg-white dark:bg-gray-700 text-foreground dark:text-white zeno-placeholder"
+                />
+                {searchQuery && (
+                  <button
+                    onClick={clearSearch}
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-muted-foreground dark:hover:text-gray-300"
+                  >
+                    <svg
+                      className="h-5 w-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </button>
+                )}
+              </div>
               <button
                 className="zeno-button-blue"
                 onClick={() => {
@@ -282,40 +312,6 @@ export function CuratorDashboard({ className }: CuratorDashboardProps) {
               >
                 Add Asset
               </button>
-            </div>
-
-            {/* Search Bar */}
-            <div className="relative max-w-md">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Search className="h-5 w-5 text-gray-400" />
-              </div>
-              <input
-                type="text"
-                placeholder="Search assets..."
-                value={searchQuery}
-                onChange={handleSearchChange}
-                className="zeno-search pl-10 pr-10 bg-white dark:bg-gray-700 text-foreground dark:text-white zeno-placeholder"
-              />
-              {searchQuery && (
-                <button
-                  onClick={clearSearch}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-muted-foreground dark:hover:text-gray-300"
-                >
-                  <svg
-                    className="h-5 w-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                </button>
-              )}
             </div>
 
             {/* Error Display */}

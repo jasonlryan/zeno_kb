@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { removeAsset } from '@/lib/assetManager';
 import { getDataConfig, setDataConfig } from '@/lib/redisConfigManager';
 import { ZenoConfig } from '@/types/config';
+import { embeddingSyncService } from '@/lib/embeddingSyncService';
 
 export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -10,6 +11,12 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
     if (!removed) {
       return NextResponse.json({ error: 'Tool not found' }, { status: 404 });
     }
+    
+    // Automatically remove embedding for the deleted tool
+    embeddingSyncService.onToolDeleted(id).catch(error => {
+      console.error('Failed to delete embedding for tool:', error);
+    });
+    
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Error deleting asset:', error);
@@ -40,6 +47,11 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     
     // Save back to Redis
     await setDataConfig(data);
+    
+    // Automatically update embedding for the modified tool
+    embeddingSyncService.onToolUpdated(data.tools[toolIndex]).catch(error => {
+      console.error('Failed to update embedding for tool:', error);
+    });
     
     return NextResponse.json({ success: true, tool: data.tools[toolIndex] });
   } catch (error) {

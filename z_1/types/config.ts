@@ -4,6 +4,7 @@ export interface ZenoAsset {
   id: string; // generated if not present in CSV
   title: string;
   description?: string; // optional per schema
+  shortDescription?: string; // AI-generated short description for cards
   url: string;
   type: string; // e.g., 'GPT', 'Prompt', etc. (from Media Type)
   categories: string[]; // from Business Category (comma-separated in CSV)
@@ -32,6 +33,9 @@ export interface ZenoAsset {
   // Script specific fields
   language?: string;
   requirements?: string[];
+  
+  // Vector search similarity score (when applicable)
+  similarity?: number;
   
   // Allow additional dynamic fields
   [key: string]: any;

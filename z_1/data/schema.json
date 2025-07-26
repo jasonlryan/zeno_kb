@@ -22,6 +22,12 @@
       "description": "Description of the tool or asset."
     },
     {
+      "name": "shortDescription",
+      "type": "string",
+      "required": false,
+      "description": "Brief, factual description used on tool cards (max 10 words)."
+    },
+    {
       "name": "url",
       "type": "string",
       "required": true,

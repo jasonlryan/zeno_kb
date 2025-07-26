@@ -18,6 +18,7 @@ import { CategoryTileDemo } from "../components/CategoryTile";
 import { ChatPanelDemo } from "../components/ChatPanel";
 import { CuratorDashboard } from "../components/CuratorDashboard";
 import { FeaturedCarousel } from "../components/FeaturedCarousel";
+import type { ZenoAsset } from "../types/config";
 import { CategoryGrid } from "../components/CategoryGrid";
 import { ToolGrid } from "../components/ToolGrid";
 // FILTERS: Conditionally imported based on feature flag
@@ -41,6 +42,7 @@ import UserGuidePage from "./user-guide/page";
 import { useFavorites } from "../hooks/useFavorites";
 import { FavoriteModal } from "../components/FavoriteModal";
 import { AnalyticsDashboard } from "../components/AnalyticsDashboard";
+import { VectorSetup } from "../components/VectorSetup";
 
 // Configuration data loaded from config files
 
@@ -53,6 +55,7 @@ export default function HomePage() {
     | "curator"
     | "users"
     | "analytics"
+    | "vector-setup"
     | "demos"
     | "tool-detail"
     | "category"
@@ -67,7 +70,7 @@ export default function HomePage() {
 
   // Favorites state
   const [favoriteModalOpen, setFavoriteModalOpen] = useState(false);
-  const [toolToFavorite, setToolToFavorite] = useState<Tool | null>(null);
+  const [toolToFavorite, setToolToFavorite] = useState<ZenoAsset | null>(null);
 
   // Add URL hash-based routing persistence
   useEffect(() => {
@@ -423,7 +426,7 @@ export default function HomePage() {
   let filteredSidebarSections: any[] = [];
   if (!navLoading) {
     filteredSidebarSections = navigation
-      .map((section) => ({
+      .map((section: any) => ({
         ...section,
         items: section.items
           .filter((item: any) => {
@@ -444,7 +447,7 @@ export default function HomePage() {
           })),
       }))
       // Remove sections with no visible items
-      .filter((section) => section.items.length > 0);
+      .filter((section: any) => section.items.length > 0);
   }
 
   // NOW we can have conditional returns after all hooks are called
@@ -462,13 +465,13 @@ export default function HomePage() {
     switch (activeView) {
       case "home":
         return (
-          <div className="space-y-8">
+          <div className="space-y-4">
             {/* Page Title */}
-            <section className="text-center py-8">
-              <h1 className="zeno-heading text-4xl text-primary mb-2">
+            <section className="text-center py-2">
+              <h1 className="zeno-heading text-2xl text-primary mb-1">
                 Welcome to the Zeno AI Knowledge Hub
               </h1>
-              <p className="zeno-body text-xl text-foreground">
+              <p className="zeno-body text-lg text-foreground">
                 Your AI toolkit, all in one place
               </p>
             </section>
@@ -490,8 +493,8 @@ export default function HomePage() {
             />
 
             {/* Categories */}
-            <section>
-              <h2 className="zeno-heading text-card-foreground mb-6">
+            <section className="zeno-content-padding">
+              <h2 className="zeno-heading-lg text-card-foreground mb-4">
                 {categoriesTitle}
               </h2>
               <CategoryGrid
@@ -501,8 +504,8 @@ export default function HomePage() {
             </section>
 
             {/* All Tools */}
-            <section>
-              <h2 className="zeno-heading text-card-foreground mb-6">
+            <section className="zeno-content-padding">
+              <h2 className="zeno-heading-lg text-card-foreground mb-4">
                 All tools ({toolsLoading ? "Loading..." : `${toolsCount} tools`}
                 )
               </h2>
@@ -617,6 +620,17 @@ export default function HomePage() {
       case "analytics":
         if (role === "admin") {
           return <AnalyticsDashboard />;
+        } else {
+          return (
+            <div className="text-center py-16">
+              <p className="zeno-body text-muted-foreground">Not authorized</p>
+            </div>
+          );
+        }
+
+      case "vector-setup":
+        if (role === "admin") {
+          return <VectorSetup />;
         } else {
           return (
             <div className="text-center py-16">
@@ -775,8 +789,8 @@ export default function HomePage() {
 
         {/* Main Content Area - expands to fill available space */}
         <div className="flex-1 overflow-auto">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-            <div className="space-y-16">{renderMainContent()}</div>
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div className="space-y-8">{renderMainContent()}</div>
           </div>
         </div>
       </div>

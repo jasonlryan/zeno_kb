@@ -47,7 +47,7 @@ export function FeaturedCarousel({
       )}
     >
       <div className="flex items-center justify-between mb-4">
-        <h2 className="zeno-heading text-xl font-semibold text-foreground dark:text-white">
+        <h2 className="zeno-heading-lg text-foreground dark:text-white">
           Featured Tools
         </h2>
         <div className="flex space-x-2">
@@ -77,7 +77,7 @@ export function FeaturedCarousel({
               onFavorite={onFavorite}
               onTagClick={onTagClick}
               isFavorite={isFavorite(tool.id)}
-              className="min-h-[320px] flex flex-col"
+              className="h-[240px] flex flex-col"
             />
           </div>
         ))}

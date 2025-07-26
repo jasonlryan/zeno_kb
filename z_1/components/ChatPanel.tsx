@@ -105,7 +105,7 @@ export function ChatPanel({
   return (
     <div
       className={cn(
-        "flex flex-col h-[600px] bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-lg overflow-hidden",
+        "flex flex-col h-[480px] bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-lg overflow-hidden",
         className
       )}
       onMouseDown={handleUserInteraction}
@@ -155,7 +155,7 @@ export function ChatPanel({
             >
               <div
                 className={cn(
-                  "prose prose-sm max-w-none",
+                  "prose prose-xs max-w-none text-sm",
                   message.sender === "user"
                     ? "prose-invert"
                     : "prose-gray dark:prose-invert"
@@ -205,13 +205,13 @@ export function ChatPanel({
             onChange={(e) => setInput(e.target.value)}
             placeholder="Ask about AI tools and resources..."
             disabled={isLoading}
-            className="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-foreground dark:text-white zeno-placeholder focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent disabled:opacity-50 transition-colors"
+            className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-foreground dark:text-white zeno-placeholder focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent disabled:opacity-50 transition-colors text-sm"
             ref={inputRef}
           />
           <button
             type="submit"
             disabled={!input.trim() || isLoading}
-            className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
+            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm text-sm"
             aria-label="Send message"
           >
             <Send className="w-5 h-5" />
@@ -261,18 +261,35 @@ export function ChatPanelDemo() {
     setMessages((prev) => [...prev, aiMessage]);
 
     try {
-      // Import AI service
-      const { getAIService } = await import("../lib/aiService");
-      const aiService = getAIService();
+      // Call the chat API with streaming
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          query: message,
+          streaming: true,
+        }),
+      });
 
-      // Use streaming response with empty tools array for now
-      // The AI service will load tools from the knowledge base
+      if (!response.ok) {
+        throw new Error("Failed to get AI response");
+      }
+
+      // Handle streaming response
+      const reader = response.body?.getReader();
+      const decoder = new TextDecoder();
       let fullResponse = "";
-      await aiService.generateStreamingResponse(
-        message,
-        [], // Empty array since AI service loads from knowledge base
-        (chunk: string) => {
+
+      if (reader) {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          const chunk = decoder.decode(value);
           fullResponse += chunk;
+
           setMessages((prev) =>
             prev.map((msg) =>
               msg.id === aiMessageId
@@ -281,7 +298,7 @@ export function ChatPanelDemo() {
             )
           );
         }
-      );
+      }
 
       // Track the complete AI response
       trackChatResponse(fullResponse);

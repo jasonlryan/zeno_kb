@@ -27,6 +27,7 @@ export function ToolFormModal({
   const [formData, setFormData] = useState({
     title: tool?.title || "",
     description: tool?.description || "",
+    shortDescription: tool?.shortDescription || "",
     url: tool?.url || "",
     type: tool?.type || "GPT",
     categories: tool?.categories || [],
@@ -49,6 +50,7 @@ export function ToolFormModal({
     setFormData({
       title: tool?.title || "",
       description: tool?.description || "",
+      shortDescription: tool?.shortDescription || "",
       url: tool?.url || "",
       type: tool?.type || "GPT",
       categories: tool?.categories || [],
@@ -85,6 +87,7 @@ export function ToolFormModal({
     const toolData = {
       title: formData.title,
       description: formData.description,
+      shortDescription: formData.shortDescription,
       url: formData.url,
       type: formData.type,
       function: formData.function,
@@ -205,7 +208,10 @@ export function ToolFormModal({
           </button>
         </div>
         {/* Form */}
-        <form onSubmit={handleSubmit} className="zeno-content-padding space-y-4">
+        <form
+          onSubmit={handleSubmit}
+          className="zeno-content-padding space-y-4"
+        >
           {tool && (
             <div className="flex gap-8 mb-2">
               <div>
@@ -252,6 +258,22 @@ export function ToolFormModal({
               rows={3}
               className="zeno-input"
             />
+          </div>
+          <div>
+            <label className="zeno-label">Short Description</label>
+            <input
+              type="text"
+              value={formData.shortDescription}
+              onChange={(e) =>
+                handleInputChange("shortDescription", e.target.value)
+              }
+              placeholder="Brief, factual description (max 10 words)"
+              className="zeno-input"
+            />
+            <p className="text-xs text-muted-foreground mt-1">
+              Used on tool cards. Keep it factual and descriptive, not
+              marketing-y.
+            </p>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>

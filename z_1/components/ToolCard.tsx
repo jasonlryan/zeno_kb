@@ -101,13 +101,16 @@ export function ToolCard({
         </div>
 
         {/* Title */}
-        <h3 className="text-sm font-semibold text-foreground dark:text-white mb-2 line-clamp-2 leading-tight">
+        <h3 className="zeno-heading-md text-foreground dark:text-white mb-2 line-clamp-2 leading-tight">
           {tool.title}
         </h3>
 
-        {/* Description */}
-        <p className="text-xs text-muted-foreground dark:text-gray-300 mb-3 line-clamp-3 flex-grow leading-relaxed">
-          {tool.description}
+        {/* Short Description */}
+        <p className="zeno-text-sm text-muted-foreground dark:text-gray-300 mb-3 line-clamp-2 flex-grow leading-relaxed">
+          {tool.shortDescription ||
+            (tool.description
+              ? tool.description.split(".")[0] + "."
+              : "No description available")}
         </p>
 
         {/* Metadata badges */}

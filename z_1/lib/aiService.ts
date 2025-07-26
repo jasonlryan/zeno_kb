@@ -1,24 +1,46 @@
 import OpenAI from 'openai';
 import type { Tool } from "../types";
+import type { SearchResult } from './supabaseClient';
 
-// Load knowledge base data
-let knowledgeBase: Tool[] = [];
-
-// Initialize knowledge base from data.json
-async function loadKnowledgeBase() {
-  if (knowledgeBase.length === 0) {
-    try {
-      const response = await fetch('/api/knowledge-base');
-      if (response.ok) {
-        knowledgeBase = await response.json();
-      }
-    } catch (error) {
-      console.error('Error loading knowledge base:', error);
-      // Fallback to empty array
-      knowledgeBase = [];
+// Helper function to perform semantic search via API
+async function performSemanticSearch(query: string, limit: number = 10): Promise<SearchResult[]> {
+  try {
+    const response = await fetch('/api/search', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ query, limit }),
+    });
+    
+    if (!response.ok) {
+      throw new Error('Search API request failed');
     }
+    
+    const data = await response.json();
+    return data.results || [];
+  } catch (error) {
+    console.error('Error calling search API:', error);
+    return [];
   }
-  return knowledgeBase;
+}
+
+// Convert SearchResult to Tool format for compatibility
+function searchResultToTool(result: SearchResult): Tool {
+  return {
+    id: result.tool_id,
+    title: result.title,
+    description: result.description,
+    type: result.type,
+    categories: result.categories,
+    skillLevel: result.skill_level,
+    url: result.url,
+    tags: result.categories, // Use categories as tags for now
+    function: result.type, // Use type as function for now
+    tier: 'Foundation', // Default tier
+    featured: false, // Default featured
+    similarity: result.similarity
+  };
 }
 
 export class AIService {
@@ -27,12 +49,11 @@ export class AIService {
   constructor() {
     this.openai = new OpenAI({
       apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
-      dangerouslyAllowBrowser: true // Only for client-side usage
     });
   }
 
   /**
-   * Generate AI response with streaming support
+   * Generate AI response with streaming support and vector search
    */
   async generateStreamingResponse(
     query: string, 
@@ -40,8 +61,13 @@ export class AIService {
     onChunk: (chunk: string) => void
   ): Promise<void> {
     try {
-      const knowledgeTools = await loadKnowledgeBase();
-      const allTools = [...tools, ...knowledgeTools];
+      // Use semantic search to find relevant tools
+      const semanticResults = await performSemanticSearch(query, 10);
+      const relevantTools = semanticResults.map((result: SearchResult) => searchResultToTool(result));
+      
+      // Combine with any provided tools (for backwards compatibility)
+      const allTools = [...tools, ...relevantTools];
+      
       const prompt = this.createPrompt(query, allTools);
       
       const stream = await this.openai.chat.completions.create({
@@ -49,7 +75,20 @@ export class AIService {
         messages: [
           {
             role: 'system',
-            content: 'You are a helpful AI assistant for the Zeno Knowledge Hub. You help users find relevant AI tools and resources from the knowledge base. Be conversational and provide practical advice. Focus on recommending the most relevant tools and explain why they would be useful for the user\'s specific needs.'
+            content: `You are a helpful AI assistant for the Zeno Knowledge Hub. You help users find relevant AI tools and resources using semantic search. 
+
+Key capabilities:
+- Use semantic understanding to recommend the most relevant tools
+- Provide practical advice and explain why tools are suitable
+- Focus on the highest similarity matches when multiple tools are available
+- Be conversational and helpful in your responses
+
+When recommending tools:
+1. Prioritize tools with higher similarity scores (if available)
+2. Explain why each tool is relevant to the user's specific needs
+3. Include practical tips for using them effectively
+4. Always include clickable links: [Tool Name](url)
+5. Mention any relevant caveats or best practices`
           },
           {
             role: 'user',
@@ -78,8 +117,13 @@ export class AIService {
    */
   async generateResponse(query: string, tools: Tool[]): Promise<string> {
     try {
-      const knowledgeTools = await loadKnowledgeBase();
-      const allTools = [...tools, ...knowledgeTools];
+      // Use semantic search to find relevant tools
+      const semanticResults = await performSemanticSearch(query, 10);
+      const relevantTools = semanticResults.map((result: SearchResult) => searchResultToTool(result));
+      
+      // Combine with any provided tools
+      const allTools = [...tools, ...relevantTools];
+      
       const prompt = this.createPrompt(query, allTools);
       
       const response = await this.openai.chat.completions.create({
@@ -87,7 +131,20 @@ export class AIService {
         messages: [
           {
             role: 'system',
-            content: 'You are a helpful AI assistant for the Zeno Knowledge Hub. You help users find relevant AI tools and resources from the knowledge base. Be conversational and provide practical advice. Focus on recommending the most relevant tools and explain why they would be useful for the user\'s specific needs.'
+            content: `You are a helpful AI assistant for the Zeno Knowledge Hub. You help users find relevant AI tools and resources using semantic search. 
+
+Key capabilities:
+- Use semantic understanding to recommend the most relevant tools
+- Provide practical advice and explain why tools are suitable
+- Focus on the highest similarity matches when multiple tools are available
+- Be conversational and helpful in your responses
+
+When recommending tools:
+1. Prioritize tools with higher similarity scores (if available)
+2. Explain why each tool is relevant to the user's specific needs
+3. Include practical tips for using them effectively
+4. Always include clickable links: [Tool Name](url)
+5. Mention any relevant caveats or best practices`
           },
           {
             role: 'user',
@@ -106,11 +163,15 @@ export class AIService {
   }
 
   /**
-   * Create the prompt for the AI with tool context
+   * Create the prompt for the AI with tool context (updated for vector search)
    */
   private createPrompt(query: string, tools: Tool[]): string {
-    // Get the most relevant tools (limit to avoid token limits)
-    const relevantTools = tools.slice(0, 15).map((tool) => ({
+    // Sort tools by similarity if available, limit to avoid token limits
+    const sortedTools = tools
+      .sort((a, b) => (b.similarity || 0) - (a.similarity || 0))
+      .slice(0, 15);
+
+    const relevantTools = sortedTools.map((tool) => ({
       title: tool.title,
       description: tool.description,
       type: tool.type,
@@ -118,69 +179,44 @@ export class AIService {
       tags: tool.tags,
       tier: tool.tier,
       featured: tool.featured,
-      url: tool.url
+      url: tool.url,
+      similarity: tool.similarity || 'N/A'
     }));
 
     return `User query: "${query}"
 
-Based on the user's query, recommend the most relevant tools and resources from the Zeno Knowledge Hub below. 
+Based on the user's query, I found these relevant tools using semantic search. Tools are ranked by relevance/similarity to your query:
 
 Available Tools and Resources:
 ${JSON.stringify(relevantTools, null, 2)}
 
 Instructions:
-1. Recommend 1-2 most relevant tools or resources that best match the user's needs
-2. Explain why they're suitable and how they can help
-3. Provide practical tips for using them effectively
-4. Include any relevant caveats or best practices
-5. Be conversational and helpful in your response
-6. If the user asks about specific topics (like audience insights, trends, marketing, etc.), prioritize tools with matching functions and tags
-7. **IMPORTANT**: When mentioning a tool, include a clickable link using this exact format: [Tool Name](link_url)
+1. Recommend 1-3 most relevant tools that best match the user's needs
+2. Consider the similarity scores - higher scores indicate better matches
+3. Explain why they're suitable and how they can help with the specific query
+4. Provide practical tips for using them effectively
+5. Include any relevant caveats or best practices
+6. Be conversational and helpful in your response
+7. **IMPORTANT**: When mentioning a tool, include a clickable link using this exact format: [Tool Name](url)
 8. Always include the link when recommending a specific tool
+9. If similarity scores are available, you can mention how well-matched a tool is
 
-Format your response in a friendly, conversational manner that helps the user understand which tools would be most valuable for their specific needs. Make sure to include clickable links to the recommended tools.`;
+Format your response in a friendly, conversational manner that helps the user understand which tools would be most valuable for their specific needs based on semantic similarity.`;
   }
 
   /**
-   * Fallback response when API is unavailable
+   * Fallback response when AI service fails
    */
   private getFallbackResponse(query: string): string {
-    const fallbackResponses = [
-      `I understand you're asking about: **${query}**. Let me help you find the right tools and resources. I'd recommend exploring our tool library for relevant options.`,
-      `Thanks for your question about **${query}**. While I'm experiencing some technical difficulties connecting to my AI service, I can suggest browsing our categorized tools to find what you need.`,
-      `Great question about **${query}**! I'm currently unable to access my full AI capabilities, but you can use our search and filter features to discover relevant tools and resources.`,
-    ];
+    return `I'm sorry, I'm experiencing some technical difficulties with my AI response system. However, I can still help you find relevant tools! 
 
-    return fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
-  }
+Try browsing our tool categories or use the search function to find tools related to "${query}". You can also check out our featured tools section for popular recommendations.
 
-  /**
-   * Check if the AI service is properly configured
-   */
-  isConfigured(): boolean {
-    return !!process.env.NEXT_PUBLIC_OPENAI_API_KEY;
-  }
-
-  /**
-   * Get configuration status message
-   */
-  getStatusMessage(): string {
-    if (this.isConfigured()) {
-      return "AI service is configured and ready";
-    }
-    return "AI service requires NEXT_PUBLIC_OPENAI_API_KEY environment variable";
+Please try your question again in a moment, or feel free to explore the tools directly.`;
   }
 }
 
-// Singleton instance
-let aiServiceInstance: AIService | null = null;
-
-/**
- * Get the AI service instance
- */
+// Export factory function for lazy initialization
 export function getAIService(): AIService {
-  if (!aiServiceInstance) {
-    aiServiceInstance = new AIService();
-  }
-  return aiServiceInstance;
+  return new AIService();
 } 

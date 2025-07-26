@@ -32,7 +32,7 @@ export function AppShell({
   onFilterToggle,
 }: AppShellProps) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const { app } = useConfig();
+  const { appConfig } = useConfig();
   const { user, signOut } = useSupabaseAuth();
   const router = useRouter();
 
@@ -87,13 +87,17 @@ export function AppShell({
               <TopSearchBar onSubmit={onSearch} />
             </div>
             {user && (
-              <Button
-                onClick={handleSignOut}
-                variant="secondary"
-                className="ml-4"
-              >
-                Sign Out
-              </Button>
+              <div className="flex items-center gap-3">
+                <div className="text-sm text-muted-foreground">
+                  Welcome,{" "}
+                  <span className="font-medium text-foreground">
+                    {user.email?.split("@")[0] || user.email}
+                  </span>
+                </div>
+                <Button onClick={handleSignOut} variant="secondary" size="sm">
+                  Sign Out
+                </Button>
+              </div>
             )}
           </div>
         </div>

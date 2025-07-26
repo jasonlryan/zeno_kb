@@ -231,7 +231,7 @@ const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
             <div className="flex items-start space-x-4">
               {getTypeIcon(tool.type)}
               <div>
-                <h2 className="zeno-heading text-4xl font-extrabold text-foreground">
+                <h2 className="zeno-heading-xl text-foreground">
                   {tool.title}
                 </h2>
                 <div className="flex items-center space-x-2 mt-2">
@@ -267,32 +267,9 @@ const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
           </div>
 
           {/* Description */}
-          <p className="zeno-body text-foreground text-lg mb-6 leading-relaxed">
+          <p className="zeno-body text-foreground text-base mb-6 leading-relaxed">
             {tool.description}
           </p>
-
-          {/* Type Metadata */}
-          <div className="flex flex-wrap gap-3 mb-4 items-center">
-            {tool.type && (
-              <>
-                <span className="zeno-body font-semibold">Type:</span>
-                <button
-                  className={cn(
-                    "zeno-type transition-colors cursor-pointer",
-                    `zeno-type-${tool.type.toLowerCase().replace(/\s+/g, "-")}`
-                  )}
-                  onClick={() =>
-                    typeof onTagClick === "function"
-                      ? onTagClick(tool.type)
-                      : console.log("Type clicked:", tool.type)
-                  }
-                  type="button"
-                >
-                  {tool.type}
-                </button>
-              </>
-            )}
-          </div>
           {/* Tag Categories Metadata */}
           {tool.tags && tool.tags.length > 0 && (
             <div className="flex flex-wrap gap-3 mb-4 items-center">
@@ -468,7 +445,7 @@ const ToolDetailPage: React.FC<ToolDetailPageProps> = ({
                 href={tool.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="zeno-button-large-blue"
+                className="zeno-button-blue inline-flex items-center"
               >
                 {getActionButtonText(tool.type)}
                 <ExternalLink className="ml-3" size={24} />

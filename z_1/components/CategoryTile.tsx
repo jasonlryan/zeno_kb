@@ -8,33 +8,51 @@ interface CategoryTileProps {
   className?: string;
 }
 
+// Map category titles to CSS color classes
+function getCategoryColorClass(title: string): string {
+  const titleLower = title.toLowerCase();
+  if (titleLower.includes("audience") || titleLower.includes("research"))
+    return "zeno-category-card-audience";
+  if (titleLower.includes("executive") || titleLower.includes("leadership"))
+    return "zeno-category-card-executive";
+  if (titleLower.includes("industries") || titleLower.includes("trends"))
+    return "zeno-category-card-industries";
+  if (titleLower.includes("digital") || titleLower.includes("platforms"))
+    return "zeno-category-card-digital";
+  if (titleLower.includes("ai") || titleLower.includes("training"))
+    return "zeno-category-card-ai";
+  if (titleLower.includes("brand") || titleLower.includes("communications"))
+    return "zeno-category-card-brand";
+  return "zeno-category-card-audience"; // default
+}
+
 export function CategoryTile({
   category,
   onSelect,
   className,
 }: CategoryTileProps) {
+  const colorClass = getCategoryColorClass(category.title);
+
   return (
     <div
       className={cn(
-        "bg-white dark:bg-gray-800 rounded-lg border-2 border-gray-200 dark:border-gray-700 zeno-content-padding cursor-pointer transition-all duration-200 hover:shadow-md hover:scale-[1.02]",
+        "rounded-lg border-2 zeno-content-padding cursor-pointer transition-all duration-200 hover:shadow-md hover:scale-[1.02]",
+        colorClass,
         className
       )}
       onClick={() => onSelect?.(category.id)}
     >
       <div className="flex items-center mb-4">
-        <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center mr-4">
+        <div className="w-12 h-12 rounded-lg flex items-center justify-center mr-4 zeno-category-icon">
           <span className="text-2xl">{category.icon}</span>
         </div>
         <div className="flex-1">
-          <h3 className="font-semibold text-foreground dark:text-white">
+          <h3 className="zeno-heading-md text-foreground dark:text-white">
             {category.title}
           </h3>
-          <span className="text-sm text-muted-foreground dark:text-gray-400">
-            {category.count} tools
-          </span>
         </div>
       </div>
-      <p className="text-sm text-muted-foreground dark:text-gray-400 line-clamp-2">
+      <p className="zeno-text-sm text-muted-foreground dark:text-gray-400">
         {category.description}
       </p>
     </div>

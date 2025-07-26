@@ -113,7 +113,7 @@ export function LearningGuideDetail({
           {/* Header with Title and Favorite */}
           <div className="flex justify-between items-start mb-6">
             <div className="flex items-start space-x-4">
-              <div className="text-4xl">📚</div>
+              <div className="text-2xl">📚</div>
               <div>
                 <div className="flex items-center gap-3 mb-2">
                   <span className="bg-blue-100 text-blue-800 text-sm font-semibold px-3 py-1 rounded-full">
@@ -126,7 +126,7 @@ export function LearningGuideDetail({
                     </div>
                   )}
                 </div>
-                <h2 className="text-4xl font-extrabold text-foreground">
+                <h2 className="zeno-heading-xl text-foreground">
                   {tool.title}
                 </h2>
                 <div className="flex items-center space-x-2 mt-2">
